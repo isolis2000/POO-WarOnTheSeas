@@ -13,7 +13,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import main.GameMaster;
+import server.GameMaster;
 
 // La clase server acepta una única conexion (tiene
 // un) solo accept() y envia datos primitivos y un

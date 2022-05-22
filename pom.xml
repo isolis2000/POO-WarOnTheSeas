@@ -10,4 +10,5 @@
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>com.mycompany.poo.warontheseasserver.POOWarOnTheSeasServer</exec.mainClass>
     </properties>
+    <name>POO-WarOnTheSeas</name>
 </project>

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Server;
+package server;
 
-import Commands.BaseCommand;
+import commands.BaseCommand;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
