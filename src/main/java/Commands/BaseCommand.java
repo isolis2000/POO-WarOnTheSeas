@@ -14,12 +14,20 @@ import java.io.Serializable;
 public abstract class BaseCommand implements iCommand, Serializable{
     private String[] args;
     private boolean isBroadcast;
-    private String commandName;
+    private String commandName, playerExcecuting;
 
     public BaseCommand(String commandName, String[] args, boolean isBroadcast) {
         this.args = args;
         this.isBroadcast = isBroadcast;
         this.commandName = commandName;
+    }
+
+    public String getPlayerExcecuting() {
+        return playerExcecuting;
+    }
+
+    public void setPlayerExcecuting(String playerExcecuting) {
+        this.playerExcecuting = playerExcecuting;
     }
     
     public String[] getArgs() {

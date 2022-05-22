@@ -5,24 +5,17 @@
  */
 package Commands;
 
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CommandFactory { 
     
     
     public static BaseCommand getCommand(String name, String[] args){
         
-        switch (name.toUpperCase()){
-            case "CHAT":
-                return new ChatCommand(name, args);
-            case "PRIVATECHAT":
-                return new PrivateChatCommand(name, args);
-            default:
-                return new ErrorCommand("error", args);
-            
-        }   
+        return switch (name.toUpperCase()) {
+            case "CHAT" -> new ChatCommand(name, args);
+            case "CHATPRIVADO" -> new PrivateChatCommand(name, args);
+            default -> new ErrorCommand("error", args);
+        };   
         
         
         

@@ -26,7 +26,10 @@ public class ChatCommand extends BaseCommand implements Serializable{
 
     @Override
     public String executeOnClient() {
-        return "Recibido: " + CommandUtils.concatArray(getArgs());
+        String[] newArgs = new String[getArgs().length-1];
+        for (int i = 0; i < newArgs.length; i++)
+            newArgs[i] = getArgs()[i+1];
+        return this.getPlayerExcecuting() + ": " + CommandUtils.concatArray(newArgs);
     }
     
     

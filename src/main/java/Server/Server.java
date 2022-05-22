@@ -6,10 +6,13 @@
 package Server;
 
 import Commands.BaseCommand;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Message;
@@ -26,10 +29,15 @@ public class Server extends Thread{
     private boolean isWaiting = false;
     private ArrayList<ThreadServer> connections;
     public ServerFrame screenRef;
+    private HashMap<ThreadServer, String> playerNames = new HashMap<>();
     //
     public Server(ServerFrame screenRef){
         this.screenRef = screenRef;
         this.runServer();
+    }
+
+    public HashMap<ThreadServer, String> getPlayerNames() {
+        return playerNames;
     }
     
     //mensaje para todos
@@ -44,6 +52,13 @@ public class Server extends Thread{
             }
         }
         
+    }
+    
+    public void sendToOne(BaseCommand command, ThreadServer ts) {
+        try {
+            ts.writer.writeObject(command);
+        } catch (IOException ex) {
+        }
     }
     
     public String toString(){
@@ -67,11 +82,22 @@ public class Server extends Thread{
         while (isRunnig){
             try {
                 Socket newSocket = serverSoccket.accept();
-                this.screenRef.showServerMessage("Nuevo cliente conectado");
-                ThreadServer newThread = new ThreadServer(newSocket, this);  
+                this.screenRef.showServerMessage("Nuevo cliente conectado"); 
+                DataInputStream inStream = new DataInputStream(newSocket.getInputStream());
+                System.out.println("1");
+                String name = inStream.readUTF();
+                System.out.println("name: " + name);
+                ThreadServer newThread = new ThreadServer(newSocket, this); 
+                System.out.println("3");
+                playerNames.put(newThread, name);
+                System.out.println("4");
+                for (String set : playerNames.values())
+                    System.out.println("player: " + set);
                 newThread.start();
+                System.out.println("5");
                 connections.add(newThread);
-                this.screenRef.showServerMessage("Nuevo thread creado");
+                System.out.println("6");
+                this.screenRef.showServerMessage("Nuevo thread creado, nombre del jugador: " + name);
                 
                 if (connections.size() >= MAX_CONNECTIONS){
                     isWaiting = true;

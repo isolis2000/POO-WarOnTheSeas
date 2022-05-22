@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Message;
@@ -40,12 +41,18 @@ public class ThreadServer extends Thread{
     }
     
     public void run(){
+        System.out.println("no");
         BaseCommand readCommand = null;
         while (isRunning) {
+            System.out.println("yes");
             
             try {
                 System.out.println("previous read command");
                 readCommand = (BaseCommand)this.reader.readObject();
+                String name = server.getPlayerNames().get(this);
+                readCommand.setPlayerExcecuting(name);
+//                System.out.println("map: ");
+//                System.out.println(server.getPlayerNames().get(this));
                 //System.out.println("read command");
             } catch (IOException ex) { 
                 System.out.println(ex.getMessage());
@@ -56,6 +63,10 @@ public class ThreadServer extends Thread{
                 server.broadcast(readCommand);
             }
             else{
+                String name = readCommand.getArgs()[1];
+                for (HashMap.Entry<ThreadServer, String> set : server.getPlayerNames().entrySet())
+                    if (set.getValue().equals(name))
+                        server.sendToOne(readCommand, set.getKey());
                 server.screenRef.showServerMessage(readCommand.executeOnServer());
             }
         }
