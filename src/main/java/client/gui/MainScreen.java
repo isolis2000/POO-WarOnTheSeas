@@ -11,7 +11,10 @@ import java.awt.GridLayout;
 import java.io.IOException;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import client.GameMaster;
+import client.ClientManager;
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 
 /**
  *
@@ -20,13 +23,13 @@ import client.GameMaster;
 public class MainScreen extends javax.swing.JFrame {
 
     private Cell[][] cells = new Cell[20][30];
-    private int boardHeight, boardWidth;
 
     /**
      * Creates new form NewJFrame
      */
     public MainScreen() {
         initComponents();
+        initBoard();
         initClient();
     }
 
@@ -57,15 +60,15 @@ public class MainScreen extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         txaLogs = new javax.swing.JTextArea();
         pnlRight = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 84, 119));
-        setResizable(false);
         setSize(new java.awt.Dimension(1280, 720));
 
         pnlMain.setBackground(new java.awt.Color(0, 84, 119));
         pnlMain.setFocusable(false);
-        pnlMain.setPreferredSize(new java.awt.Dimension(1280, 720));
+        pnlMain.setPreferredSize(new java.awt.Dimension(1516, 720));
 
         pnlGameData.setBackground(new java.awt.Color(0, 84, 119));
         pnlGameData.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
@@ -107,7 +110,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(0, 0, 0)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 507, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(0, 0, 0)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -170,11 +173,11 @@ public class MainScreen extends javax.swing.JFrame {
         pnlCommands.setLayout(pnlCommandsLayout);
         pnlCommandsLayout.setHorizontalGroup(
             pnlCommandsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCommandsLayout.createSequentialGroup()
-                .addComponent(txfCommand, javax.swing.GroupLayout.PREFERRED_SIZE, 1187, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCommandsLayout.createSequentialGroup()
+                .addComponent(txfCommand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
-            .addComponent(jScrollPane1)
+                .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         pnlCommandsLayout.setVerticalGroup(
             pnlCommandsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,7 +198,7 @@ public class MainScreen extends javax.swing.JFrame {
         pnlBoard.setLayout(pnlBoardLayout);
         pnlBoardLayout.setHorizontalGroup(
             pnlBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 544, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         pnlBoardLayout.setVerticalGroup(
             pnlBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,7 +240,7 @@ public class MainScreen extends javax.swing.JFrame {
         pnlLeft.setLayout(pnlLeftLayout);
         pnlLeftLayout.setHorizontalGroup(
             pnlLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
             .addComponent(jScrollPane3)
         );
         pnlLeftLayout.setVerticalGroup(
@@ -253,39 +256,52 @@ public class MainScreen extends javax.swing.JFrame {
         pnlRight.setFocusable(false);
         pnlRight.setPreferredSize(new java.awt.Dimension(315, 539));
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlRightLayout = new javax.swing.GroupLayout(pnlRight);
         pnlRight.setLayout(pnlRightLayout);
         pnlRightLayout.setHorizontalGroup(
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 311, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRightLayout.createSequentialGroup()
+                .addContainerGap(75, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(111, 111, 111))
         );
         pnlRightLayout.setVerticalGroup(
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 537, Short.MAX_VALUE)
+            .addGroup(pnlRightLayout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addComponent(jButton1)
+                .addContainerGap(448, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
         pnlMainLayout.setHorizontalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMainLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(pnlCommands, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addComponent(pnlLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pnlLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pnlGameData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pnlBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE))
+                            .addComponent(pnlBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 945, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlRight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(pnlRight, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMainLayout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(pnlMainLayout.createSequentialGroup()
@@ -294,7 +310,7 @@ public class MainScreen extends javax.swing.JFrame {
                             .addComponent(pnlGameData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(pnlLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnlRight, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pnlCommands, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -308,12 +324,12 @@ public class MainScreen extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, 1292, 1292, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -337,30 +353,53 @@ public class MainScreen extends javax.swing.JFrame {
                 showClientMessage(newCommand.executeOnClient());
             } else {
                 try {
-                    GameMaster.getGM().getThreadClient().getWriter().writeObject(newCommand);
+                    ClientManager.getCM().getThreadClient().getWriter().writeObject(newCommand);
                 } catch (IOException ex) {
                 }
             }
         }
     }//GEN-LAST:event_btnSendActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.out.println("size: " + pnlMain.getSize());
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void initBoard() {
-        boardHeight = pnlBoard.getHeight()/20;
-        boardWidth = pnlBoard.getWidth()/30;
-        pnlBoard.setLayout(new GridLayout(20, 30));
-        for (Cell[] row : cells) {
-            for (Cell cell : row) {
-                System.out.println("cell");
+        pnlBoard.setLayout(new GridLayout(21, 31, 0, 0));
+        Border whileLine = BorderFactory.createLineBorder(Color.white);
+        int x = 1;
+        JLabel blank = new JLabel();
+        pnlBoard.add(blank);
+        for (int i = 1; i < 31; i++) {
+            JLabel label = new JLabel(Integer.toString(i));
+            label.setForeground(Color.white);
+            label.setHorizontalAlignment(JLabel.CENTER);
+            pnlBoard.add(label);            
+        }
+        for (int row = 0; row < 20; row++) {
+            JLabel label = new JLabel(Integer.toString(x));
+            label.setForeground(Color.white);
+            label.setHorizontalAlignment(JLabel.CENTER);
+            pnlBoard.add(label);
+            x++;
+            for (int col = 0; col < 30; col++) {
+                Cell cell = new Cell();
+                cell.setOpaque(true);
+                cell.setForeground(Color.gray);
+                cell.setFocusable(false);
+                cell.setBorder(whileLine);
+                cells[row][col] = cell;
+                pnlBoard.add(cell);
             }
         }
     }
     
     private void initClient() {
-        GameMaster.getGM().setMainScreen(this);
+        ClientManager.getCM().setMainScreen(this);
         String name = JOptionPane.showInputDialog("Escriba su nombre por favor");
-        GameMaster.getGM().setClient();
-        GameMaster.getGM().setPlayerName(name);
-        GameMaster.getGM().getClient().connect(name);
+        ClientManager.getCM().setClient();
+        ClientManager.getCM().setPlayerName(name);
+        ClientManager.getCM().getClient().connect(name);
     }
 
     public void showClientMessage(String msg) {
@@ -402,6 +441,7 @@ public class MainScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSend;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

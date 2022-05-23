@@ -10,8 +10,8 @@ import java.io.ObjectOutputStream;
  *
  * @author ivan
  */
-public class GameMaster {
-    private static final GameMaster gameMaster = new GameMaster();
+public class ClientManager {
+    private static final ClientManager clientManager = new ClientManager();
     private Client client;
     private ThreadClient threadClient;
     private final int firstPort = 35557;
@@ -27,8 +27,8 @@ public class GameMaster {
         client = new Client();
     }
 
-    public static GameMaster getGM() {
-        return gameMaster;
+    public static ClientManager getCM() {
+        return clientManager;
     }
 
     public int getFirstPort() {

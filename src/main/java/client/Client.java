@@ -34,7 +34,7 @@ public class Client {
                 System.out.println("1");
                 this.outStream = new DataOutputStream(socket.getOutputStream());
                 System.out.println("2");
-                GameMaster.getGM().getMainScreen().showClientMessage(name);
+                ClientManager.getCM().getMainScreen().showClientMessage(name);
                 System.out.println("3");
                 outStream.writeUTF(name);
                 System.out.println("4");

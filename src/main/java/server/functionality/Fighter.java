@@ -8,12 +8,12 @@ package server.functionality;
  *
  * @author ivan
  */
-public class Commander {
+public class Fighter {
     
     private String name;
     private int percentage, power, resistance, sanity;
 
-    public Commander(String name, int percentage, int power, int resistance, int sanity) {
+    public Fighter(String name, int percentage, int power, int resistance, int sanity) {
         this.name = name;
         this.percentage = percentage;
         this.power = power;

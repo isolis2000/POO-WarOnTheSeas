@@ -4,6 +4,8 @@
  */
 package client.gui;
 
+import java.awt.Color;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 
 /**
@@ -13,11 +15,6 @@ import javax.swing.JLabel;
 public class Cell extends JLabel{
     
     private String record = "";
-    private String color;
-
-    public Cell(String color) {
-        this.color = color;
-    }
     
     public void addToRecord(String str) {
         record += "\n" + str;
@@ -25,14 +22,6 @@ public class Cell extends JLabel{
 
     public String getRecord() {
         return record;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
     
 }

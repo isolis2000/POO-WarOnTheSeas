@@ -4,37 +4,25 @@
  */
 package server;
 
-import communication.FirstConnection;
-import communication.Server;
 import server.functionality.Players;
 
 /**
  *
  * @author ivan
  */
-public class GameMaster {
+public class ServerManager {
     
-    private final static GameMaster gameMaster = new GameMaster();
-    private Server server = new Server();
+    private final static ServerManager serverManager = new ServerManager();
     private int firstPort = 35557;
-    private FirstConnection firstConnection = new FirstConnection();
     private boolean gameInitialized = false;
     private Players players = new Players();
 
-    public static GameMaster getGameMaster() {
-        return gameMaster;
-    }
-
-    public Server getServer() {
-        return server;
+    public static ServerManager getSM() {
+        return serverManager;
     }
 
     public int getFirstPort() {
         return firstPort;
-    }
-
-    public FirstConnection getFirstConnection() {
-        return firstConnection;
     }
 
     public boolean isGameInitialized() {

@@ -5,7 +5,7 @@
  */
 package client;
 
-import Commands.BaseCommand;
+import commands.BaseCommand;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -25,9 +25,9 @@ public class ThreadClient extends Thread{
 
     public ThreadClient() {
         try {
-            writer = new ObjectOutputStream(GameMaster.getGM().getClient().socket.getOutputStream());
-            reader = new ObjectInputStream(GameMaster.getGM().getClient().socket.getInputStream());
-            GameMaster.getGM().setThreadClient(this);
+            writer = new ObjectOutputStream(ClientManager.getCM().getClient().socket.getOutputStream());
+            reader = new ObjectInputStream(ClientManager.getCM().getClient().socket.getInputStream());
+            ClientManager.getCM().setThreadClient(this);
         } catch (IOException ex) {
             //Logger.getLogger(ThreadClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -57,12 +57,12 @@ public class ThreadClient extends Thread{
             
             try {
                 readMessage = (BaseCommand)this.reader.readObject();
-                System.out.println("port: " + GameMaster.getGM().getClient().socket.getPort());
+                System.out.println("port: " + ClientManager.getCM().getClient().socket.getPort());
             } catch (IOException ex) {    
             } catch (ClassNotFoundException ex) {}
             
             
-            GameMaster.getGM().getMainScreen().showClientMessage(readMessage.executeOnClient());
+            ClientManager.getCM().getMainScreen().showClientMessage(readMessage.executeOnClient());
             
 //            if (readMessage.getName().toUpperCase().equals("CHAT")){
 //                System.out.println("recibido " + readMessage.toString());
