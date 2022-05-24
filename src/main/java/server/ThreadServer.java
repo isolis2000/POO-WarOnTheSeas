@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Message;
+import server.functionality.Player;
 
 /**
  *
@@ -24,11 +25,13 @@ public class ThreadServer extends Thread{
     Server server;
     ObjectOutputStream writer;
     ObjectInputStream reader;
+    Player player;
     private boolean isRunning = true;
 
-    public ThreadServer(Socket socket, Server server) {
+    public ThreadServer(Socket socket, Server server, Player player) {
         this.socket = socket;
         this.server = server;
+        this.player = player;
         this._init_();
     }
     
@@ -45,12 +48,13 @@ public class ThreadServer extends Thread{
         BaseCommand readCommand = null;
         while (isRunning) {
             System.out.println("yes");
-            
             try {
                 System.out.println("previous read command");
                 readCommand = (BaseCommand)this.reader.readObject();
-                String name = server.getPlayerNames().get(this);
-                readCommand.setPlayerExcecuting(name);
+                Player player = server.getPlayers().get(this);
+                System.out.println("Player  " + player);
+                readCommand.setPlayerExcecuting(player);
+                
 //                System.out.println("map: ");
 //                System.out.println(server.getPlayerNames().get(this));
                 //System.out.println("read command");
@@ -60,12 +64,14 @@ public class ThreadServer extends Thread{
                 System.out.println(ex.getMessage());}
             
             if (readCommand.isBroadcast()){
+                System.out.println("broadcast");
+                System.out.println(readCommand.getCommandName());
                 server.broadcast(readCommand);
             }
             else{
                 String name = readCommand.getArgs()[1];
-                for (HashMap.Entry<ThreadServer, String> set : server.getPlayerNames().entrySet())
-                    if (set.getValue().equals(name))
+                for (HashMap.Entry<ThreadServer, Player> set : server.getPlayers().entrySet())
+                    if (set.getValue().getPlayerName().equals(name))
                         server.sendToOne(readCommand, set.getKey());
                 server.screenRef.showServerMessage(readCommand.executeOnServer());
             }

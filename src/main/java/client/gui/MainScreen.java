@@ -346,6 +346,7 @@ public class MainScreen extends javax.swing.JFrame {
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         String comando = txfCommand.getText().trim();
+        System.out.println("comando: " + comando);
         if (!comando.equals("")) {
             String array[] = CommandUtils.convertToArray(comando);
             BaseCommand newCommand = CommandFactory.getCommand(array[0], array);

@@ -14,6 +14,7 @@ public class CommandFactory {
         return switch (name.toUpperCase()) {
             case "CHAT" -> new ChatCommand(name, args);
             case "CHATPRIVADO" -> new PrivateChatCommand(name, args);
+            case "CREARPERSONAJE" -> new CreateCharacterCommand(name, args);
             default -> new ErrorCommand("error", args);
         };   
         

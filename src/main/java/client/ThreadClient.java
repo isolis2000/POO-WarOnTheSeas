@@ -54,14 +54,13 @@ public class ThreadClient extends Thread{
     public void run(){
         BaseCommand readMessage = null;
         while (isRunning) {
-            
             try {
+                System.out.println("mensaje: " + this.reader.read());
                 readMessage = (BaseCommand)this.reader.readObject();
                 System.out.println("port: " + ClientManager.getCM().getClient().socket.getPort());
-            } catch (IOException ex) {    
-            } catch (ClassNotFoundException ex) {}
-            
-            
+            } catch (IOException ex) {    System.out.println("readmessage");
+            } catch (ClassNotFoundException ex) {System.out.println("message");}
+
             ClientManager.getCM().getMainScreen().showClientMessage(readMessage.executeOnClient());
             
 //            if (readMessage.getName().toUpperCase().equals("CHAT")){

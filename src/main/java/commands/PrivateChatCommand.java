@@ -26,10 +26,13 @@ public class PrivateChatCommand  extends BaseCommand implements Serializable{
 
     @Override
     public String executeOnClient() {
+        System.out.println("entra aqui");
         String[] newArgs = new String[getArgs().length-2];
         for (int i = 0; i < newArgs.length; i++)
             newArgs[i] = getArgs()[i+2];
-        return this.getPlayerExcecuting() + ": " + CommandUtils.concatArray(newArgs);
+        String ret = CommandUtils.concatArray(newArgs);
+        System.out.println("ret: " + ret);
+        return this.getPlayerExcecuting() + ": " + ret;
     }
  
 

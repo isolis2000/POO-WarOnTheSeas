@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @author diemo
  */
 public class Client {
-    private final int PORT = 35500;
+    private final int PORT = 35501;
     private final String SERVER_IP = "localhost";
     public Socket socket;
     public ObjectOutputStream writer;

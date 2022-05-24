@@ -4,30 +4,38 @@
  */
 package server.functionality;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author ivan
  */
-public class Player {
+public class Player implements Serializable {
     
     private Square[] gameArea = new Square[600];
     private boolean ready = false;
     private String playerName;
-    private ArrayList<Fighter> commanders = new ArrayList<>();
+    private ArrayList<Fighter> fighters = new ArrayList<>();
 
     public Player(String playerName) {
         this.playerName = playerName;
     }
     
-    public boolean addCommander(String name, int percentage, int power, int resistance, int sanity) {
-        if (commanders.size() < 3) {
-            Fighter commander = new Fighter(name, percentage, power, resistance, sanity);
-            commanders.add(commander);
+    public boolean addFighter(String name, String image, int percentage, int type, int power, int resistance, int sanity) {
+        if (fighters.size() < 3) {
+            Fighter commander = new Fighter(name, image, type, percentage, power, resistance, sanity);
+            fighters.add(commander);
             return true;
         } else 
             return false;
     }
-    
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public ArrayList<Fighter> getFighters() {
+        return fighters;
+    }
 }

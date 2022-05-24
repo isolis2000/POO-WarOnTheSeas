@@ -12,43 +12,54 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Message;
+import server.functionality.Player;
 
 /**
  *
  * @author diemo
  */
 public class Server extends Thread{
-    private final int PORT = 35500;
+    private final int PORT = 35501;
     private final int MAX_CONNECTIONS = 6;
     private ServerSocket serverSoccket;
     private boolean isRunnig = true;
     private boolean isWaiting = false;
     private ArrayList<ThreadServer> connections;
     public ServerFrame screenRef;
-    private HashMap<ThreadServer, String> playerNames = new HashMap<>();
+    private HashMap<ThreadServer, Player> players = new HashMap<>();
+//    private HashMap<String, Player> players = new HashMap<>();
     //
     public Server(ServerFrame screenRef){
         this.screenRef = screenRef;
         this.runServer();
     }
 
-    public HashMap<ThreadServer, String> getPlayerNames() {
-        return playerNames;
+    public HashMap<ThreadServer, Player> getPlayers() {
+        return players;
     }
     
     //mensaje para todos
     public void broadcast (BaseCommand command){
-        
+        command.executeOnServer();
         for (ThreadServer connection : connections) {
             try {
+                System.out.println("broadcastasdlfkn" + command.toString());
+                System.out.println("connections size: " + connections.size());
+                System.out.println("connectionasdfasd: " + connection);
+                System.out.println("Connection: " + connection.player.getPlayerName());
+                System.out.println("Object: " + Arrays.toString(command.getArgs()));
+                System.out.println("Object1: " + command);
+                System.out.println("writer: " + connection.writer);
                 connection.writer.writeObject(command);
-                //this.screenRef.showServerMessage(command.toString());
+                System.out.println("Command broad: " + command);
+                this.screenRef.showServerMessage(command.toString());
             } catch (IOException ex) {
-                
+                ex.printStackTrace();
             }
         }
         
@@ -56,6 +67,8 @@ public class Server extends Thread{
     
     public void sendToOne(BaseCommand command, ThreadServer ts) {
         try {
+            System.out.println("Hello");
+            System.out.println(command.toString());
             ts.writer.writeObject(command);
         } catch (IOException ex) {
         }
@@ -84,19 +97,21 @@ public class Server extends Thread{
                 Socket newSocket = serverSoccket.accept();
                 this.screenRef.showServerMessage("Nuevo cliente conectado"); 
                 DataInputStream inStream = new DataInputStream(newSocket.getInputStream());
-                System.out.println("1");
+//                System.out.println("1");
                 String name = inStream.readUTF();
-                System.out.println("name: " + name);
-                ThreadServer newThread = new ThreadServer(newSocket, this); 
-                System.out.println("3");
-                playerNames.put(newThread, name);
-                System.out.println("4");
-                for (String set : playerNames.values())
-                    System.out.println("player: " + set);
+                Player player = new Player(name);
+//                System.out.println("name: " + name);
+                ThreadServer newThread = new ThreadServer(newSocket, this, player); 
+//                System.out.println("3");
+                players.put(newThread, player);
+//                System.out.println("4");
+//                for (String set : playerNames.values())
+//                    System.out.println("player: " + set);
                 newThread.start();
-                System.out.println("5");
+//                System.out.println("5");
                 connections.add(newThread);
-                System.out.println("6");
+                System.out.println("Thread in: " + newThread.player.getPlayerName());
+//                System.out.println("6");
                 this.screenRef.showServerMessage("Nuevo thread creado, nombre del jugador: " + name);
                 
                 if (connections.size() >= MAX_CONNECTIONS){
