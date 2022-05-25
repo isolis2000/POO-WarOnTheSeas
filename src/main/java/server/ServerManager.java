@@ -4,8 +4,6 @@
  */
 package server;
 
-import server.functionality.Players;
-
 /**
  *
  * @author ivan
@@ -15,7 +13,6 @@ public class ServerManager {
     private final static ServerManager serverManager = new ServerManager();
     private int firstPort = 35557;
     private boolean gameInitialized = false;
-    private Players players = new Players();
 
     public static ServerManager getSM() {
         return serverManager;
@@ -31,10 +28,6 @@ public class ServerManager {
 
     public void setGameInitialized(boolean gameInitialized) {
         this.gameInitialized = gameInitialized;
-    }
-
-    public Players getPlayers() {
-        return players;
     }
     
 }

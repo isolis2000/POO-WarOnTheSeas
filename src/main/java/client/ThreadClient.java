@@ -6,10 +6,12 @@
 package client;
 
 import commands.BaseCommand;
+import gamelogic.Fighter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Message;
@@ -51,13 +53,21 @@ public class ThreadClient extends Thread{
     
     
 
+    @Override
     public void run(){
-        BaseCommand readMessage = null;
         while (isRunning) {
+        BaseCommand readMessage = null;
             try {
-                System.out.println("mensaje: " + this.reader.read());
+                writer.reset();
+            } catch (IOException ex) {
+                Logger.getLogger(ThreadClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+//                System.out.println("---------------------------------------------------------------");
+//                System.out.println(this.reader.readObject());
                 readMessage = (BaseCommand)this.reader.readObject();
-                System.out.println("port: " + ClientManager.getCM().getClient().socket.getPort());
+                System.out.println("RECIBIDO--------------------------");
+                System.out.println("mensaje: " + readMessage);
             } catch (IOException ex) {    System.out.println("readmessage");
             } catch (ClassNotFoundException ex) {System.out.println("message");}
 

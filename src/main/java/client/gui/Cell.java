@@ -5,6 +5,7 @@
 package client.gui;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
@@ -14,13 +15,13 @@ import javax.swing.JLabel;
  */
 public class Cell extends JLabel{
     
-    private String record = "";
+    private ArrayList<String> record = new ArrayList<>();
     
     public void addToRecord(String str) {
-        record += "\n" + str;
+        record.add(str);
     }
 
-    public String getRecord() {
+    public ArrayList<String> getRecord() {
         return record;
     }
     

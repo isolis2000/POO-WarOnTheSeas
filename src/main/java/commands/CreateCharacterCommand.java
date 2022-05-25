@@ -1,26 +1,24 @@
 package commands;
 
+import client.Client;
 import java.io.Serializable;
 import java.util.Arrays;
-import server.functionality.Player;
+import gamelogic.Player;
 
 /**
  *
  * @author ivan
  */
-public class CreateCharacterCommand extends BaseCommand implements Serializable {
-
-    private boolean mistake = false;
+public class CreateCharacterCommand extends BaseCommand {
 
     public CreateCharacterCommand(String commandName, String[] args) {
-        super(commandName, args, true);
+        super(commandName, args, false);
     }
 
     @Override
     public String executeOnServer() {
-        Player player = this.getPlayerExcecuting();
+        System.out.println("EXECUTEONSERVER!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         String[] args = getArgs();
-        System.out.println("Args: " + Arrays.toString(args));
         String name = null, image = null;
         int percentage = -1, type = -1, power = -1, resistance = -1, sanity = -1;
         try {
@@ -41,24 +39,23 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
                 }
                 i++;
             }
-            Object[] arr = new Object[] {name, image, percentage, type, power, resistance, sanity};
-            System.out.println("valuesok: " + CommandUtils.areValuesOk(arr));
-            System.out.println("values: ");
-            for (Object o : arr)
-                System.out.println(o);
             if (CommandUtils.areValuesOk(new Object[] {name, image, percentage, type, power, resistance, sanity})) {
-                player.addFighter(name, image, percentage, type, power, resistance, sanity);
-                System.out.println("no2");
-                System.out.println(player.getFighters().get(0));
-                return "a";                
+                if (getPlayerExcecuting().addFighter(name, image, percentage, type, power, resistance, sanity)) {
+                    System.out.println("Fighters after add: " + getPlayerExcecuting().getFighters().toString());
+                    return CommandUtils.concatArray(args);  
+                }
+                else {
+                    return "ERROR";
+                }
             } else {
-                            System.out.println("no4");
-                            return "ERROR";
+                System.out.println("no4");
+                return "ERROR";
 //                return error(player.getPlayerName());
             }
         } catch (Exception ex) {
-                            System.out.println("no3");
-                            return "ERROR";
+            System.out.println("no3");
+            getPlayerExcecuting().setReady(true);
+            return "ERROR";
 //            return error(player.getPlayerName());
         }
     }
@@ -74,9 +71,18 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
     @Override
     public String executeOnClient() {
         Player player = getPlayerExcecuting();
+        if (player.isReady())
+            return "No se pueden crer mas de 3 luchadores";
         String ret = player.getPlayerName() + " creo un luchador con los siguientes datos: \n" 
-                + player.getFighters().get(0).toString();
+                + player.getLastFighter().toString();
+        System.out.println("player getfighter: " + player.getLastFighter());
+        Client.getMainScreen().addFighter(player.getLastFighter());
         return ret;
+    }
+    
+    @Override
+    public String toString() {
+        return this.getPlayerExcecuting().toString();
     }
 
 }

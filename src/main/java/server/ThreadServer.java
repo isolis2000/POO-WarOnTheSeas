@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Message;
-import server.functionality.Player;
+import gamelogic.Player;
 
 /**
  *
@@ -49,12 +49,14 @@ public class ThreadServer extends Thread{
         while (isRunning) {
             System.out.println("yes");
             try {
+                writer.reset();
+            } catch (IOException ex) {
+                Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
                 System.out.println("previous read command");
                 readCommand = (BaseCommand)this.reader.readObject();
-                Player player = server.getPlayers().get(this);
-                System.out.println("Player  " + player);
                 readCommand.setPlayerExcecuting(player);
-                
 //                System.out.println("map: ");
 //                System.out.println(server.getPlayerNames().get(this));
                 //System.out.println("read command");
@@ -64,11 +66,12 @@ public class ThreadServer extends Thread{
                 System.out.println(ex.getMessage());}
             
             if (readCommand.isBroadcast()){
-                System.out.println("broadcast");
-                System.out.println(readCommand.getCommandName());
                 server.broadcast(readCommand);
             }
-            else{
+            else if (readCommand.getCommandName().equals("CREARPERSONAJE")){
+                server.screenRef.showServerMessage(readCommand.executeOnServer());
+                server.sendToOne(readCommand, this);
+            } else {
                 String name = readCommand.getArgs()[1];
                 for (HashMap.Entry<ThreadServer, Player> set : server.getPlayers().entrySet())
                     if (set.getValue().getPlayerName().equals(name))

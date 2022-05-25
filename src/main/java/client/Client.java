@@ -25,6 +25,7 @@ public class Client {
     private DataOutputStream outStream;
     private boolean isConnected = false;
     private ThreadClient theadClient;
+    private static MainScreen mainScreen;
     
     public void connect(String name){
         try {
@@ -49,6 +50,14 @@ public class Client {
         } catch (IOException ex) {
             
         }
+    }
+
+    public static MainScreen getMainScreen() {
+        return mainScreen;
+    }
+
+    public static void setMainScreen(MainScreen mainScreen) {
+        Client.mainScreen = mainScreen;
     }
     
     

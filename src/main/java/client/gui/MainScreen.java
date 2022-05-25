@@ -4,6 +4,7 @@
  */
 package client.gui;
 
+import client.Client;
 import commands.BaseCommand;
 import commands.CommandFactory;
 import commands.CommandUtils;
@@ -12,7 +13,10 @@ import java.io.IOException;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import client.ClientManager;
+import gamelogic.Fighter;
 import java.awt.Color;
+import java.util.Collections;
+import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 
@@ -31,6 +35,7 @@ public class MainScreen extends javax.swing.JFrame {
         initComponents();
         initBoard();
         initClient();
+        Client.setMainScreen(this);
     }
 
     /**
@@ -60,7 +65,6 @@ public class MainScreen extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         txaLogs = new javax.swing.JTextArea();
         pnlRight = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 84, 119));
@@ -110,7 +114,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(0, 0, 0)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 507, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 434, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(0, 0, 0)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -136,7 +140,7 @@ public class MainScreen extends javax.swing.JFrame {
         txfCommand.setBackground(new java.awt.Color(0, 84, 119));
         txfCommand.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         txfCommand.setForeground(new java.awt.Color(255, 255, 255));
-        txfCommand.setText("Comandos");
+        txfCommand.setText("CREARPERSONAJE nombre name imagen ruta porcentaje 20 tipo 2 poder 20 resistencia 20 sanidad 20");
         txfCommand.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
         txfCommand.setPreferredSize(new java.awt.Dimension(65, 35));
         txfCommand.addActionListener(new java.awt.event.ActionListener() {
@@ -256,28 +260,15 @@ public class MainScreen extends javax.swing.JFrame {
         pnlRight.setFocusable(false);
         pnlRight.setPreferredSize(new java.awt.Dimension(315, 539));
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pnlRightLayout = new javax.swing.GroupLayout(pnlRight);
         pnlRight.setLayout(pnlRightLayout);
         pnlRightLayout.setHorizontalGroup(
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRightLayout.createSequentialGroup()
-                .addContainerGap(75, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(111, 111, 111))
+            .addGap(0, 264, Short.MAX_VALUE)
         );
         pnlRightLayout.setVerticalGroup(
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlRightLayout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addComponent(jButton1)
-                .addContainerGap(448, Short.MAX_VALUE))
+            .addGap(0, 537, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -293,7 +284,7 @@ public class MainScreen extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pnlGameData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pnlBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 945, Short.MAX_VALUE))
+                            .addComponent(pnlBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 872, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlRight, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -301,7 +292,7 @@ public class MainScreen extends javax.swing.JFrame {
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMainLayout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+                .addContainerGap(9, Short.MAX_VALUE)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(pnlMainLayout.createSequentialGroup()
@@ -310,7 +301,7 @@ public class MainScreen extends javax.swing.JFrame {
                             .addComponent(pnlGameData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(pnlLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnlRight, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addComponent(pnlCommands, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -335,6 +326,10 @@ public class MainScreen extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    public Cell[][] getCells() {
+        return cells;
+    }
 
     private void txfCommandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfCommandActionPerformed
         // TODO add your handling code here:
@@ -361,10 +356,6 @@ public class MainScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSendActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("size: " + pnlMain.getSize());
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void initBoard() {
         pnlBoard.setLayout(new GridLayout(21, 31, 0, 0));
         Border whileLine = BorderFactory.createLineBorder(Color.white);
@@ -386,7 +377,7 @@ public class MainScreen extends javax.swing.JFrame {
             for (int col = 0; col < 30; col++) {
                 Cell cell = new Cell();
                 cell.setOpaque(true);
-                cell.setForeground(Color.gray);
+                cell.setBackground(Color.gray);
                 cell.setFocusable(false);
                 cell.setBorder(whileLine);
                 cells[row][col] = cell;
@@ -405,6 +396,39 @@ public class MainScreen extends javax.swing.JFrame {
 
     public void showClientMessage(String msg) {
         this.txaLogs.append(msg + "\n");
+    }
+    
+    public void addFighter(Fighter fighter) {
+        int numOfCellsToPaint = (int)(600*(fighter.getPercentage()/100.0f));
+        int x = 0;
+        Color color = fighter.getColor();
+        shuffleMatrix(cells);
+        outerloop:
+        for (Cell[] cell1 : cells) {
+            for (Cell cell : cell1) {
+                if (x == numOfCellsToPaint)
+                    break outerloop;
+                else if (cell.getBackground() == Color.gray) {
+                    cell.setBackground(color);
+                    x++;
+                }
+            }
+        }
+    }
+    
+    private void shuffleMatrix(Cell[][] arr) {
+        Random random = new Random();
+
+        for (int i = arr.length - 1; i > 0; i--) {
+            for (int j = arr[i].length - 1; j > 0; j--) {
+                int m = random.nextInt(i + 1);
+                int n = random.nextInt(j + 1);
+
+                Cell temp = arr[i][j];
+                arr[i][j] = arr[m][n];
+                arr[m][n] = temp;
+            }
+        }
     }
 
     public static void start() {
@@ -442,7 +466,6 @@ public class MainScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSend;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

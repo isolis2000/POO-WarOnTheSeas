@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Message;
-import server.functionality.Player;
+import gamelogic.Player;
 
 /**
  *
@@ -45,19 +45,22 @@ public class Server extends Thread{
     
     //mensaje para todos
     public void broadcast (BaseCommand command){
-        command.executeOnServer();
         for (ThreadServer connection : connections) {
             try {
-                System.out.println("broadcastasdlfkn" + command.toString());
-                System.out.println("connections size: " + connections.size());
-                System.out.println("connectionasdfasd: " + connection);
-                System.out.println("Connection: " + connection.player.getPlayerName());
-                System.out.println("Object: " + Arrays.toString(command.getArgs()));
-                System.out.println("Object1: " + command);
-                System.out.println("writer: " + connection.writer);
+//                System.out.println("broadcastasdlfkn" + command.toString());
+//                System.out.println("connections size: " + connections.size());
+//                System.out.println("connectionasdfasd: " + connection);
+//                System.out.println("Connection: " + connection.player.getPlayerName());
+//                System.out.println("Object: " + Arrays.toString(command.getArgs()));
+//                System.out.println("Object1: " + command);
+//                System.out.println("writer: " + connection.writer);
+                this.screenRef.showServerMessage(command.executeOnServer());
+//                this.screenRef.showServerMessage(Integer.toString(command.getPlayerExcecuting().getFighters().size()));
+                System.out.println("To SEND ------------------");
+                System.out.println(command.toString());
+                System.out.println("connection: " + connection.player);
                 connection.writer.writeObject(command);
-                System.out.println("Command broad: " + command);
-                this.screenRef.showServerMessage(command.toString());
+                connection.writer.flush();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
