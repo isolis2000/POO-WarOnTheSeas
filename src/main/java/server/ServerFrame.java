@@ -17,6 +17,7 @@ public class ServerFrame extends javax.swing.JFrame {
         initComponents();
         server = new Server(this);
         server.start();
+        ServerManager.getSM().setServer(server);
     }
     
     public void showServerMessage(String msg){

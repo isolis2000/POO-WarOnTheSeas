@@ -14,14 +14,19 @@ import gamelogic.Player;
  */
 public abstract class BaseCommand implements iCommand, Serializable{
     private String[] args;
-    private boolean isBroadcast;
+    private boolean broadcast, localCommand;
     private String commandName;
     private Player playerExcecuting;
 
-    public BaseCommand(String commandName, String[] args, boolean isBroadcast) {
+    public BaseCommand(String commandName, String[] args, boolean broadcast, boolean localCommand) {
         this.args = args;
-        this.isBroadcast = isBroadcast;
+        this.broadcast = broadcast;
+        this.localCommand = localCommand;
         this.commandName = commandName;
+    }
+
+    public boolean isLocalCommand() {
+        return localCommand;
     }
 
     public Player getPlayerExcecuting() {
@@ -45,7 +50,7 @@ public abstract class BaseCommand implements iCommand, Serializable{
     }
     
     public boolean isBroadcast(){
-        return isBroadcast;
+        return broadcast;
     }
     
     

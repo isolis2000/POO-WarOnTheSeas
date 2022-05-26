@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class Player implements Serializable {
     
-    private boolean ready = false;
+    private boolean ready = false, fighersDone = false, turn = false;
     private final String playerName;
     private ArrayList<Fighter> fighters = new ArrayList<>();
     private Fighter lastFighter;
@@ -69,6 +69,22 @@ public class Player implements Serializable {
 
     public void setReady(boolean ready) {
         this.ready = ready;
+    }
+
+    public boolean areFighersDone() {
+        return fighersDone;
+    }
+
+    public void setFighersDone(boolean fighersDone) {
+        this.fighersDone = fighersDone;
+    }
+
+    public boolean isTurn() {
+        return turn;
+    }
+
+    public void setTurn(boolean turn) {
+        this.turn = turn;
     }
     
     @Override

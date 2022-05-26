@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class PrivateChatCommand  extends BaseCommand implements Serializable{
 
     public PrivateChatCommand(String commandName, String[] args) {
-        super(commandName, args, false);
+        super(commandName, args, false, false);
     }
 
     // Diego Hola como estas?

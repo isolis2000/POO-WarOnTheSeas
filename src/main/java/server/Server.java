@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Message;
 import gamelogic.Player;
+import java.util.Collections;
 
 /**
  *
@@ -32,6 +33,7 @@ public class Server extends Thread{
     private ArrayList<ThreadServer> connections;
     public ServerFrame screenRef;
     private HashMap<ThreadServer, Player> players = new HashMap<>();
+    private boolean gameStarted = false;
 //    private HashMap<String, Player> players = new HashMap<>();
     //
     public Server(ServerFrame screenRef){
@@ -50,17 +52,17 @@ public class Server extends Thread{
 //                System.out.println("broadcastasdlfkn" + command.toString());
 //                System.out.println("connections size: " + connections.size());
 //                System.out.println("connectionasdfasd: " + connection);
-//                System.out.println("Connection: " + connection.player.getPlayerName());
+//                System.out.println("Connection: " + connection.connection.getPlayer().getPlayerName());
 //                System.out.println("Object: " + Arrays.toString(command.getArgs()));
 //                System.out.println("Object1: " + command);
-//                System.out.println("writer: " + connection.writer);
+//                System.out.println("writer: " + getWriter());
                 this.screenRef.showServerMessage(command.executeOnServer());
 //                this.screenRef.showServerMessage(Integer.toString(command.getPlayerExcecuting().getFighters().size()));
                 System.out.println("To SEND ------------------");
                 System.out.println(command.toString());
-                System.out.println("connection: " + connection.player);
-                connection.writer.writeObject(command);
-                connection.writer.flush();
+                System.out.println("connection: " + connection.getPlayer());
+                connection.getWriter().writeObject(command);
+                connection.getWriter().flush();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -72,7 +74,7 @@ public class Server extends Thread{
         try {
             System.out.println("Hello");
             System.out.println(command.toString());
-            ts.writer.writeObject(command);
+            ts.getWriter().writeObject(command);
         } catch (IOException ex) {
         }
     }
@@ -84,12 +86,36 @@ public class Server extends Thread{
         return str;
     }
     
+    public boolean startGame() {
+        if (!areAllPlayersReady())
+            return false;
+        Collections.shuffle(connections);
+        connections.get(0).getPlayer().setTurn(true);
+        gameStarted = true;
+        return true;
+    }
+    
+    private boolean areAllPlayersReady() {
+        for (ThreadServer connection : connections)
+            if (!connection.getPlayer().isReady())
+                return false;
+        return true;
+    }
+    
     private void runServer(){
         try {
             this.serverSoccket = new ServerSocket(PORT);
             this.connections = new ArrayList<ThreadServer>();
         } catch (IOException ex) {       
         }
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
     }
     
     public void run(){
@@ -113,7 +139,7 @@ public class Server extends Thread{
                 newThread.start();
 //                System.out.println("5");
                 connections.add(newThread);
-                System.out.println("Thread in: " + newThread.player.getPlayerName());
+                System.out.println("Thread in: " + newThread.getPlayer().getPlayerName());
 //                System.out.println("6");
                 this.screenRef.showServerMessage("Nuevo thread creado, nombre del jugador: " + name);
                 

@@ -9,10 +9,10 @@ import gamelogic.Player;
  *
  * @author ivan
  */
-public class CreateCharacterCommand extends BaseCommand {
+public class CreateCharacterCommand extends BaseCommand implements Serializable {
 
     public CreateCharacterCommand(String commandName, String[] args) {
-        super(commandName, args, false);
+        super(commandName, args, false, true);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class CreateCharacterCommand extends BaseCommand {
             }
         } catch (Exception ex) {
             System.out.println("no3");
-            getPlayerExcecuting().setReady(true);
+            getPlayerExcecuting().setFighersDone(true);
             return "ERROR";
 //            return error(player.getPlayerName());
         }
@@ -71,8 +71,10 @@ public class CreateCharacterCommand extends BaseCommand {
     @Override
     public String executeOnClient() {
         Player player = getPlayerExcecuting();
-        if (player.isReady())
+        if (player.areFighersDone())
             return "No se pueden crer mas de 3 luchadores";
+        else if (player.isReady())
+            return "No puede crear luchadores luego de comenzar el juego";
         String ret = player.getPlayerName() + " creo un luchador con los siguientes datos: \n" 
                 + player.getLastFighter().toString();
         System.out.println("player getfighter: " + player.getLastFighter());

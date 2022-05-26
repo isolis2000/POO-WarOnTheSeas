@@ -11,23 +11,18 @@ package server;
 public class ServerManager {
     
     private final static ServerManager serverManager = new ServerManager();
-    private int firstPort = 35557;
-    private boolean gameInitialized = false;
+    private Server server;
 
     public static ServerManager getSM() {
         return serverManager;
     }
 
-    public int getFirstPort() {
-        return firstPort;
+    public Server getServer() {
+        return server;
     }
 
-    public boolean isGameInitialized() {
-        return gameInitialized;
-    }
-
-    public void setGameInitialized(boolean gameInitialized) {
-        this.gameInitialized = gameInitialized;
+    public void setServer(Server server) {
+        this.server = server;
     }
     
 }

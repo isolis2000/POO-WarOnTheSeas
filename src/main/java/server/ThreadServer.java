@@ -21,11 +21,11 @@ import gamelogic.Player;
  * @author diemo
  */
 public class ThreadServer extends Thread{
-    Socket socket;
-    Server server;
-    ObjectOutputStream writer;
-    ObjectInputStream reader;
-    Player player;
+    private Socket socket;
+    private Server server;
+    private ObjectOutputStream writer;
+    private ObjectInputStream reader;
+    private Player player;
     private boolean isRunning = true;
 
     public ThreadServer(Socket socket, Server server, Player player) {
@@ -68,7 +68,7 @@ public class ThreadServer extends Thread{
             if (readCommand.isBroadcast()){
                 server.broadcast(readCommand);
             }
-            else if (readCommand.getCommandName().equals("CREARPERSONAJE")){
+            else if (readCommand.isLocalCommand()){
                 server.screenRef.showServerMessage(readCommand.executeOnServer());
                 server.sendToOne(readCommand, this);
             } else {
@@ -80,6 +80,54 @@ public class ThreadServer extends Thread{
             }
         }
         
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
+
+    public ObjectOutputStream getWriter() {
+        return writer;
+    }
+
+    public void setWriter(ObjectOutputStream writer) {
+        this.writer = writer;
+    }
+
+    public ObjectInputStream getReader() {
+        return reader;
+    }
+
+    public void setReader(ObjectInputStream reader) {
+        this.reader = reader;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public boolean isIsRunning() {
+        return isRunning;
+    }
+
+    public void setIsRunning(boolean isRunning) {
+        this.isRunning = isRunning;
     }
     
     

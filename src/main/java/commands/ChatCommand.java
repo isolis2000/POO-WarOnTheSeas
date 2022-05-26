@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class ChatCommand extends BaseCommand implements Serializable{
 
     public ChatCommand(String commandName, String[] args) {
-        super(commandName, args, true);
+        super(commandName, args, true, false);
     }
 
     // Hola como estan
