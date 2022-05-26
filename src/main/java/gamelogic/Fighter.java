@@ -6,6 +6,7 @@ package gamelogic;
 
 import java.awt.Color;
 import java.io.Serializable;
+import server.ThreadServer;
 
 /**
  *
@@ -14,18 +15,23 @@ import java.io.Serializable;
 public class Fighter implements Serializable {
     
     private String name, image;
-    private int percentage, type, power, resistance, sanity;
+    private int percentage, power, resistance, sanity;
     private Color color;
 
-    public Fighter(String name, String image, int percentage, int type, int power, int resistance, int sanity, Color color) {
+    public Fighter(String name, String image, int percentage, int power, int resistance, int sanity, Color color) {
         this.name = name;
         this.image = image;
         this.percentage = percentage;
-        this.type = type;
         this.power = power;
         this.resistance = resistance;
         this.sanity = sanity;
         this.color = color;
+    }
+    
+    public void attack(String attackCommand, ThreadServer enemy) {
+        switch (attackCommand) {
+            case "sanidad" -> 
+        }
     }
 
 //    @Override
@@ -62,14 +68,6 @@ public class Fighter implements Serializable {
 
     public void setPercentage(int percentage) {
         this.percentage = percentage;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public int getPower() {

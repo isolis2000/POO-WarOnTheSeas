@@ -5,7 +5,7 @@
  */
 package server;
 
-import commands.BaseCommand;
+import commandsmanager.BaseCommand;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;

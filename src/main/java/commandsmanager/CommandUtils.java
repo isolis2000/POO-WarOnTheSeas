@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package commands;
+package commandsmanager;
 
 /**
  *
@@ -12,13 +12,29 @@ package commands;
 public class CommandUtils {
     
     public static String[] convertToArray(String str){
-        return str.split(" ");
+        return str.split("-");
+    }
+    
+    public static boolean isInteger(String s) {
+        return isInteger(s,10);
+    }
+
+    private static boolean isInteger(String s, int radix) {
+        if(s.isEmpty()) return false;
+        for(int i = 0; i < s.length(); i++) {
+            if(i == 0 && s.charAt(i) == '-') {
+                if(s.length() == 1) return false;
+                else continue;
+            }
+            if(Character.digit(s.charAt(i),radix) < 0) return false;
+        }
+        return true;
     }
     
     public static String concatArray(String[] args) {
         String str = "";
         for (int i = 0; i < args.length; i++) {
-            str += args[i] + " ";
+            str += args[i] + "-";
         }
         return str;
     }

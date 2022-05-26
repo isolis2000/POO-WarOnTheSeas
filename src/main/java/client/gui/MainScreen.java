@@ -5,9 +5,9 @@
 package client.gui;
 
 import client.Client;
-import commands.BaseCommand;
-import commands.CommandFactory;
-import commands.CommandUtils;
+import commandsmanager.BaseCommand;
+import commandsmanager.CommandFactory;
+import commandsmanager.CommandUtils;
 import java.awt.GridLayout;
 import java.io.IOException;
 import javax.swing.JLabel;

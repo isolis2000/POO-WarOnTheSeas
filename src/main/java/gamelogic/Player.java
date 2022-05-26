@@ -28,7 +28,7 @@ public class Player implements Serializable {
     public boolean addFighter(String name, String image, int percentage, int type, int power, int resistance, int sanity) {
         Color color = colors[fighters.size()];
         if (fighters.size() < 3) {
-            Fighter commander = new Fighter(name, image, percentage, type, power, resistance, sanity, color);
+            Fighter commander = FighterFactory.getCommand(name, image, percentage, power, resistance, sanity, color, type);
             fighters.add(commander);
             setLastFighter();
             System.out.println("Added new fighter, new size: " + fighters.size());

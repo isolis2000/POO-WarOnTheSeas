@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package commands;
+package commandsmanager.commands;
 
+import commandsmanager.BaseCommand;
 import java.io.Serializable;
 
 /**

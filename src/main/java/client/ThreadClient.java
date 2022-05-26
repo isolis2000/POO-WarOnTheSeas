@@ -5,7 +5,7 @@
  */
 package client;
 
-import commands.BaseCommand;
+import commandsmanager.BaseCommand;
 import gamelogic.Fighter;
 import java.io.IOException;
 import java.io.ObjectInputStream;

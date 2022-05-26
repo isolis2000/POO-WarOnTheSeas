@@ -1,15 +1,20 @@
-package commands;
+package commandsmanager.commands;
 
 import client.Client;
+import commandsmanager.BaseCommand;
+import commandsmanager.CommandUtils;
 import java.io.Serializable;
 import java.util.Arrays;
 import gamelogic.Player;
+import java.util.HashMap;
 
 /**
  *
  * @author ivan
  */
 public class CreateCharacterCommand extends BaseCommand implements Serializable {
+    
+    private transient HashMap<String, Integer> fighterTypes = new HashMap<>();
 
     public CreateCharacterCommand(String commandName, String[] args) {
         super(commandName, args, false, true);
@@ -17,7 +22,7 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
 
     @Override
     public String executeOnServer() {
-        System.out.println("EXECUTEONSERVER!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        initHashMap();
         String[] args = getArgs();
         String name = null, image = null;
         int percentage = -1, type = -1, power = -1, resistance = -1, sanity = -1;
@@ -27,7 +32,12 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
                     case "nombre" -> name = args[i + 1];
                     case "imagen" -> image = args[i + 1];
                     case "porcentaje" -> percentage = Integer.parseInt(args[i + 1]);
-                    case "tipo" -> type = Integer.parseInt(args[i + 1]);
+                    case "tipo" -> {
+                        if (CommandUtils.isInteger(args[i + 1]))
+                            type = Integer.parseInt(args[i + 1]);
+                        else 
+                            type = fighterTypes.get(args[i + 1]);
+                    }
                     case "poder" -> power = Integer.parseInt(args[i + 1]);
                     case "resistencia" -> resistance = Integer.parseInt(args[i + 1]);
                     case "sanidad" -> sanity = Integer.parseInt(args[i + 1]);
@@ -80,6 +90,15 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
         System.out.println("player getfighter: " + player.getLastFighter());
         Client.getMainScreen().addFighter(player.getLastFighter());
         return ret;
+    }
+    
+    private void initHashMap() { 
+        fighterTypes.put("Release the Kraken", 1);
+        fighterTypes.put("Poseidon Trident", 2);
+        fighterTypes.put("Fish Telepathy", 3);
+        fighterTypes.put("Undersea Fire", 4);
+        fighterTypes.put("Thunders under the sea", 5);
+        fighterTypes.put("Waves control", 1);
     }
     
     @Override
