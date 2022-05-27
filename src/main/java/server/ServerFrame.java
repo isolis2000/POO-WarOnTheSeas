@@ -11,13 +11,12 @@ package server;
  */
 public class ServerFrame extends javax.swing.JFrame {
     
-    Server server;
+    private static Server server;
     
     public ServerFrame() {
         initComponents();
         server = new Server(this);
         server.start();
-        ServerManager.getSM().setServer(server);
     }
     
     public void showServerMessage(String msg){
@@ -79,6 +78,10 @@ public class ServerFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.showServerMessage(this.server.toString());
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    public static Server getServer() {
+        return server;
+    }
 
     /**
      * @param args the command line arguments

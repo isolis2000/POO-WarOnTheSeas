@@ -6,6 +6,7 @@ package gamelogic.fighters;
 
 import gamelogic.Fighter;
 import java.awt.Color;
+import server.ThreadServer;
 
 /**
  *
@@ -16,6 +17,10 @@ public class FishTelepathy extends Fighter {
     public FishTelepathy(String name, String image, int percentage, int power, int resistance, int sanity, Color color) {
         super(name, image, percentage, power, resistance, sanity, color);
     }
-    
+
+    @Override
+    protected boolean specialAttack(String[] args, ThreadServer target) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

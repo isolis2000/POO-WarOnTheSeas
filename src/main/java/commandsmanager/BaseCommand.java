@@ -5,6 +5,8 @@
  */
 package commandsmanager;
 
+import client.ClientManager;
+import client.gui.MainScreen;
 import java.io.Serializable;
 import gamelogic.Player;
 
@@ -18,11 +20,12 @@ public abstract class BaseCommand implements iCommand, Serializable{
     private String commandName;
     private Player playerExcecuting;
 
-    public BaseCommand(String commandName, String[] args, boolean broadcast, boolean localCommand) {
+    public BaseCommand(String commandName, String[] args, boolean broadcast, boolean localCommand, Player player) {
         this.args = args;
         this.broadcast = broadcast;
         this.localCommand = localCommand;
         this.commandName = commandName;
+        this.playerExcecuting = player;
     }
 
     public boolean isLocalCommand() {

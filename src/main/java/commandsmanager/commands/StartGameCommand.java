@@ -5,8 +5,9 @@
 package commandsmanager.commands;
 
 import commandsmanager.BaseCommand;
+import gamelogic.Player;
 import java.io.Serializable;
-import server.ServerManager;
+import server.ServerFrame;
 
 /**
  *
@@ -14,8 +15,8 @@ import server.ServerManager;
  */
 public class StartGameCommand extends BaseCommand implements Serializable {
 
-    public StartGameCommand(String commandName, String[] args) {
-        super(commandName, args, false, true);
+    public StartGameCommand(String commandName, String[] args, Player player) {
+        super(commandName, args, false, true, player);
     }
 
     @Override
@@ -23,7 +24,7 @@ public class StartGameCommand extends BaseCommand implements Serializable {
         if (getPlayerExcecuting().areFighersDone()) {
             getPlayerExcecuting().setReady(true);
         }
-        if (ServerManager.getSM().getServer().startGame())
+        if (ServerFrame.getServer().startGame())
             return "Todos los jugadores estan listos";
         else
             return "Jugador " + getPlayerExcecuting().getPlayerName() + " esta listo para jugar, pero aun faltan jugadores para comenzar el juego";

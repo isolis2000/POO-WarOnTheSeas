@@ -6,6 +6,7 @@
 package commandsmanager.commands;
 
 import commandsmanager.BaseCommand;
+import gamelogic.Player;
 import java.io.Serializable;
 
 /**
@@ -27,8 +28,8 @@ public class ErrorCommand  extends BaseCommand implements Serializable{
        return "Error: commando desconocido";
     }
 
-    public ErrorCommand(String commandName, String[] args) {
-        super(commandName, args, false, true);
+    public ErrorCommand(String commandName, String[] args, Player player) {
+        super(commandName, args, false, true, player);
     }
 
     

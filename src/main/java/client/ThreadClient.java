@@ -60,7 +60,7 @@ public class ThreadClient extends Thread{
             try {
                 writer.reset();
             } catch (IOException ex) {
-                Logger.getLogger(ThreadClient.class.getName()).log(Level.SEVERE, null, ex);
+                System.exit(0);
             }
             try {
 //                System.out.println("---------------------------------------------------------------");

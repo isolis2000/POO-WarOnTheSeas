@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Message;
 import gamelogic.Player;
+import java.io.ObjectInputStream;
 import java.util.Collections;
 
 /**
@@ -33,6 +34,7 @@ public class Server extends Thread{
     private ArrayList<ThreadServer> connections;
     public ServerFrame screenRef;
     private HashMap<ThreadServer, Player> players = new HashMap<>();
+    private HashMap<String, ThreadServer> connectionsByName = new HashMap<>();
     private boolean gameStarted = false;
 //    private HashMap<String, Player> players = new HashMap<>();
     //
@@ -43,6 +45,11 @@ public class Server extends Thread{
 
     public HashMap<ThreadServer, Player> getPlayers() {
         return players;
+    }
+    
+    public void syncPlayerToThread(Player player) {
+        ThreadServer ts = connectionsByName.get(player.getPlayerName());
+        players.replace(ts, player);
     }
     
     //mensaje para todos
@@ -61,6 +68,7 @@ public class Server extends Thread{
                 System.out.println("To SEND ------------------");
                 System.out.println(command.toString());
                 System.out.println("connection: " + connection.getPlayer());
+                command.setPlayerExcecuting(connection.getPlayer());
                 connection.getWriter().writeObject(command);
                 connection.getWriter().flush();
             } catch (IOException ex) {
@@ -117,6 +125,10 @@ public class Server extends Thread{
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
     }
+
+    public HashMap<String, ThreadServer> getConnectionsByName() {
+        return connectionsByName;
+    }
     
     public void run(){
         this.screenRef.showServerMessage("Server running!");
@@ -125,10 +137,9 @@ public class Server extends Thread{
             try {
                 Socket newSocket = serverSoccket.accept();
                 this.screenRef.showServerMessage("Nuevo cliente conectado"); 
-                DataInputStream inStream = new DataInputStream(newSocket.getInputStream());
+                ObjectInputStream inStream = new ObjectInputStream(newSocket.getInputStream());
 //                System.out.println("1");
-                String name = inStream.readUTF();
-                Player player = new Player(name);
+                Player player = (Player)inStream.readObject();
 //                System.out.println("name: " + name);
                 ThreadServer newThread = new ThreadServer(newSocket, this, player); 
 //                System.out.println("3");
@@ -139,9 +150,10 @@ public class Server extends Thread{
                 newThread.start();
 //                System.out.println("5");
                 connections.add(newThread);
+                connectionsByName.put(player.getPlayerName(), newThread);
                 System.out.println("Thread in: " + newThread.getPlayer().getPlayerName());
 //                System.out.println("6");
-                this.screenRef.showServerMessage("Nuevo thread creado, nombre del jugador: " + name);
+                this.screenRef.showServerMessage("Nuevo thread creado, nombre del jugador: " + player.getPlayerName());
                 
                 if (connections.size() >= MAX_CONNECTIONS){
                     isWaiting = true;
@@ -154,6 +166,8 @@ public class Server extends Thread{
             } catch (IOException ex) {
                 
             } catch (InterruptedException ex) {
+                
+            } catch (ClassNotFoundException ex) {
                 
             }
             

@@ -8,6 +8,7 @@ package commandsmanager.commands;
 import commandsmanager.BaseCommand;
 import commandsmanager.CommandUtils;
 import commandsmanager.CommandUtils;
+import gamelogic.Player;
 import java.io.Serializable;
 
 /**
@@ -16,8 +17,8 @@ import java.io.Serializable;
  */
 public class ChatCommand extends BaseCommand implements Serializable{
 
-    public ChatCommand(String commandName, String[] args) {
-        super(commandName, args, true, false);
+    public ChatCommand(String commandName, String[] args, Player player) {
+        super(commandName, args, true, false, player);
     }
 
     // Hola como estan

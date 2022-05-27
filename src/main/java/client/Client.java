@@ -6,6 +6,7 @@
 package client;
 
 import client.gui.MainScreen;
+import gamelogic.Player;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -22,22 +23,22 @@ public class Client {
     private final String SERVER_IP = "localhost";
     public Socket socket;
     public ObjectOutputStream writer;
-    private DataOutputStream outStream;
+    private ObjectOutputStream outStream;
     private boolean isConnected = false;
     private ThreadClient theadClient;
     private static MainScreen mainScreen;
     
-    public void connect(String name){
+    public void connect(Player player){
         try {
             if (!isConnected){
                 this.socket = new Socket(SERVER_IP, PORT);
 //                this.writer = new ObjectOutputStream(socket.getOutputStream());
                 System.out.println("1");
-                this.outStream = new DataOutputStream(socket.getOutputStream());
+                this.outStream = new ObjectOutputStream(socket.getOutputStream());
                 System.out.println("2");
-                ClientManager.getCM().getMainScreen().showClientMessage(name);
+                ClientManager.getCM().getMainScreen().showClientMessage(player.getPlayerName());
                 System.out.println("3");
-                outStream.writeUTF(name);
+                outStream.writeObject(player);
                 System.out.println("4");
                 this.theadClient = new ThreadClient();
                 System.out.println("5");

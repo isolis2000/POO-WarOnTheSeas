@@ -14,7 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import client.ClientManager;
 import gamelogic.Fighter;
+import gamelogic.Player;
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import javax.swing.BorderFactory;
@@ -25,15 +27,14 @@ import javax.swing.border.Border;
  * @author ivan
  */
 public class MainScreen extends javax.swing.JFrame {
-
-    private Cell[][] cells = new Cell[20][30];
-
+    
+    private Player player;
+    
     /**
      * Creates new form NewJFrame
      */
     public MainScreen() {
         initComponents();
-        initBoard();
         initClient();
         Client.setMainScreen(this);
     }
@@ -140,7 +141,7 @@ public class MainScreen extends javax.swing.JFrame {
         txfCommand.setBackground(new java.awt.Color(0, 84, 119));
         txfCommand.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         txfCommand.setForeground(new java.awt.Color(255, 255, 255));
-        txfCommand.setText("CREARPERSONAJE nombre name imagen ruta porcentaje 20 tipo 2 poder 20 resistencia 20 sanidad 20");
+        txfCommand.setText("CREAR PERSONAJE-nombre-name-imagen-ruta-porcentaje-20-tipo-RELEASE THE KRAKEN-poder-20-resistencia-20-sanidad-20");
         txfCommand.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
         txfCommand.setPreferredSize(new java.awt.Dimension(65, 35));
         txfCommand.addActionListener(new java.awt.event.ActionListener() {
@@ -327,9 +328,6 @@ public class MainScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public Cell[][] getCells() {
-        return cells;
-    }
 
     private void txfCommandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfCommandActionPerformed
         // TODO add your handling code here:
@@ -344,7 +342,7 @@ public class MainScreen extends javax.swing.JFrame {
         System.out.println("comando: " + comando);
         if (!comando.equals("")) {
             String array[] = CommandUtils.convertToArray(comando);
-            BaseCommand newCommand = CommandFactory.getCommand(array[0], array);
+            BaseCommand newCommand = CommandFactory.getCommand(array[0], array, player);
             if (newCommand.getCommandName().toUpperCase().equals("ERROR")) {
                 showClientMessage(newCommand.executeOnClient());
             } else {
@@ -375,15 +373,16 @@ public class MainScreen extends javax.swing.JFrame {
             pnlBoard.add(label);
             x++;
             for (int col = 0; col < 30; col++) {
-                Cell cell = new Cell();
+                Cell cell = new Cell("A");
                 cell.setOpaque(true);
                 cell.setBackground(Color.gray);
                 cell.setFocusable(false);
                 cell.setBorder(whileLine);
-                cells[row][col] = cell;
-                pnlBoard.add(cell);
+                player.getCells()[row][col] = cell;
+                pnlBoard.add(player.getCells()[row][col]);
             }
         }
+        System.out.println("Arrays: " + Arrays.toString(player.getCells()));
     }
     
     private void initClient() {
@@ -391,7 +390,9 @@ public class MainScreen extends javax.swing.JFrame {
         String name = JOptionPane.showInputDialog("Escriba su nombre por favor");
         ClientManager.getCM().setClient();
         ClientManager.getCM().setPlayerName(name);
-        ClientManager.getCM().getClient().connect(name);
+        player = new Player(name);
+        initBoard();
+        ClientManager.getCM().getClient().connect(player);
     }
 
     public void showClientMessage(String msg) {
@@ -402,9 +403,9 @@ public class MainScreen extends javax.swing.JFrame {
         int numOfCellsToPaint = (int)(600*(fighter.getPercentage()/100.0f));
         int x = 0;
         Color color = fighter.getColor();
-        shuffleMatrix(cells);
+        shuffleMatrix(player.getCells());
         outerloop:
-        for (Cell[] cell1 : cells) {
+        for (Cell[] cell1 : player.getCells()) {
             for (Cell cell : cell1) {
                 if (x == numOfCellsToPaint)
                     break outerloop;
@@ -431,6 +432,22 @@ public class MainScreen extends javax.swing.JFrame {
         }
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+    
+    public void updateCells(Cell[][] newCells) {
+        for (int row = 0; row < this.player.getCells().length; row++) {
+            for (int cell = 0; cell < this.player.getCells()[row].length; cell++) {
+                this.player.getCells()[row][cell].setText(newCells[row][cell].getText());
+            }
+        }
+    }
+    
     public static void start() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

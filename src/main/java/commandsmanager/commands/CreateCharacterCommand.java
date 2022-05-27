@@ -14,33 +14,34 @@ import java.util.HashMap;
  */
 public class CreateCharacterCommand extends BaseCommand implements Serializable {
     
-    private transient HashMap<String, Integer> fighterTypes = new HashMap<>();
+    private transient HashMap<String, Integer> fighterTypes;
 
-    public CreateCharacterCommand(String commandName, String[] args) {
-        super(commandName, args, false, true);
+    public CreateCharacterCommand(String commandName, String[] args, Player player) {
+        super(commandName, args, false, true, player);
     }
 
     @Override
     public String executeOnServer() {
+        fighterTypes = new HashMap<>();
         initHashMap();
         String[] args = getArgs();
         String name = null, image = null;
         int percentage = -1, type = -1, power = -1, resistance = -1, sanity = -1;
         try {
             for (int i = 1; i < args.length; i++) {
-                switch (args[i]) {
-                    case "nombre" -> name = args[i + 1];
-                    case "imagen" -> image = args[i + 1];
-                    case "porcentaje" -> percentage = Integer.parseInt(args[i + 1]);
-                    case "tipo" -> {
+                switch (args[i].toUpperCase()) {
+                    case "NOMBRE" -> name = args[i + 1];
+                    case "IMAGEN" -> image = args[i + 1];
+                    case "PORCENTAJE" -> percentage = Integer.parseInt(args[i + 1]);
+                    case "TIPO" -> {
                         if (CommandUtils.isInteger(args[i + 1]))
                             type = Integer.parseInt(args[i + 1]);
                         else 
-                            type = fighterTypes.get(args[i + 1]);
+                            type = fighterTypes.get(args[i + 1].toUpperCase());
                     }
-                    case "poder" -> power = Integer.parseInt(args[i + 1]);
-                    case "resistencia" -> resistance = Integer.parseInt(args[i + 1]);
-                    case "sanidad" -> sanity = Integer.parseInt(args[i + 1]);
+                    case "PODER" -> power = Integer.parseInt(args[i + 1]);
+                    case "RESISTENCIA" -> resistance = Integer.parseInt(args[i + 1]);
+                    case "SANIDAD" -> sanity = Integer.parseInt(args[i + 1]);
                     default -> {
                             System.out.println("no1");
                             return "ERROR";
@@ -49,9 +50,11 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
                 }
                 i++;
             }
+            System.out.println("fighters before: " + getPlayerExcecuting().getFighters().toString());
             if (CommandUtils.areValuesOk(new Object[] {name, image, percentage, type, power, resistance, sanity})) {
                 if (getPlayerExcecuting().addFighter(name, image, percentage, type, power, resistance, sanity)) {
                     System.out.println("Fighters after add: " + getPlayerExcecuting().getFighters().toString());
+                    
                     return CommandUtils.concatArray(args);  
                 }
                 else {
@@ -64,7 +67,8 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
             }
         } catch (Exception ex) {
             System.out.println("no3");
-            getPlayerExcecuting().setFighersDone(true);
+            if (getPlayerExcecuting().getFighters().size() == 3)
+                getPlayerExcecuting().setFighersDone(true);
             return "ERROR";
 //            return error(player.getPlayerName());
         }
@@ -93,12 +97,12 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
     }
     
     private void initHashMap() { 
-        fighterTypes.put("Release the Kraken", 1);
-        fighterTypes.put("Poseidon Trident", 2);
-        fighterTypes.put("Fish Telepathy", 3);
-        fighterTypes.put("Undersea Fire", 4);
-        fighterTypes.put("Thunders under the sea", 5);
-        fighterTypes.put("Waves control", 1);
+        fighterTypes.put("RELEASE THE KRAKEN", 1);
+        fighterTypes.put("POSEIDON TRIDENT", 2);
+        fighterTypes.put("FISH TELEPATHY", 3);
+        fighterTypes.put("UNDERSEA FIRE", 4);
+        fighterTypes.put("THUNDERS UNDER THE SEA", 5);
+        fighterTypes.put("WAVES CONTROL", 1);
     }
     
     @Override

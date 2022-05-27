@@ -8,6 +8,7 @@ package commandsmanager.commands;
 import commandsmanager.BaseCommand;
 import commandsmanager.CommandUtils;
 import commandsmanager.CommandUtils;
+import gamelogic.Player;
 import java.io.Serializable;
 
 /**
@@ -16,8 +17,8 @@ import java.io.Serializable;
  */
 public class PrivateChatCommand  extends BaseCommand implements Serializable{
 
-    public PrivateChatCommand(String commandName, String[] args) {
-        super(commandName, args, false, false);
+    public PrivateChatCommand(String commandName, String[] args, Player player) {
+        super(commandName, args, false, false, player);
     }
 
     // Diego Hola como estas?

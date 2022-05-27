@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Message;
 import gamelogic.Player;
+import java.util.Arrays;
 
 /**
  *
@@ -51,12 +52,15 @@ public class ThreadServer extends Thread{
             try {
                 writer.reset();
             } catch (IOException ex) {
-                Logger.getLogger(ThreadServer.class.getName()).log(Level.SEVERE, null, ex);
+                System.exit(0);
             }
             try {
                 System.out.println("previous read command");
                 readCommand = (BaseCommand)this.reader.readObject();
+//                player = readCommand.getPlayerExcecuting();
+                System.out.println("CellsAfterW: " + Arrays.toString(player.getCells()));
                 readCommand.setPlayerExcecuting(player);
+//                player = readCommand.getPlayerExcecuting();
 //                System.out.println("map: ");
 //                System.out.println(server.getPlayerNames().get(this));
                 //System.out.println("read command");
@@ -70,13 +74,15 @@ public class ThreadServer extends Thread{
             }
             else if (readCommand.isLocalCommand()){
                 server.screenRef.showServerMessage(readCommand.executeOnServer());
+                player = readCommand.getPlayerExcecuting();
+                System.out.println("fighters after executing and equaling: " + player.getFighters().toString());
                 server.sendToOne(readCommand, this);
             } else {
                 String name = readCommand.getArgs()[1];
+                server.screenRef.showServerMessage(readCommand.executeOnServer());
                 for (HashMap.Entry<ThreadServer, Player> set : server.getPlayers().entrySet())
                     if (set.getValue().getPlayerName().equals(name))
                         server.sendToOne(readCommand, set.getKey());
-                server.screenRef.showServerMessage(readCommand.executeOnServer());
             }
         }
         

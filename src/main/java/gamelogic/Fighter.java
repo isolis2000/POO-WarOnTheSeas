@@ -4,6 +4,7 @@
  */
 package gamelogic;
 
+import client.gui.Cell;
 import java.awt.Color;
 import java.io.Serializable;
 import server.ThreadServer;
@@ -12,7 +13,7 @@ import server.ThreadServer;
  *
  * @author ivan
  */
-public class Fighter implements Serializable {
+public abstract class Fighter implements Serializable {
     
     private String name, image;
     private int percentage, power, resistance, sanity;
@@ -28,11 +29,33 @@ public class Fighter implements Serializable {
         this.color = color;
     }
     
-    public void attack(String attackCommand, ThreadServer enemy) {
-        switch (attackCommand) {
-            case "sanidad" -> 
-        }
+    // 0 attack 1 target 2 fighter 3 attacktype 4 instructions
+    public boolean attack(String[] args, ThreadServer target) {
+        return switch (args[3].toLowerCase()) {
+            case "sanidad" -> sanity(target);
+            case "resistencia" -> resistance(target);
+            default -> specialAttack(args, target);
+        };
     }
+    
+    // 0 attaque 1 objetivo 2 luchador 3 habilidad
+    private boolean sanity(ThreadServer target) {
+        for (Cell[] row : target.getPlayer().getCells())
+            for (Cell cell : row)
+                if (cell.getFighter().getName().equals(this.name))
+                    cell.addHp(this.sanity);
+        return true;
+    }
+    
+    private boolean resistance(ThreadServer target) {
+        for (Cell[] row : target.getPlayer().getCells())
+            for (Cell cell : row)
+                if (cell.getFighter().getName().equals(this.name))
+                    cell.setResistance(this.resistance);
+        return true;
+    }
+    
+    protected abstract boolean specialAttack(String[] args, ThreadServer target);
 
 //    @Override
 //    public String toString() {
