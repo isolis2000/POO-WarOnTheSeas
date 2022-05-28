@@ -22,6 +22,7 @@ public class Cell extends JLabel implements Serializable {
     private int hp, resistance;
     private Fighter fighter;
     private final int[] placement;
+    private boolean volcano = false, whirlpool = false;
 
     public Cell(String text, int[] placement) {
         super(text);

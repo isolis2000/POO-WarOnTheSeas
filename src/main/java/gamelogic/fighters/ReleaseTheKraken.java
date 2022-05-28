@@ -84,10 +84,8 @@ public class ReleaseTheKraken extends Fighter {
                 }
                 i++;
             }
-            for (int i = 0; i < 3; i++) {
-                for (Cell cell : target.getPlayer().getCellsInLine(new int[] {x, y}, numOfCells, direction)) {
-                    cell.setHp(0);
-                }
+            for (Cell cell : target.getPlayer().getCellsInLine(new int[] {x, y}, numOfCells, direction)) {
+                cell.setHp(0);
             }
             return true;
         } catch (Exception ex) {
@@ -95,9 +93,33 @@ public class ReleaseTheKraken extends Fighter {
             return false;
         }    
     }
-    
+    /*
+    Release the Kraken: el Kraken
+    aparece en un punto del mapa y
+    destruye todo en un radio de
+    1,2,3,4,5,6,7,8,9 casillas.
+    */
     private boolean releaseTheKraken(String[] args, ThreadServer target) {
-        return true;
+        Random random = new Random();       
+        int radius = random.nextInt(9) + 1;
+        int x = 0; int y = 0;
+        try {
+            for (int i = 4; i < args.length; i++) {
+                switch (args[i].toLowerCase()) {
+                    case "x" -> x = Integer.parseInt(args[i + 1]);
+                    case "y" -> y = Integer.parseInt(args[i + 1]);
+                    default -> throw new NumberFormatException();
+                }
+                i++;
+            }
+            for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x, y}, radius)) {
+                cell.setHp(0);
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }    
     }
     
 }

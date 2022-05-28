@@ -124,17 +124,36 @@ public class Player implements Serializable {
         ArrayList<Cell> cellsRet = new ArrayList<>();
         int x = origin[0]-1;
         int y = origin[1]-1;
+        boolean bounds1 = false, bounds2 = false, bounds3 = false, bounds4 = false;
+        if (!((x >= 0) && (x < 20) && (y >= 0) && (y < 30)))
+            return cellsRet;
+        cellsRet.add(cells[x][y]);
         for (int i = 1; i <= radius; i++) {
-            cellsRet.add(cells[x+i][y]);
-            cellsRet.add(cells[x-i][y]);
-            cellsRet.add(cells[x][y+i]);
-            cellsRet.add(cells[x][y-i]);
-            cellsRet.add(cells[x+i][y+i]);
-            cellsRet.add(cells[x-i][y-i]);
-            cellsRet.add(cells[x-i][y+i]);
-            cellsRet.add(cells[x+i][y-i]);
+            if ((x + i) < 20) {
+                bounds1 = true;
+                cellsRet.add(cells[x+i][y]);
+            }
+            if ((x - i) >= 0) {
+                bounds2 = true;
+                cellsRet.add(cells[x-i][y]);
+            }
+            if ((y + i) < 30) {
+                bounds3 = true;
+                cellsRet.add(cells[x][y+i]);
+            }
+            if ((y - i) >= 0) {
+                bounds4 = true;
+                cellsRet.add(cells[x][y-i]);
+            }
+            if (bounds1 && bounds3)
+                cellsRet.add(cells[x+i][y+i]);
+            if (bounds2 && bounds4)
+                cellsRet.add(cells[x-i][y-i]);
+            if (bounds2 && bounds3)
+                cellsRet.add(cells[x-i][y+i]);
+            if (bounds1 && bounds4)
+                cellsRet.add(cells[x+i][y-i]);
         }
-        System.out.println("Array to work: " + cellsRet.toString());
         return cellsRet;
     }
     
@@ -142,12 +161,37 @@ public class Player implements Serializable {
         ArrayList<Cell> cellsRet = new ArrayList<>();
         int x = origin[0]-1;
         int y = origin[1]-1;
-        for (int i = 1; i <= numOfCells; i++) {
-            switch (direction) {
-                case "arriba" -> cellsRet.add(cells[x-i][y]);
-                case "abajo" -> cellsRet.add(cells[x+i][y]);
-                case "izquierda" -> cellsRet.add(cells[x][y-i]);
-                case "derecha" -> cellsRet.add(cells[x][y+i]);
+        if (!((x >= 0) && (x < 20) && (y >= 0) && (y < 30)))
+            return cellsRet;
+        cellsRet.add(cells[x][y]);
+        switch (direction) {
+            case "arriba" -> {
+                for (int i = 0; i < numOfCells; i++) {
+                    if ((x - i) < 0)
+                        break;
+                    cellsRet.add(cells[x-i][y]);
+                }
+            }
+            case "abajo" ->  {
+                for (int i = 0; i < numOfCells; i++) {
+                    if ((x + i) >= 20)
+                        break;
+                    cellsRet.add(cells[x+i][y]);
+                }
+            }
+            case "izquierda" -> {
+                for (int i = 0; i < numOfCells; i++) {
+                    if ((y - i) < 0)
+                        break;
+                    cellsRet.add(cells[x][y-i]);
+                }
+            }
+            case "derecha" -> {
+                for (int i = 0; i < numOfCells; i++) {
+                    if ((y + i) >= 30)
+                        break;
+                    cellsRet.add(cells[x][y+i]);                
+                }
             }
         }
         return cellsRet;
