@@ -36,7 +36,7 @@ public class MainScreen extends javax.swing.JFrame {
     public MainScreen() {
         initComponents();
         initClient();
-        Client.setMainScreen(this);
+        ClientManager.getCM().setMainScreen(this);
     }
 
     /**
@@ -373,16 +373,18 @@ public class MainScreen extends javax.swing.JFrame {
             pnlBoard.add(label);
             x++;
             for (int col = 0; col < 30; col++) {
-                Cell cell = new Cell("A");
+                int[] placement = {row+1, col+1};
+                Cell cell = new Cell("E", placement);
+                cell.setText("");
                 cell.setOpaque(true);
                 cell.setBackground(Color.gray);
+                cell.setForeground(Color.black);
                 cell.setFocusable(false);
                 cell.setBorder(whileLine);
                 player.getCells()[row][col] = cell;
                 pnlBoard.add(player.getCells()[row][col]);
             }
         }
-        System.out.println("Arrays: " + Arrays.toString(player.getCells()));
     }
     
     private void initClient() {
@@ -399,22 +401,39 @@ public class MainScreen extends javax.swing.JFrame {
         this.txaLogs.append(msg + "\n");
     }
     
+    public void printCells(Cell[][] cells) {
+//        Cell[][] cells = player.getCells();
+        for (Cell[] row : cells)
+            System.out.println(Arrays.toString(row));
+    }
+    
     public void addFighter(Fighter fighter) {
         int numOfCellsToPaint = (int)(600*(fighter.getPercentage()/100.0f));
         int x = 0;
-        Color color = fighter.getColor();
-        shuffleMatrix(player.getCells());
+        Cell[][] cellsAux = new Cell[20][30];
+        for (int row = 0; row < this.player.getCells().length; row++)
+            for (int n = 0; n < this.player.getCells()[row].length; n++) {
+                int[] coords = new int[2];
+                Cell initialCell = this.player.getCells()[row][n];
+                System.arraycopy(initialCell.getPlacement(), 0, coords, 0, 2);
+                Cell newCell = new Cell("", coords);
+                newCell.setBackground(initialCell.getBackground());
+                cellsAux[row][n] = newCell;
+            }
+        shuffleMatrix(cellsAux);
         outerloop:
-        for (Cell[] cell1 : player.getCells()) {
+        for (Cell[] cell1 : cellsAux) {
             for (Cell cell : cell1) {
                 if (x == numOfCellsToPaint)
                     break outerloop;
                 else if (cell.getBackground() == Color.gray) {
-                    cell.setBackground(color);
+                    cell.setFighter(fighter);
+                    System.out.println("se pinto la celda: " + cell);
                     x++;
                 }
             }
         }
+        updateCells(cellsAux);
     }
     
     private void shuffleMatrix(Cell[][] arr) {
@@ -441,10 +460,20 @@ public class MainScreen extends javax.swing.JFrame {
     }
     
     public void updateCells(Cell[][] newCells) {
-        for (int row = 0; row < this.player.getCells().length; row++) {
-            for (int cell = 0; cell < this.player.getCells()[row].length; cell++) {
-                this.player.getCells()[row][cell].setText(newCells[row][cell].getText());
+        int x = 0;
+        int y = 0;
+        try {
+            for (int row = 0; row < this.player.getCells().length; row++) {
+                for (int cell = 0; cell < this.player.getCells()[row].length; cell++) {
+                    Cell newCell = newCells[row][cell];
+                    int[] placements = newCell.getPlacement();
+                    x = placements[0] - 1;
+                    y = placements[1] - 1;
+                    this.player.getCells()[x][y].updateCell(newCell);
+                }
             }
+        } catch (java.lang.ArrayIndexOutOfBoundsException ex) {
+            ex.printStackTrace();
         }
     }
     

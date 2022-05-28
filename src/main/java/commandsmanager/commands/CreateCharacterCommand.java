@@ -1,6 +1,7 @@
 package commandsmanager.commands;
 
 import client.Client;
+import client.ClientManager;
 import commandsmanager.BaseCommand;
 import commandsmanager.CommandUtils;
 import java.io.Serializable;
@@ -92,7 +93,7 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
         String ret = player.getPlayerName() + " creo un luchador con los siguientes datos: \n" 
                 + player.getLastFighter().toString();
         System.out.println("player getfighter: " + player.getLastFighter());
-        Client.getMainScreen().addFighter(player.getLastFighter());
+        ClientManager.getCM().getMainScreen().addFighter(player.getLastFighter());
         return ret;
     }
     

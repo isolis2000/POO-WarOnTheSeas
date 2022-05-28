@@ -5,9 +5,9 @@
 package client.gui;
 
 import gamelogic.Fighter;
-import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -21,9 +21,11 @@ public class Cell extends JLabel implements Serializable {
     private ArrayList<String> record = new ArrayList<>();
     private int hp, resistance;
     private Fighter fighter;
+    private final int[] placement;
 
-    public Cell(String text) {
+    public Cell(String text, int[] placement) {
         super(text);
+        this.placement = placement;
     }
     
     public void addToRecord(String str) {
@@ -40,6 +42,14 @@ public class Cell extends JLabel implements Serializable {
 
     public void setHp(int hp) {
         this.hp = hp;
+        verifyHp();
+    }
+    
+    private void verifyHp() {
+        if (this.hp <= 0) {
+            this.hp = 0;
+            this.setText("X");
+        }
     }
     
     public void addHp(int hp) {
@@ -62,10 +72,30 @@ public class Cell extends JLabel implements Serializable {
     
     public void takeDamage(int damage) {
         this.hp -= (damage * (resistance/100));
+        verifyHp();
     }
 
     public void setFighter(Fighter owner) {
         this.fighter = owner;
     }
+
+    public int[] getPlacement() {
+        return placement;
+    }
     
+    public void updateCell(Cell newCell) {
+        this.record = newCell.getRecord();
+        this.fighter = newCell.getFighter();
+        this.hp = newCell.getHp();
+        this.resistance = newCell.getResistance();  
+        this.setText(newCell.getText());
+        if (this.fighter != null)
+            this.setBackground(this.fighter.getColor());
+        this.paintImmediately(this.getBounds());
+    }
+    
+    @Override
+    public String toString() {
+        return Arrays.toString(this.placement) + " text " + this.getText();
+    }
 }

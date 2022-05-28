@@ -11,6 +11,7 @@ import commandsmanager.CommandUtils;
 import commandsmanager.CommandUtils;
 import gamelogic.Player;
 import java.io.Serializable;
+import java.util.Arrays;
 import server.Server;
 import server.ServerFrame;
 import server.ThreadServer;
@@ -39,7 +40,9 @@ public class AttackCommand extends BaseCommand implements Serializable{
 
     @Override
     public String executeOnClient() {
+        ClientManager.getCM().getMainScreen().printCells(getPlayerExcecuting().getCells());
         ClientManager.getCM().getMainScreen().updateCells(getPlayerExcecuting().getCells());
+        ClientManager.getCM().getMainScreen().printCells(ClientManager.getCM().getMainScreen().getPlayer().getCells());
         return "Jugador ataco";
     }
     

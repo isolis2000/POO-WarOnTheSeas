@@ -122,9 +122,8 @@ public class Player implements Serializable {
     
     public ArrayList<Cell> getCellsInRadius(int[] origin, int radius) {
         ArrayList<Cell> cellsRet = new ArrayList<>();
-        int x = origin[0];
-        int y = origin[1];
-        cellsRet.add(cells[x][y]);
+        int x = origin[0]-1;
+        int y = origin[1]-1;
         for (int i = 1; i <= radius; i++) {
             cellsRet.add(cells[x+i][y]);
             cellsRet.add(cells[x-i][y]);
@@ -136,7 +135,21 @@ public class Player implements Serializable {
             cellsRet.add(cells[x+i][y-i]);
         }
         System.out.println("Array to work: " + cellsRet.toString());
-        System.out.println("all arrayL " + Arrays.toString(cells[x]));
+        return cellsRet;
+    }
+    
+    public ArrayList<Cell> getCellsInLine(int[] origin, int numOfCells, String direction) {
+        ArrayList<Cell> cellsRet = new ArrayList<>();
+        int x = origin[0]-1;
+        int y = origin[1]-1;
+        for (int i = 1; i <= numOfCells; i++) {
+            switch (direction) {
+                case "arriba" -> cellsRet.add(cells[x-i][y]);
+                case "abajo" -> cellsRet.add(cells[x+i][y]);
+                case "izquierda" -> cellsRet.add(cells[x][y-i]);
+                case "derecha" -> cellsRet.add(cells[x][y+i]);
+            }
+        }
         return cellsRet;
     }
     

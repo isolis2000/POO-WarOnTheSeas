@@ -26,7 +26,7 @@ public class Client {
     private ObjectOutputStream outStream;
     private boolean isConnected = false;
     private ThreadClient theadClient;
-    private static MainScreen mainScreen;
+//    private static MainScreen mainScreen;
     
     public void connect(Player player){
         try {
@@ -53,13 +53,13 @@ public class Client {
         }
     }
 
-    public static MainScreen getMainScreen() {
-        return mainScreen;
-    }
-
-    public static void setMainScreen(MainScreen mainScreen) {
-        Client.mainScreen = mainScreen;
-    }
+//    public static MainScreen getMainScreen() {
+//        return mainScreen;
+//    }
+//
+//    public static void setMainScreen(MainScreen mainScreen) {
+//        Client.mainScreen = mainScreen;
+//    }
     
     
 }

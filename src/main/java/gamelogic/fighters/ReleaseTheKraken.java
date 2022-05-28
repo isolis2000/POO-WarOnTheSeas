@@ -8,6 +8,7 @@ import client.gui.Cell;
 import gamelogic.Fighter;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Random;
 import server.ThreadServer;
 
 /**
@@ -40,7 +41,6 @@ public class ReleaseTheKraken extends Fighter {
         ArrayList<Integer> y = new ArrayList<>();
         try {
             for (int i = 4; i < args.length; i++) {
-                System.out.println("fuck");
                 switch (args[i].toLowerCase()) {
                     case "x" -> x.add(Integer.parseInt(args[i + 1]));
                     case "y" -> y.add(Integer.parseInt(args[i + 1]));
@@ -48,13 +48,9 @@ public class ReleaseTheKraken extends Fighter {
                 }
                 i++;
             }
-            System.out.println("entered here");
             for (int i = 0; i < 3; i++) {
-                System.out.println("not fuck");
                 for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x.get(i), y.get(i)}, 1)) {
                     cell.setHp(0);
-                    cell.setText("X");
-                    cell.setForeground(Color.black);
                 }
             }
             return true;
@@ -63,9 +59,41 @@ public class ReleaseTheKraken extends Fighter {
             return false;
         }
     }
+    /*
+    Kraken Breath: se selecciona una
+    casilla donde el Kraken lanza su
+    aliento hacia una dirección: arriba,
+    abajo, derecha, izquierda. El aliento
+    destruye entre 1 y 8 casillas en esa
+    dirección.
+    */
     
+    // 0 attack 1 target 2 fighter 3 attacktype 4 instructions
     private boolean krakenBreath(String[] args, ThreadServer target) {
-        return true;
+        Random random = new Random();       
+        int numOfCells = random.nextInt(8) + 1;
+        int x = 0; int y = 0;
+        String direction = "";
+        try {
+            for (int i = 4; i < args.length; i++) {
+                switch (args[i].toLowerCase()) {
+                    case "x" -> x = Integer.parseInt(args[i + 1]);
+                    case "y" -> y = Integer.parseInt(args[i + 1]);
+                    case "direccion" -> direction = args[i + 1].toLowerCase();
+                    default -> throw new NumberFormatException();
+                }
+                i++;
+            }
+            for (int i = 0; i < 3; i++) {
+                for (Cell cell : target.getPlayer().getCellsInLine(new int[] {x, y}, numOfCells, direction)) {
+                    cell.setHp(0);
+                }
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }    
     }
     
     private boolean releaseTheKraken(String[] args, ThreadServer target) {
