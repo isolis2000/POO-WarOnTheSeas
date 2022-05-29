@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import server.ThreadServer;
 
 /**
@@ -32,7 +33,7 @@ public class Player implements Serializable {
     public boolean addFighter(String name, String image, int percentage, int type, int power, int resistance, int sanity) {
         Color color = colors[fighters.size()];
         if (fighters.size() < 3) {
-            Fighter commander = FighterFactory.getCommand(name, image, percentage, power, resistance, sanity, color, type);
+            Fighter commander = FighterFactory.getFighter(name, image, percentage, power, resistance, sanity, color, type);
             fighters.add(commander);
             setLastFighter();
             System.out.println("Added new fighter, new size: " + fighters.size());
@@ -153,6 +154,10 @@ public class Player implements Serializable {
                 cellsRet.add(cells[x-i][y+i]);
             if (bounds1 && bounds4)
                 cellsRet.add(cells[x+i][y-i]);
+            bounds1 = false;
+            bounds2 = false;
+            bounds3 = false;
+            bounds4 = false;
         }
         return cellsRet;
     }
@@ -195,6 +200,17 @@ public class Player implements Serializable {
             }
         }
         return cellsRet;
+    }
+    
+    public ArrayList<Cell> getRandomCells(int numOfCells) {
+        Random random = new Random();
+        ArrayList<Cell> randomCells = new ArrayList<>();
+        for (int i = 0; i < numOfCells; i++) {
+            int x = random.nextInt(20);
+            int y = random.nextInt(30);
+            randomCells.add(cells[x][y]);
+        }
+        return randomCells;
     }
     
     @Override

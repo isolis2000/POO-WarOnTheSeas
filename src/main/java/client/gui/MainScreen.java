@@ -345,7 +345,17 @@ public class MainScreen extends javax.swing.JFrame {
             BaseCommand newCommand = CommandFactory.getCommand(array[0], array, player);
             if (newCommand.getCommandName().toUpperCase().equals("ERROR")) {
                 showClientMessage(newCommand.executeOnClient());
-            } else {
+            } else  if (
+                    newCommand.getCommandName().toUpperCase().equals("CHAT") ||
+                    newCommand.getCommandName().toUpperCase().equals("CHAT PRIVADO") ||
+                    newCommand.getCommandName().toUpperCase().equals("CREAR PERSONAJE") ||
+                    newCommand.getCommandName().toUpperCase().equals("INICIAR PARTIDA")
+                    ){
+                try {
+                    ClientManager.getCM().getThreadClient().getWriter().writeObject(newCommand);
+                } catch (IOException ex) {
+                }
+            } else if (player.isTurn()) {
                 try {
                     ClientManager.getCM().getThreadClient().getWriter().writeObject(newCommand);
                 } catch (IOException ex) {
@@ -428,7 +438,6 @@ public class MainScreen extends javax.swing.JFrame {
                     break outerloop;
                 else if (cell.getBackground() == Color.gray) {
                     cell.setFighter(fighter);
-                    System.out.println("se pinto la celda: " + cell);
                     x++;
                 }
             }
@@ -475,6 +484,10 @@ public class MainScreen extends javax.swing.JFrame {
         } catch (java.lang.ArrayIndexOutOfBoundsException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    public String askForThreeNumbers() {
+        return JOptionPane.showInputDialog("Un jugador lo esta atacando, digite 3 numeros separados por \"-\"");
     }
     
     public static void start() {

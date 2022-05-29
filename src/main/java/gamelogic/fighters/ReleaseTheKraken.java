@@ -112,7 +112,9 @@ public class ReleaseTheKraken extends Fighter {
                 }
                 i++;
             }
+            System.out.println("release");
             for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x, y}, radius)) {
+                System.out.println("the kraken");
                 cell.setHp(0);
             }
             return true;

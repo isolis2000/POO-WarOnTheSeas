@@ -62,14 +62,27 @@ public class ThreadClient extends Thread{
             } catch (IOException ex) {
                 System.exit(0);
             }
+//            try {
+//                System.out.println("waiting for bool");
+//                boolean threeNumbersAttack = this.reader.readBoolean();
+//                if (threeNumbersAttack) 
+//                    writer.writeUTF(ClientManager.getCM().getMainScreen().askForThreeNumbers());
+//            } catch (IOException ex) {
+//                System.out.println("No es un bool");
+//            }
             try {
 //                System.out.println("---------------------------------------------------------------");
 //                System.out.println(this.reader.readObject());
                 readMessage = (BaseCommand)this.reader.readObject();
                 System.out.println("RECIBIDO--------------------------");
                 System.out.println("mensaje: " + readMessage);
-            } catch (IOException ex) {    System.out.println("readmessage");
-            } catch (ClassNotFoundException ex) {System.out.println("message");}
+            } catch (IOException ex) {    
+                System.out.println("readmessage");
+                continue;
+            } catch (ClassNotFoundException ex) {
+                System.out.println("message");
+                continue;
+            }
 
             ClientManager.getCM().getMainScreen().showClientMessage(readMessage.executeOnClient());
             
