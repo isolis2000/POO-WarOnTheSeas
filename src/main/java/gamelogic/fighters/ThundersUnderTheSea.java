@@ -5,6 +5,7 @@
 package gamelogic.fighters;
 
 import gamelogic.Fighter;
+import gamelogic.Player;
 import java.awt.Color;
 import server.ThreadServer;
 
@@ -14,8 +15,8 @@ import server.ThreadServer;
  */
 public class ThundersUnderTheSea extends Fighter {
 
-    public ThundersUnderTheSea(String name, String image, int percentage, int power, int resistance, int sanity, Color color) {
-        super(name, image, percentage, power, resistance, sanity, color);
+    public ThundersUnderTheSea(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
+        super(name, image, percentage, power, resistance, sanity, color, playerExecuting);
     }
 
     @Override

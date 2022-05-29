@@ -16,11 +16,12 @@ import server.ServerFrame;
 public class StartGameCommand extends BaseCommand implements Serializable {
 
     public StartGameCommand(String commandName, String[] args, Player player) {
-        super(commandName, args, false, true, player);
+        super(commandName, args, true, false, player);
     }
 
     @Override
     public String executeOnServer() {
+        System.out.println("Jugador: " + this.getPlayerExcecuting().getPlayerName() + " esta listo? " + getPlayerExcecuting().areFighersDone());
         if (getPlayerExcecuting().areFighersDone()) {
             getPlayerExcecuting().setReady(true);
         }

@@ -55,7 +55,6 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
             if (CommandUtils.areValuesOk(new Object[] {name, image, percentage, type, power, resistance, sanity})) {
                 if (getPlayerExcecuting().addFighter(name, image, percentage, type, power, resistance, sanity)) {
                     System.out.println("Fighters after add: " + getPlayerExcecuting().getFighters().toString());
-                    
                     return CommandUtils.concatArray(args);  
                 }
                 else {
@@ -67,7 +66,7 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
 //                return error(player.getPlayerName());
             }
         } catch (Exception ex) {
-            System.out.println("no3");
+            System.out.println("fighters size EXCEPTION: " + getPlayerExcecuting().getFighters().size());
             if (getPlayerExcecuting().getFighters().size() == 3)
                 getPlayerExcecuting().setFighersDone(true);
             return "ERROR";
@@ -103,7 +102,7 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
         fighterTypes.put("FISH TELEPATHY", 3);
         fighterTypes.put("UNDERSEA FIRE", 4);
         fighterTypes.put("THUNDERS UNDER THE SEA", 5);
-        fighterTypes.put("WAVES CONTROL", 1);
+        fighterTypes.put("WAVES CONTROL", 6);
     }
     
     @Override

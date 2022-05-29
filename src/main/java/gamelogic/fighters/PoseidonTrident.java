@@ -6,6 +6,7 @@ package gamelogic.fighters;
 
 import client.gui.Cell;
 import gamelogic.Fighter;
+import gamelogic.Player;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,8 +18,8 @@ import server.ThreadServer;
  */
 public class PoseidonTrident extends Fighter {
 
-    public PoseidonTrident(String name, String image, int percentage, int power, int resistance, int sanity, Color color) {
-        super(name, image, percentage, power, resistance, sanity, color);
+    public PoseidonTrident(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
+        super(name, image, percentage, power, resistance, sanity, color, playerExecuting);
     }
 /*
     Three lines: selecciona 3 puntos en el mapa. En cada punto destruye lo que esté de 1 a 4
@@ -61,8 +62,9 @@ public class PoseidonTrident extends Fighter {
             for (int i = 0; i < 3; i++) {
                 String direction = directions[random.nextInt(directions.length)];
                 ArrayList<Cell> cellsToDestroy = target.getPlayer().getCellsInLine(new int[] {x.get(i), y.get(i)}, numOfCells, direction);
+                String forRecord = "Jugador " + this.playerExecuting.getPlayerName() + "destruyo esta casilla con el ataque threeLines";
                 for (Cell cell : cellsToDestroy) {
-                    cell.setHp(0);
+                    cell.setHp(0, forRecord);
                 }
             }
             return true;

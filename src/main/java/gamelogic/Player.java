@@ -19,7 +19,7 @@ import server.ThreadServer;
  */
 public class Player implements Serializable {
     
-    private boolean ready = false, fighersDone = false, turn = false;
+    private boolean ready = false, fightersDone = false, turn = false;
     private final String playerName;
     private ArrayList<Fighter> fighters = new ArrayList<>();
     private Fighter lastFighter;
@@ -33,7 +33,7 @@ public class Player implements Serializable {
     public boolean addFighter(String name, String image, int percentage, int type, int power, int resistance, int sanity) {
         Color color = colors[fighters.size()];
         if (fighters.size() < 3) {
-            Fighter commander = FighterFactory.getFighter(name, image, percentage, power, resistance, sanity, color, type);
+            Fighter commander = FighterFactory.getFighter(name, image, percentage, power, resistance, sanity, color, type, this);
             fighters.add(commander);
             setLastFighter();
             System.out.println("Added new fighter, new size: " + fighters.size());
@@ -41,6 +41,12 @@ public class Player implements Serializable {
         } else {
             return false;
         }
+    }
+    
+    public void syncPlayer(Player newPlayer) {
+        this.ready = newPlayer.isReady();
+        this.fightersDone = newPlayer.areFighersDone();
+        this.turn = newPlayer.isTurn();
     }
     
     public Fighter getLastFighter() {
@@ -77,11 +83,11 @@ public class Player implements Serializable {
     }
 
     public boolean areFighersDone() {
-        return fighersDone;
+        return fightersDone;
     }
 
     public void setFighersDone(boolean fighersDone) {
-        this.fighersDone = fighersDone;
+        this.fightersDone = fighersDone;
     }
 
     public boolean isTurn() {
@@ -211,6 +217,19 @@ public class Player implements Serializable {
             randomCells.add(cells[x][y]);
         }
         return randomCells;
+    }
+    
+    public ArrayList<Cell> getSharkCells() {
+        Random random = new Random();
+        ArrayList<Cell> sharkCells = new ArrayList<>();
+        int maxX = cells.length;
+        int maxY = cells[0].length;
+        sharkCells.addAll(getCellsInRadius(new int[] {maxX, 1}, random.nextInt(10) + 1));
+        sharkCells.addAll(getCellsInRadius(new int[] {maxX, maxY}, random.nextInt(10) + 1));
+        sharkCells.addAll(getCellsInRadius(new int[] {1, 1}, random.nextInt(10) + 1));
+        sharkCells.addAll(getCellsInRadius(new int[] {1, maxY}, random.nextInt(10) + 1));
+        System.out.println("Shark cells: " + sharkCells);
+        return sharkCells;
     }
     
     @Override

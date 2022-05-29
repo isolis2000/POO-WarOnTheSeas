@@ -141,7 +141,6 @@ public class MainScreen extends javax.swing.JFrame {
         txfCommand.setBackground(new java.awt.Color(0, 84, 119));
         txfCommand.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         txfCommand.setForeground(new java.awt.Color(255, 255, 255));
-        txfCommand.setText("CREAR PERSONAJE-nombre-name-imagen-ruta-porcentaje-20-tipo-RELEASE THE KRAKEN-poder-20-resistencia-20-sanidad-20");
         txfCommand.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
         txfCommand.setPreferredSize(new java.awt.Dimension(65, 35));
         txfCommand.addActionListener(new java.awt.event.ActionListener() {
@@ -251,9 +250,9 @@ public class MainScreen extends javax.swing.JFrame {
         pnlLeftLayout.setVerticalGroup(
             pnlLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLeftLayout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pnlRight.setBackground(new java.awt.Color(0, 84, 119));
@@ -293,7 +292,7 @@ public class MainScreen extends javax.swing.JFrame {
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMainLayout.createSequentialGroup()
-                .addContainerGap(9, Short.MAX_VALUE)
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(pnlMainLayout.createSequentialGroup()
@@ -302,7 +301,7 @@ public class MainScreen extends javax.swing.JFrame {
                             .addComponent(pnlGameData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(pnlLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnlRight, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addComponent(pnlCommands, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -360,7 +359,8 @@ public class MainScreen extends javax.swing.JFrame {
                     ClientManager.getCM().getThreadClient().getWriter().writeObject(newCommand);
                 } catch (IOException ex) {
                 }
-            }
+            } else
+                showCommandRegistry("No es su turno");
         }
     }//GEN-LAST:event_btnSendActionPerformed
 
@@ -405,6 +405,12 @@ public class MainScreen extends javax.swing.JFrame {
         player = new Player(name);
         initBoard();
         ClientManager.getCM().getClient().connect(player);
+    }
+    
+    private void showCommandRegistry(String msg) {
+        String text = txaCommandsRegistry.getText();
+        text += "\n" + msg;
+        txaCommandsRegistry.setText(text);
     }
 
     public void showClientMessage(String msg) {
