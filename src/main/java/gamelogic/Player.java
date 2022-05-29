@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import server.ThreadServer;
 
 /**
@@ -18,7 +19,7 @@ import server.ThreadServer;
  */
 public class Player implements Serializable {
     
-    private boolean ready = false, fighersDone = false, turn = false;
+    private boolean ready = false, fightersDone = false, turn = false;
     private final String playerName;
     private ArrayList<Fighter> fighters = new ArrayList<>();
     private Fighter lastFighter;
@@ -32,7 +33,7 @@ public class Player implements Serializable {
     public boolean addFighter(String name, String image, int percentage, int type, int power, int resistance, int sanity) {
         Color color = colors[fighters.size()];
         if (fighters.size() < 3) {
-            Fighter commander = FighterFactory.getCommand(name, image, percentage, power, resistance, sanity, color, type);
+            Fighter commander = FighterFactory.getFighter(name, image, percentage, power, resistance, sanity, color, type, this);
             fighters.add(commander);
             setLastFighter();
             System.out.println("Added new fighter, new size: " + fighters.size());
@@ -40,6 +41,12 @@ public class Player implements Serializable {
         } else {
             return false;
         }
+    }
+    
+    public void syncPlayer(Player newPlayer) {
+        this.ready = newPlayer.isReady();
+        this.fightersDone = newPlayer.areFighersDone();
+        this.turn = newPlayer.isTurn();
     }
     
     public Fighter getLastFighter() {
@@ -76,11 +83,11 @@ public class Player implements Serializable {
     }
 
     public boolean areFighersDone() {
-        return fighersDone;
+        return fightersDone;
     }
 
     public void setFighersDone(boolean fighersDone) {
-        this.fighersDone = fighersDone;
+        this.fightersDone = fighersDone;
     }
 
     public boolean isTurn() {
@@ -124,17 +131,40 @@ public class Player implements Serializable {
         ArrayList<Cell> cellsRet = new ArrayList<>();
         int x = origin[0]-1;
         int y = origin[1]-1;
+        boolean bounds1 = false, bounds2 = false, bounds3 = false, bounds4 = false;
+        if (!((x >= 0) && (x < 20) && (y >= 0) && (y < 30)))
+            return cellsRet;
+        cellsRet.add(cells[x][y]);
         for (int i = 1; i <= radius; i++) {
-            cellsRet.add(cells[x+i][y]);
-            cellsRet.add(cells[x-i][y]);
-            cellsRet.add(cells[x][y+i]);
-            cellsRet.add(cells[x][y-i]);
-            cellsRet.add(cells[x+i][y+i]);
-            cellsRet.add(cells[x-i][y-i]);
-            cellsRet.add(cells[x-i][y+i]);
-            cellsRet.add(cells[x+i][y-i]);
+            if ((x + i) < 20) {
+                bounds1 = true;
+                cellsRet.add(cells[x+i][y]);
+            }
+            if ((x - i) >= 0) {
+                bounds2 = true;
+                cellsRet.add(cells[x-i][y]);
+            }
+            if ((y + i) < 30) {
+                bounds3 = true;
+                cellsRet.add(cells[x][y+i]);
+            }
+            if ((y - i) >= 0) {
+                bounds4 = true;
+                cellsRet.add(cells[x][y-i]);
+            }
+            if (bounds1 && bounds3)
+                cellsRet.add(cells[x+i][y+i]);
+            if (bounds2 && bounds4)
+                cellsRet.add(cells[x-i][y-i]);
+            if (bounds2 && bounds3)
+                cellsRet.add(cells[x-i][y+i]);
+            if (bounds1 && bounds4)
+                cellsRet.add(cells[x+i][y-i]);
+            bounds1 = false;
+            bounds2 = false;
+            bounds3 = false;
+            bounds4 = false;
         }
-        System.out.println("Array to work: " + cellsRet.toString());
         return cellsRet;
     }
     
@@ -142,15 +172,64 @@ public class Player implements Serializable {
         ArrayList<Cell> cellsRet = new ArrayList<>();
         int x = origin[0]-1;
         int y = origin[1]-1;
-        for (int i = 1; i <= numOfCells; i++) {
-            switch (direction) {
-                case "arriba" -> cellsRet.add(cells[x-i][y]);
-                case "abajo" -> cellsRet.add(cells[x+i][y]);
-                case "izquierda" -> cellsRet.add(cells[x][y-i]);
-                case "derecha" -> cellsRet.add(cells[x][y+i]);
+        if (!((x >= 0) && (x < 20) && (y >= 0) && (y < 30)))
+            return cellsRet;
+        cellsRet.add(cells[x][y]);
+        switch (direction) {
+            case "arriba" -> {
+                for (int i = 0; i < numOfCells; i++) {
+                    if ((x - i) < 0)
+                        break;
+                    cellsRet.add(cells[x-i][y]);
+                }
+            }
+            case "abajo" ->  {
+                for (int i = 0; i < numOfCells; i++) {
+                    if ((x + i) >= 20)
+                        break;
+                    cellsRet.add(cells[x+i][y]);
+                }
+            }
+            case "izquierda" -> {
+                for (int i = 0; i < numOfCells; i++) {
+                    if ((y - i) < 0)
+                        break;
+                    cellsRet.add(cells[x][y-i]);
+                }
+            }
+            case "derecha" -> {
+                for (int i = 0; i < numOfCells; i++) {
+                    if ((y + i) >= 30)
+                        break;
+                    cellsRet.add(cells[x][y+i]);                
+                }
             }
         }
         return cellsRet;
+    }
+    
+    public ArrayList<Cell> getRandomCells(int numOfCells) {
+        Random random = new Random();
+        ArrayList<Cell> randomCells = new ArrayList<>();
+        for (int i = 0; i < numOfCells; i++) {
+            int x = random.nextInt(20);
+            int y = random.nextInt(30);
+            randomCells.add(cells[x][y]);
+        }
+        return randomCells;
+    }
+    
+    public ArrayList<Cell> getSharkCells() {
+        Random random = new Random();
+        ArrayList<Cell> sharkCells = new ArrayList<>();
+        int maxX = cells.length;
+        int maxY = cells[0].length;
+        sharkCells.addAll(getCellsInRadius(new int[] {maxX, 1}, random.nextInt(10) + 1));
+        sharkCells.addAll(getCellsInRadius(new int[] {maxX, maxY}, random.nextInt(10) + 1));
+        sharkCells.addAll(getCellsInRadius(new int[] {1, 1}, random.nextInt(10) + 1));
+        sharkCells.addAll(getCellsInRadius(new int[] {1, maxY}, random.nextInt(10) + 1));
+        System.out.println("Shark cells: " + sharkCells);
+        return sharkCells;
     }
     
     @Override

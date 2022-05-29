@@ -18,8 +18,9 @@ public abstract class Fighter implements Serializable {
     private String name, image;
     private int percentage, power, resistance, sanity;
     private Color color;
+    protected Player playerExecuting;
 
-    public Fighter(String name, String image, int percentage, int power, int resistance, int sanity, Color color) {
+    public Fighter(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
         this.name = name;
         this.image = image;
         this.percentage = percentage;
@@ -27,6 +28,7 @@ public abstract class Fighter implements Serializable {
         this.resistance = resistance;
         this.sanity = sanity;
         this.color = color;
+        this.playerExecuting = playerExecuting;
     }
     
     // 0 attack 1 target 2 fighter 3 attacktype 4 instructions

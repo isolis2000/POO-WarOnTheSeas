@@ -22,13 +22,16 @@ public class Cell extends JLabel implements Serializable {
     private int hp, resistance;
     private Fighter fighter;
     private final int[] placement;
+    private boolean volcano = false, whirlpool = false;
 
     public Cell(String text, int[] placement) {
         super(text);
         this.placement = placement;
+        this.hp = 100;
+        this.resistance = 0;
     }
     
-    public void addToRecord(String str) {
+    private void addToRecord(String str) {
         record.add(str);
     }
 
@@ -36,20 +39,28 @@ public class Cell extends JLabel implements Serializable {
         return record;
     }
 
+    public String getRecordStr() {
+        String ret = "";
+        for (String s : record)
+            ret += "\n" + s;
+        return ret;
+    }
+
     public int getHp() {
         return hp;
     }
 
-    public void setHp(int hp) {
+    public void setHp(int hp, String strForRecord) {
         this.hp = hp;
-        verifyHp();
+        verifyHp(strForRecord);
     }
     
-    private void verifyHp() {
+    private void verifyHp(String strForRecord) {
         if (this.hp <= 0) {
             this.hp = 0;
             this.setText("X");
         }
+        addToRecord(strForRecord);
     }
     
     public void addHp(int hp) {
@@ -70,9 +81,9 @@ public class Cell extends JLabel implements Serializable {
         return fighter;
     }
     
-    public void takeDamage(int damage) {
-        this.hp -= (damage * (resistance/100));
-        verifyHp();
+    public void takeDamage(int damage, String strForRecord) {
+        this.hp -= damage - (damage * (resistance/100));
+        verifyHp(strForRecord);
     }
 
     public void setFighter(Fighter owner) {
@@ -81,6 +92,22 @@ public class Cell extends JLabel implements Serializable {
 
     public int[] getPlacement() {
         return placement;
+    }
+
+    public boolean isVolcano() {
+        return volcano;
+    }
+
+    public void setVolcano(boolean volcano) {
+        this.volcano = volcano;
+    }
+
+    public boolean isWhirlpool() {
+        return whirlpool;
+    }
+
+    public void setWhirlpool(boolean whirlpool) {
+        this.whirlpool = whirlpool;
     }
     
     public void updateCell(Cell newCell) {

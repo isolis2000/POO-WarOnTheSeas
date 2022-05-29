@@ -6,6 +6,7 @@ package gamelogic.fighters;
 
 import client.gui.Cell;
 import gamelogic.Fighter;
+import gamelogic.Player;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,8 +18,8 @@ import server.ThreadServer;
  */
 public class ReleaseTheKraken extends Fighter {
 
-    public ReleaseTheKraken(String name, String image, int percentage, int power, int resistance, int sanity, Color color) {
-        super(name, image, percentage, power, resistance, sanity, color);
+    public ReleaseTheKraken(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
+        super(name, image, percentage, power, resistance, sanity, color, playerExecuting);
     }
     
     // 0 attack 1 target 2 fighter 3 attacktype 4 instructions
@@ -26,7 +27,7 @@ public class ReleaseTheKraken extends Fighter {
     protected boolean specialAttack(String[] args, ThreadServer target) {
         boolean result = 
         switch (args[3].toUpperCase()) {
-            case "TENTACULOS" -> tentacles(args, target);
+            case "TENTACLES" -> tentacles(args, target);
             case "KRAKEN BREATH" -> krakenBreath(args, target);
             case "RELEASE THE KRAKEN" -> releaseTheKraken(args, target);
             default ->false;
@@ -48,9 +49,10 @@ public class ReleaseTheKraken extends Fighter {
                 }
                 i++;
             }
+            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() + " destruyo esta casilla con el ataque Tentacles";
             for (int i = 0; i < 3; i++) {
                 for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x.get(i), y.get(i)}, 1)) {
-                    cell.setHp(0);
+                    cell.setHp(0, forRecord);
                 }
             }
             return true;
@@ -84,10 +86,9 @@ public class ReleaseTheKraken extends Fighter {
                 }
                 i++;
             }
-            for (int i = 0; i < 3; i++) {
-                for (Cell cell : target.getPlayer().getCellsInLine(new int[] {x, y}, numOfCells, direction)) {
-                    cell.setHp(0);
-                }
+            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() + " destruyo esta casilla con el ataque Kraken Breath";
+            for (Cell cell : target.getPlayer().getCellsInLine(new int[] {x, y}, numOfCells, direction)) {
+                cell.setHp(0, forRecord);
             }
             return true;
         } catch (Exception ex) {
@@ -95,9 +96,34 @@ public class ReleaseTheKraken extends Fighter {
             return false;
         }    
     }
-    
+    /*
+    Release the Kraken: el Kraken
+    aparece en un punto del mapa y
+    destruye todo en un radio de
+    1,2,3,4,5,6,7,8,9 casillas.
+    */
     private boolean releaseTheKraken(String[] args, ThreadServer target) {
-        return true;
+        Random random = new Random();       
+        int radius = random.nextInt(9) + 1;
+        int x = 0; int y = 0;
+        try {
+            for (int i = 4; i < args.length; i++) {
+                switch (args[i].toLowerCase()) {
+                    case "x" -> x = Integer.parseInt(args[i + 1]);
+                    case "y" -> y = Integer.parseInt(args[i + 1]);
+                    default -> throw new NumberFormatException();
+                }
+                i++;
+            }
+            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() + " destruyo esta casilla con el ataque Release The Kraken";
+            for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x, y}, radius)) {
+                cell.setHp(0, forRecord);
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }    
     }
     
 }

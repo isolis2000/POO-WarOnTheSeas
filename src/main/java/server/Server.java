@@ -130,6 +130,21 @@ public class Server extends Thread{
         return connectionsByName;
     }
     
+    public void changeTurn() {
+        if (connections.size() != 1) {
+            for (int i = 0; i < connections.size(); i++) {
+                if (connections.get(i).getPlayer().isTurn()) {
+                    connections.get(i).getPlayer().setTurn(false);
+                    if (i + 1 == connections.size())
+                        connections.get(0).getPlayer().setTurn(true);
+                    else
+                        connections.get(i + 1).getPlayer().setTurn(true);
+                    return;
+                }
+            }
+        }
+    }
+    
     public void run(){
         this.screenRef.showServerMessage("Server running!");
         this.screenRef.showServerMessage("Waiting for connections!");
