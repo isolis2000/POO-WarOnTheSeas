@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
 import server.ThreadServer;
 
@@ -129,42 +130,17 @@ public class Player implements Serializable {
     
     public ArrayList<Cell> getCellsInRadius(int[] origin, int radius) {
         ArrayList<Cell> cellsRet = new ArrayList<>();
+        HashSet<Cell> set = new HashSet<>();
         int x = origin[0]-1;
         int y = origin[1]-1;
-        boolean bounds1 = false, bounds2 = false, bounds3 = false, bounds4 = false;
         if (!((x >= 0) && (x < 20) && (y >= 0) && (y < 30)))
             return cellsRet;
-        cellsRet.add(cells[x][y]);
-        for (int i = 1; i <= radius; i++) {
-            if ((x + i) < 20) {
-                bounds1 = true;
-                cellsRet.add(cells[x+i][y]);
-            }
-            if ((x - i) >= 0) {
-                bounds2 = true;
-                cellsRet.add(cells[x-i][y]);
-            }
-            if ((y + i) < 30) {
-                bounds3 = true;
-                cellsRet.add(cells[x][y+i]);
-            }
-            if ((y - i) >= 0) {
-                bounds4 = true;
-                cellsRet.add(cells[x][y-i]);
-            }
-            if (bounds1 && bounds3)
-                cellsRet.add(cells[x+i][y+i]);
-            if (bounds2 && bounds4)
-                cellsRet.add(cells[x-i][y-i]);
-            if (bounds2 && bounds3)
-                cellsRet.add(cells[x-i][y+i]);
-            if (bounds1 && bounds4)
-                cellsRet.add(cells[x+i][y-i]);
-            bounds1 = false;
-            bounds2 = false;
-            bounds3 = false;
-            bounds4 = false;
-        }
+        set.add(cells[x][y]);
+        for (int i = x - radius; i < x + radius; i++)
+            for (int j = y - radius; j < y + radius; j++)
+                if (((i >= 0) && (i < 20) && (j >= 0) && (j < 30)))
+                    set.add(cells[i][j]);
+        cellsRet.addAll(set);
         return cellsRet;
     }
     

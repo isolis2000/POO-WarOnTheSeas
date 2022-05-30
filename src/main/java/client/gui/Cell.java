@@ -20,9 +20,9 @@ public class Cell extends JLabel implements Serializable {
     
     private ArrayList<String> record = new ArrayList<>();
     private int hp, resistance;
+    private int volcano = 0, whirlpool = 0; //0 = no structure, 1 = center, 2 = radius
     private Fighter fighter;
     private final int[] placement;
-    private boolean volcano = false, whirlpool = false;
 
     public Cell(String text, int[] placement) {
         super(text);
@@ -94,20 +94,39 @@ public class Cell extends JLabel implements Serializable {
         return placement;
     }
 
-    public boolean isVolcano() {
+    public int getVolcano() {
         return volcano;
     }
 
-    public void setVolcano(boolean volcano) {
-        this.volcano = volcano;
+    public void setVolcano(int volcano) {
+        if (this.volcano != 1)
+            this.volcano = volcano;
+        verifySpecialObjects();
     }
 
-    public boolean isWhirlpool() {
+    public int getWhirlpool() {
         return whirlpool;
     }
 
-    public void setWhirlpool(boolean whirlpool) {
-        this.whirlpool = whirlpool;
+    public void setWhirlpool(int whirlpool) {
+        if (this.whirlpool != 1)
+            this.whirlpool = whirlpool;
+        verifySpecialObjects();
+    }
+    
+    private void verifySpecialObjects() {
+        if (this.whirlpool != 0 && this.volcano != 0) {
+            this.setText("!");
+            addToRecord("Esta casilla ahora posee un volcan y un remolino");            
+        }
+        else if (this.whirlpool != 0) {
+            this.setText("R");
+            addToRecord("Esta casilla ahora posee un remolino");
+        }
+        else if (this.volcano != 0) {
+            this.setText("V");
+            addToRecord("Esta casilla ahora posee un volcan");
+        }
     }
     
     public void updateCell(Cell newCell) {
