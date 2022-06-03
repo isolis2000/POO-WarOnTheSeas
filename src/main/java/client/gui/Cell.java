@@ -91,7 +91,7 @@ public class Cell extends JLabel implements Serializable {
         return fighter;
     }
     
-    public void takeDamage(int damage, String strForRecord) {
+    public void takeDamage(double damage, String strForRecord) {
         if (this.hp > 0){
             this.hp -= damage - (damage * (resistance/100));
             verifyHp(strForRecord);

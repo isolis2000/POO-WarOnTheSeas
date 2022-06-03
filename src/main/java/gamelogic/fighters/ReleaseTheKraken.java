@@ -52,7 +52,7 @@ public class ReleaseTheKraken extends Fighter {
             String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
                     + " destruyo esta casilla con el ataque Tentacles";
             for (int i = 0; i < 3; i++) {
-                for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x.get(i), y.get(i)}, 2)) {
+                for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x.get(i), y.get(i)}, 1)) {
                     cell.setHp(0, forRecord);
                 }
             }

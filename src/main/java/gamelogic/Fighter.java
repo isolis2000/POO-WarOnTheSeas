@@ -16,7 +16,7 @@ import server.ThreadServer;
 public abstract class Fighter implements Serializable {
     
     private String name, image;
-    private int percentage, power, resistance, sanity;
+    protected int percentage, power, resistance, sanity, powerup;
     private Color color;
     protected Player playerExecuting;
 
@@ -29,32 +29,45 @@ public abstract class Fighter implements Serializable {
         this.sanity = sanity;
         this.color = color;
         this.playerExecuting = playerExecuting;
+        this.powerup = 0;
     }
     
     // 0 attack 1 target 2 fighter 3 attacktype 4 instructions
     public boolean attack(String[] args, ThreadServer target) {
         return switch (args[3].toLowerCase()) {
-            case "sanidad" -> sanity(target);
-            case "resistencia" -> resistance(target);
+            case "sanidad" -> sanity();
+            case "resistencia" -> resistance();
+            case "fuerza" -> powerUp();
             default -> specialAttack(args, target);
         };
     }
     
     // 0 attaque 1 objetivo 2 luchador 3 habilidad
-    private boolean sanity(ThreadServer target) {
-        for (Cell[] row : target.getPlayer().getCells())
+    private boolean sanity() {
+        for (Cell[] row : this.getPlayerExecuting().getCells())
             for (Cell cell : row)
                 if (cell.getFighter().getName().equals(this.name))
                     cell.addHp(this.sanity);
         return true;
     }
     
-    private boolean resistance(ThreadServer target) {
-        for (Cell[] row : target.getPlayer().getCells())
+    private boolean resistance() {
+        for (Cell[] row : this.getPlayerExecuting().getCells())
             for (Cell cell : row)
                 if (cell.getFighter().getName().equals(this.name))
                     cell.setResistance(this.resistance);
         return true;
+    }
+    
+    private boolean powerUp() {
+        this.powerup ++;
+        return true;
+    }
+    
+    protected double getDamageWithPowerUp(int initialDamage) {
+        double damage = initialDamage + ((initialDamage * (power * powerup))/100);
+        powerup = 0;
+        return damage;
     }
     
     protected abstract boolean specialAttack(String[] args, ThreadServer target);

@@ -47,8 +47,8 @@ public class ThundersUnderTheSea extends Fighter {
                     + " La casilla tomo ";
             ArrayList<Cell> cellsHit = target.getPlayer().getRandomCells(100);
             for (Cell cell : cellsHit) {
-                int damageTaken = random.nextInt(10,21);
-                forRecord += Integer.toString(damageTaken) + "% de dano.";
+                double damageTaken = getDamageWithPowerUp(random.nextInt(10,21));
+                forRecord += Double.toString(damageTaken) + "% de dano.";
                 cell.takeDamage(damageTaken, forRecord);
             }
             return true;
@@ -99,9 +99,9 @@ public class ThundersUnderTheSea extends Fighter {
             ArrayList<Cell> cellsToAttack = target.getPlayer().getRandomCells(numOfEels);
             for (Cell cell : cellsToAttack) {
                 int numOfShocks = random.nextInt(10) + 1;
-                int damage = numOfShocks * 10;
+                double damage = getDamageWithPowerUp(numOfShocks * 10);
                 forRecord += Integer.toString(numOfShocks) + " descargas y tomo " 
-                        + Integer.toString(damage) + "% de dano.";
+                        + Double.toString(damage) + "% de dano.";
                 cell.takeDamage(damage, forRecord);
             }
             return true;

@@ -93,9 +93,10 @@ public class WavesControl extends Fighter {
             }
             Swirl swirl = target.getPlayer().getCells()[x][y].getSwirl();
             int radius = swirl.getRadius();
+            double damage = getDamageWithPowerUp(25);
             String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
                     + " ataco esta casilla con el ataque Send Human Garbage." 
-                    + " La casilla tomo 25% de dano.";
+                    + " La casilla tomo " + damage + "% de dano.";
             ArrayList<Cell> cellsToAttack = target.getPlayer().getRandomCells(radius * 10);
             for (Cell cell : cellsToAttack) {
                 if (random.nextBoolean()) {
@@ -103,7 +104,7 @@ public class WavesControl extends Fighter {
                             + "esta permanece en esta casilla";
                     cell.addRadioactiveWaste();
                 }
-                cell.takeDamage(25, forRecord);
+                cell.takeDamage(damage, forRecord);
             }
             return true;
         } catch (Exception ex) {
@@ -131,7 +132,7 @@ public class WavesControl extends Fighter {
                         + " toneladas de basura radioactiva."
                         + " El ataque durara " + time + " segundos.";
                 cell.addToRecord(initialRecord);
-                int damage = tonsOfRadWaste * 10;
+                double damage = getDamageWithPowerUp(tonsOfRadWaste * 10);
                 for (int i = 0; i < time; i++) {
                     String forRecord = "Esta casilla tomo " + damage + "% de dano"
                             + " por el efecto de la basura radioactiva.";

@@ -88,12 +88,13 @@ public class UnderseaFire extends Fighter {
             }
             Volcano volcano = target.getPlayer().getCells()[x][y].getVolcano();
             int radius = volcano.getRadius();
+            double damage = getDamageWithPowerUp(20);
             String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
                     + " ataco esta casilla con el ataque Volcano Explosion." 
-                    + " La casilla tomo 20% de dano.";
+                    + " La casilla tomo " + damage + "% de dano.";
             ArrayList<Cell> cellsToAttack = target.getPlayer().getRandomCells(radius * 10);
             for (Cell cell : cellsToAttack) {
-                cell.takeDamage(20, forRecord);
+                cell.takeDamage(damage, forRecord);
             }
             return true;
         } catch (Exception ex) {
@@ -127,14 +128,15 @@ public class UnderseaFire extends Fighter {
                     + " ataco esta casilla con el ataque Radioactive Rush. El "
                     + "radio de este volcan es de " + radius;
             ArrayList<Cell> cellsToAttack = target.getPlayer().getCellsInRadius(origin, radius + 5);
+            double damage = getDamageWithPowerUp(radius);
             for (Cell cell : cellsToAttack) {
                 int time = random.nextInt(5, 7);
                 initialRecord += " El ataque durara " + time + " segundos.";
                 cell.addToRecord(initialRecord);
                 for (int i = 0; i < time; i++) {
-                    String forRecord = "Esta casilla tomo " + radius + "% de dano"
+                    String forRecord = "Esta casilla tomo " + damage + "% de dano"
                             + " por el efecto del calentamiento del agua.";
-                    cell.takeDamage(radius, forRecord);
+                    cell.takeDamage(damage, forRecord);
                 }
             }
             return true;
