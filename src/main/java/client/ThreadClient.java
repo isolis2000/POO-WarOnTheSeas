@@ -84,7 +84,6 @@ public class ThreadClient extends Thread{
                 System.out.println("message");
                 continue;
             }
-
             ClientManager.getCM().getMainScreen().showClientMessage(readMessage.executeOnClient());
             
 //            if (readMessage.getName().toUpperCase().equals("CHAT")){

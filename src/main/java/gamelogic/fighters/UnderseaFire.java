@@ -5,10 +5,11 @@
 package gamelogic.fighters;
 
 import client.gui.Cell;
+import gamelogic.structures.Volcano;
 import gamelogic.Fighter;
 import gamelogic.Player;
 import java.awt.Color;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Random;
 import server.ThreadServer;
 
@@ -56,12 +57,11 @@ public class UnderseaFire extends Fighter {
             }
             String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
                     + " destruyo esta casilla con el ataque Volcano Rising.";
-            for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x, y}, radius)) {
-                if (Arrays.equals(cell.getPlacement(), new int[] {x, y}))
-                    cell.setVolcano(1);
-                else 
-                    cell.setVolcano(2);
-                cell.setHp(0, forRecord);
+            int[] origin = {x, y};
+            ArrayList<Cell> cellsToAttack = target.getPlayer().getCellsInRadius(origin, radius);
+            Volcano volcano = new Volcano(radius, origin);
+            for (Cell cell : cellsToAttack) {
+                cell.setVolcano(volcano, forRecord);
             }
             return true;
         } catch (NumberFormatException ex) {
@@ -76,7 +76,30 @@ public class UnderseaFire extends Fighter {
     20% de la casilla donde cae.
     */
     private boolean volcanoExplosion(String[] args, ThreadServer target) {
-        return true;
+        int x = 0; int y = 0;
+        try {
+            for (int i = 4; i < args.length; i++) {
+                switch (args[i].toLowerCase()) {
+                    case "x" -> x = Integer.parseInt(args[i + 1]);
+                    case "y" -> y = Integer.parseInt(args[i + 1]);
+                    default -> throw new NumberFormatException();
+                }
+                i++;
+            }
+            Volcano volcano = target.getPlayer().getCells()[x][y].getVolcano();
+            int radius = volcano.getRadius();
+            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+                    + " ataco esta casilla con el ataque Volcano Explosion." 
+                    + " La casilla tomo 20% de dano.";
+            ArrayList<Cell> cellsToAttack = target.getPlayer().getRandomCells(radius * 10);
+            for (Cell cell : cellsToAttack) {
+                cell.takeDamage(20, forRecord);
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        } 
     }
     /*
     • Termal rush: se genera un sobrecalentamiento del agua alrededor
@@ -86,7 +109,39 @@ public class UnderseaFire extends Fighter {
     que pasa dañará las casillas en 5%
     */
     private boolean termalRush(String[] args, ThreadServer target) {
-        return true;
+        Random random = new Random();
+        int x = 0; int y = 0;
+        try {
+            for (int i = 4; i < args.length; i++) {
+                switch (args[i].toLowerCase()) {
+                    case "x" -> x = Integer.parseInt(args[i + 1]);
+                    case "y" -> y = Integer.parseInt(args[i + 1]);
+                    default -> throw new NumberFormatException();
+                }
+                i++;
+            }
+            Volcano volcano = target.getPlayer().getCells()[x][y].getVolcano();
+            int radius = volcano.getRadius();
+            int[] origin = volcano.getOrigin();
+            String initialRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+                    + " ataco esta casilla con el ataque Radioactive Rush. El "
+                    + "radio de este volcan es de " + radius;
+            ArrayList<Cell> cellsToAttack = target.getPlayer().getCellsInRadius(origin, radius + 5);
+            for (Cell cell : cellsToAttack) {
+                int time = random.nextInt(5, 7);
+                initialRecord += " El ataque durara " + time + " segundos.";
+                cell.addToRecord(initialRecord);
+                for (int i = 0; i < time; i++) {
+                    String forRecord = "Esta casilla tomo " + radius + "% de dano"
+                            + " por el efecto del calentamiento del agua.";
+                    cell.takeDamage(radius, forRecord);
+                }
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        } 
     }
     
     

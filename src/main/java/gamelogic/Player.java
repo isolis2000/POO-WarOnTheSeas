@@ -23,7 +23,6 @@ public class Player implements Serializable {
     private boolean ready = false, fightersDone = false, turn = false;
     private final String playerName;
     private ArrayList<Fighter> fighters = new ArrayList<>();
-    private Fighter lastFighter;
     private static final Color[] colors = {Color.pink, Color.green, Color.cyan};
     private Cell[][] cells = new Cell[20][30];
     
@@ -36,7 +35,7 @@ public class Player implements Serializable {
         if (fighters.size() < 3) {
             Fighter commander = FighterFactory.getFighter(name, image, percentage, power, resistance, sanity, color, type, this);
             fighters.add(commander);
-            setLastFighter();
+            addFighterToCells(commander);
             System.out.println("Added new fighter, new size: " + fighters.size());
             return true;
         } else {
@@ -44,19 +43,55 @@ public class Player implements Serializable {
         }
     }
     
+    private void addFighterToCells(Fighter fighter) {
+        Random random = new Random();
+        int numOfCellsToPaint = (int)(600*(fighter.getPercentage()/100.0f));
+        ArrayList<Cell> availableCells = getCellsWithoutFighter();
+        int numOfAvailableCells = availableCells.size();
+        if (numOfCellsToPaint > numOfAvailableCells)
+            numOfCellsToPaint = numOfAvailableCells;
+        if (numOfCellsToPaint == numOfAvailableCells) {
+            for (Cell cell : availableCells)
+                cell.setFighter(fighter);
+        } else {
+            int numOfCellsPainted = 0;
+            while (numOfCellsPainted < numOfCellsToPaint) {
+                int cellNum = random.nextInt(numOfAvailableCells);
+                availableCells.get(cellNum).setFighter(fighter);
+                availableCells.remove(cellNum);
+                numOfCellsPainted ++;
+                numOfAvailableCells --;
+            }
+        }
+    }
+    
+    private ArrayList<Cell> getCellsWithoutFighter() {
+        ArrayList<Cell> cellsWithoutFighter = new ArrayList<>();
+        for (Cell[] row : cells)
+            for (Cell cell : row)
+                if (cell.getFighter() == null)
+                    cellsWithoutFighter.add(cell);
+        return cellsWithoutFighter;
+    }
+    
     public void syncPlayer(Player newPlayer) {
         this.ready = newPlayer.isReady();
         this.fightersDone = newPlayer.areFighersDone();
         this.turn = newPlayer.isTurn();
+        this.fighters = newPlayer.getFighters();
+        for (int row = 0; row < cells.length; row++)
+            for (int cell = 0; cell < cells[row].length; cell++)
+                this.cells[row][cell].updateCell(newPlayer.getCells()[row][cell]);
+    }
+    
+    public void printCells() {
+        for (Cell[] row : cells)
+            for (Cell cell : row)
+                System.out.println(cell);
     }
     
     public Fighter getLastFighter() {
-        return lastFighter;
-    }
-
-    public void setLastFighter() {
-        System.out.println("Fighters size: " + fighters.size());
-        lastFighter = fighters.get(fighters.size()-1);
+        return fighters.get(fighters.size()-1);
     }
 
     public String getPlayerName() {
@@ -136,10 +171,12 @@ public class Player implements Serializable {
         if (!((x >= 0) && (x < 20) && (y >= 0) && (y < 30)))
             return cellsRet;
         set.add(cells[x][y]);
-        for (int i = x - radius; i < x + radius; i++)
-            for (int j = y - radius; j < y + radius; j++)
-                if (((i >= 0) && (i < 20) && (j >= 0) && (j < 30)))
+        for (int i = x - radius; i <= x + radius; i++)
+            for (int j = y - radius; j <= y + radius; j++)
+                if (((i >= 0) && (i < 20) && (j >= 0) && (j < 30))) {
                     set.add(cells[i][j]);
+                    System.out.println("Cell added: [" + Integer.toString(i) + ", " + Integer.toString(j) + "]");
+                }
         cellsRet.addAll(set);
         return cellsRet;
     }
@@ -204,8 +241,16 @@ public class Player implements Serializable {
         sharkCells.addAll(getCellsInRadius(new int[] {maxX, maxY}, random.nextInt(10) + 1));
         sharkCells.addAll(getCellsInRadius(new int[] {1, 1}, random.nextInt(10) + 1));
         sharkCells.addAll(getCellsInRadius(new int[] {1, maxY}, random.nextInt(10) + 1));
-        System.out.println("Shark cells: " + sharkCells);
         return sharkCells;
+    }
+    
+    public ArrayList<Cell> getRadioactiveCells() {
+        ArrayList<Cell> radioactiveCells = new ArrayList<>();
+        for (Cell[] row : cells)
+            for (Cell cell : row)
+                if (cell.getRadioactiveWaste() > 0)
+                    radioactiveCells.add(cell);
+        return radioactiveCells;
     }
     
     @Override

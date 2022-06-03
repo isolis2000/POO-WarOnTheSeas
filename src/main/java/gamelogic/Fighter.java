@@ -79,6 +79,10 @@ public abstract class Fighter implements Serializable {
         this.name = name;
     }
 
+    public Player getPlayerExecuting() {
+        return playerExecuting;
+    }
+
     public String getImage() {
         return image;
     }

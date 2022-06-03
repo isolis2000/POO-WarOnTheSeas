@@ -11,6 +11,7 @@ import commandsmanager.commands.CreateCharacterCommand;
 import commandsmanager.commands.ErrorCommand;
 import commandsmanager.commands.StartGameCommand;
 import commandsmanager.commands.ChatCommand;
+import commandsmanager.commands.LogCommand;
 import gamelogic.Player;
 
 
@@ -24,6 +25,7 @@ public class CommandFactory {
             case "CREAR PERSONAJE" -> new CreateCharacterCommand(name, args, player);
             case "INICIAR PARTIDA" -> new StartGameCommand(name, args, player);
             case "ATAQUE" -> new AttackCommand(name, args, player);
+            case "LOG" -> new LogCommand(name, args, player);
             default -> new ErrorCommand("error", args, player);
         };
     }

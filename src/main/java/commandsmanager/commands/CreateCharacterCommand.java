@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import gamelogic.Player;
 import java.util.HashMap;
+import server.ServerFrame;
 
 /**
  *
@@ -53,8 +54,13 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
             }
             System.out.println("fighters before: " + getPlayerExcecuting().getFighters().toString());
             if (CommandUtils.areValuesOk(new Object[] {name, image, percentage, type, power, resistance, sanity})) {
+//                System.out.println("-----------------------------------------------------------------------");
+//                getPlayerExcecuting().printCells();
                 if (getPlayerExcecuting().addFighter(name, image, percentage, type, power, resistance, sanity)) {
-                    System.out.println("Fighters after add: " + getPlayerExcecuting().getFighters().toString());
+//                    System.out.println("Fighters after add: " + getPlayerExcecuting().getFighters().toString());
+//                    System.out.println("cells after add: ");
+//                System.out.println("-----------------------------------------------------------------------");
+                    ServerFrame.getServer().getConnectionsByName().get(getPlayerExcecuting().getPlayerName()).getPlayer().syncPlayer(getPlayerExcecuting());
                     return CommandUtils.concatArray(args);  
                 }
                 else {
@@ -92,7 +98,7 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
         String ret = player.getPlayerName() + " creo un luchador con los siguientes datos: \n" 
                 + player.getLastFighter().toString();
         System.out.println("player getfighter: " + player.getLastFighter());
-        ClientManager.getCM().getMainScreen().addFighter(player.getLastFighter());
+        ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(player);
         return ret;
     }
     

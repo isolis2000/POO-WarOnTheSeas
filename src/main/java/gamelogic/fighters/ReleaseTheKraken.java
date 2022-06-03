@@ -49,9 +49,10 @@ public class ReleaseTheKraken extends Fighter {
                 }
                 i++;
             }
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() + " destruyo esta casilla con el ataque Tentacles";
+            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+                    + " destruyo esta casilla con el ataque Tentacles";
             for (int i = 0; i < 3; i++) {
-                for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x.get(i), y.get(i)}, 9)) {
+                for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x.get(i), y.get(i)}, 2)) {
                     cell.setHp(0, forRecord);
                 }
             }
@@ -86,7 +87,8 @@ public class ReleaseTheKraken extends Fighter {
                 }
                 i++;
             }
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() + " destruyo esta casilla con el ataque Kraken Breath";
+            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+                    + " destruyo esta casilla con el ataque Kraken Breath";
             for (Cell cell : target.getPlayer().getCellsInLine(new int[] {x, y}, numOfCells, direction)) {
                 cell.setHp(0, forRecord);
             }
@@ -115,7 +117,8 @@ public class ReleaseTheKraken extends Fighter {
                 }
                 i++;
             }
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() + " destruyo esta casilla con el ataque Release The Kraken";
+            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+                    + " destruyo esta casilla con el ataque Release The Kraken";
             for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x, y}, radius)) {
                 cell.setHp(0, forRecord);
             }

@@ -59,8 +59,8 @@ public class ThreadServer extends Thread{
                 readCommand = (BaseCommand)this.reader.readObject();
 //                player = readCommand.getPlayerExcecuting();
                 System.out.println("CellsAfterW: " + Arrays.toString(player.getCells()));
-                readCommand.setPlayerExcecuting(player);
-//                player = readCommand.getPlayerExcecuting();
+//                readCommand.setPlayerExcecuting(player);
+                player = readCommand.getPlayerExcecuting();
 //                System.out.println("map: ");
 //                System.out.println(server.getPlayerNames().get(this));
                 //System.out.println("read command");
@@ -74,8 +74,8 @@ public class ThreadServer extends Thread{
             }
             else if (readCommand.isLocalCommand()){
                 server.screenRef.showServerMessage(readCommand.executeOnServer());
-                player = readCommand.getPlayerExcecuting();
-                System.out.println("fighters after executing and equaling: " + player.getFighters().toString());
+//                player = readCommand.getPlayerExcecuting();
+//                System.out.println("fighters after executing and equaling: " + player.getFighters().toString());
                 server.sendToOne(readCommand, this);
             } else {
                 String name = readCommand.getArgs()[1];
