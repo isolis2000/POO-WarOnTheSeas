@@ -20,7 +20,7 @@ import server.ThreadServer;
  *
  * @author diemo
  */
-public class AttackCommand extends BaseCommand implements Serializable{
+public class AttackCommand extends BaseCommand implements Serializable {
     
     private String excecutionResult = "";
 
@@ -41,10 +41,8 @@ public class AttackCommand extends BaseCommand implements Serializable{
 
     @Override
     public String executeOnClient() {
-        ClientManager.getCM().getMainScreen().updateCells(getPlayerExcecuting().getCells());
+        ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(getPlayerExcecuting());
         return excecutionResult;
     }
-    
-    
     
 }

@@ -4,13 +4,14 @@
  */
 package client.gui;
 
+import gamelogic.structures.Swirl;
+import gamelogic.structures.Volcano;
 import gamelogic.Fighter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+import server.ServerFrame;
 
 /**
  *
@@ -20,19 +21,27 @@ public class Cell extends JLabel implements Serializable {
     
     private ArrayList<String> record = new ArrayList<>();
     private int hp, resistance;
+    private int radioactiveWaste = 0;
     private Fighter fighter;
     private final int[] placement;
-    private boolean volcano = false, whirlpool = false;
+    private Volcano volcano;
+    private Swirl swirl;
 
     public Cell(String text, int[] placement) {
         super(text);
         this.placement = placement;
         this.hp = 100;
         this.resistance = 0;
+        this.volcano = null;
+        this.swirl = null;
     }
     
-    private void addToRecord(String str) {
+    public void addToRecord(String str) {
         record.add(str);
+        String strForLogs = "Evento de jugador " + this.fighter.getPlayerExecuting().getPlayerName()
+                + " en casilla " + Arrays.toString(placement) + ": ";
+        strForLogs += str;
+        ServerFrame.getServer().addToLogs(strForLogs);
     }
 
     public ArrayList<String> getRecord() {
@@ -58,7 +67,8 @@ public class Cell extends JLabel implements Serializable {
     private void verifyHp(String strForRecord) {
         if (this.hp <= 0) {
             this.hp = 0;
-            this.setText("X");
+            if (this.getText().equals(""))
+                this.setText("X");
         }
         addToRecord(strForRecord);
     }
@@ -82,8 +92,10 @@ public class Cell extends JLabel implements Serializable {
     }
     
     public void takeDamage(int damage, String strForRecord) {
-        this.hp -= damage - (damage * (resistance/100));
-        verifyHp(strForRecord);
+        if (this.hp > 0){
+            this.hp -= damage - (damage * (resistance/100));
+            verifyHp(strForRecord);
+        }
     }
 
     public void setFighter(Fighter owner) {
@@ -94,20 +106,51 @@ public class Cell extends JLabel implements Serializable {
         return placement;
     }
 
-    public boolean isVolcano() {
+    public int getRadioactiveWaste() {
+        return radioactiveWaste;
+    }
+
+    public void setRadioactiveWaste(int radioactiveWaste) {
+        this.radioactiveWaste = radioactiveWaste;
+    }
+    
+    public void addRadioactiveWaste() {
+        this.radioactiveWaste ++;
+    }
+    
+    public void setVolcano(Volcano volcano, String strForRecord) {
+        this.volcano = volcano;
+        verifySpecialObjects();
+        this.setHp(0, strForRecord);
+    }
+    
+    public void setSwirl(Swirl swirl, String strForRecord) {
+        this.swirl = swirl;
+        verifySpecialObjects();
+        this.setHp(0, strForRecord);
+    }
+    
+    public Volcano getVolcano() {
         return volcano;
     }
 
-    public void setVolcano(boolean volcano) {
-        this.volcano = volcano;
+    public Swirl getSwirl() {
+        return swirl;
     }
-
-    public boolean isWhirlpool() {
-        return whirlpool;
-    }
-
-    public void setWhirlpool(boolean whirlpool) {
-        this.whirlpool = whirlpool;
+    
+    private void verifySpecialObjects() {
+        if (this.swirl != null && this.volcano != null) {
+            this.setText("!");
+            addToRecord("Esta casilla ahora posee un volcan y un remolino");            
+        }
+        else if (this.swirl != null) {
+            this.setText("R");
+            addToRecord("Esta casilla ahora posee un remolino");
+        }
+        else if (this.volcano != null) {
+            this.setText("V");
+            addToRecord("Esta casilla ahora posee un volcan");
+        }
     }
     
     public void updateCell(Cell newCell) {
@@ -123,6 +166,7 @@ public class Cell extends JLabel implements Serializable {
     
     @Override
     public String toString() {
-        return Arrays.toString(this.placement) + " text " + this.getText();
+        return Arrays.toString(this.placement) + " text " + this.getText()
+                + " fighter: " + this.fighter;
     }
 }

@@ -16,10 +16,13 @@ import client.ClientManager;
 import gamelogic.Fighter;
 import gamelogic.Player;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import javax.swing.BorderFactory;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 /**
@@ -348,13 +351,9 @@ public class MainScreen extends javax.swing.JFrame {
                     newCommand.getCommandName().toUpperCase().equals("CHAT") ||
                     newCommand.getCommandName().toUpperCase().equals("CHAT PRIVADO") ||
                     newCommand.getCommandName().toUpperCase().equals("CREAR PERSONAJE") ||
-                    newCommand.getCommandName().toUpperCase().equals("INICIAR PARTIDA")
+                    newCommand.getCommandName().toUpperCase().equals("INICIAR PARTIDA") ||
+                    player.isTurn()
                     ){
-                try {
-                    ClientManager.getCM().getThreadClient().getWriter().writeObject(newCommand);
-                } catch (IOException ex) {
-                }
-            } else if (player.isTurn()) {
                 try {
                     ClientManager.getCM().getThreadClient().getWriter().writeObject(newCommand);
                 } catch (IOException ex) {
@@ -397,6 +396,16 @@ public class MainScreen extends javax.swing.JFrame {
         }
     }
     
+    public void showPopup(String str) {
+        JTextArea textArea = new JTextArea(str);
+        JScrollPane scrollPane = new JScrollPane(textArea);  
+        textArea.setLineWrap(true);  
+        textArea.setWrapStyleWord(true); 
+        scrollPane.setPreferredSize( new Dimension( 500, 500 ) );
+        JOptionPane.showMessageDialog(null, scrollPane, "Registro",  
+                                               JOptionPane.INFORMATION_MESSAGE);
+    }
+    
     private void initClient() {
         ClientManager.getCM().setMainScreen(this);
         String name = JOptionPane.showInputDialog("Escriba su nombre por favor");
@@ -423,33 +432,33 @@ public class MainScreen extends javax.swing.JFrame {
             System.out.println(Arrays.toString(row));
     }
     
-    public void addFighter(Fighter fighter) {
-        int numOfCellsToPaint = (int)(600*(fighter.getPercentage()/100.0f));
-        int x = 0;
-        Cell[][] cellsAux = new Cell[20][30];
-        for (int row = 0; row < this.player.getCells().length; row++)
-            for (int n = 0; n < this.player.getCells()[row].length; n++) {
-                int[] coords = new int[2];
-                Cell initialCell = this.player.getCells()[row][n];
-                System.arraycopy(initialCell.getPlacement(), 0, coords, 0, 2);
-                Cell newCell = new Cell("", coords);
-                newCell.setBackground(initialCell.getBackground());
-                cellsAux[row][n] = newCell;
-            }
-        shuffleMatrix(cellsAux);
-        outerloop:
-        for (Cell[] cell1 : cellsAux) {
-            for (Cell cell : cell1) {
-                if (x == numOfCellsToPaint)
-                    break outerloop;
-                else if (cell.getBackground() == Color.gray) {
-                    cell.setFighter(fighter);
-                    x++;
-                }
-            }
-        }
-        updateCells(cellsAux);
-    }
+//    public void addFighter(Fighter fighter) {
+//        
+//        int x = 0;
+//        Cell[][] cellsAux = new Cell[20][30];
+//        for (int row = 0; row < this.player.getCells().length; row++)
+//            for (int n = 0; n < this.player.getCells()[row].length; n++) {
+//                int[] coords = new int[2];
+//                Cell initialCell = this.player.getCells()[row][n];
+//                System.arraycopy(initialCell.getPlacement(), 0, coords, 0, 2);
+//                Cell newCell = new Cell("", coords);
+//                newCell.setBackground(initialCell.getBackground());
+//                cellsAux[row][n] = newCell;
+//            }
+//        shuffleMatrix(cellsAux);
+//        outerloop:
+//        for (Cell[] cell1 : cellsAux) {
+//            for (Cell cell : cell1) {
+//                if (x == numOfCellsToPaint)
+//                    break outerloop;
+//                else if (cell.getBackground() == Color.gray) {
+//                    cell.setFighter(fighter);
+//                    x++;
+//                }
+//            }
+//        }
+//        updateCells(cellsAux);
+//    }
     
     private void shuffleMatrix(Cell[][] arr) {
         Random random = new Random();
@@ -474,23 +483,23 @@ public class MainScreen extends javax.swing.JFrame {
         this.player = player;
     }
     
-    public void updateCells(Cell[][] newCells) {
-        int x = 0;
-        int y = 0;
-        try {
-            for (int row = 0; row < this.player.getCells().length; row++) {
-                for (int cell = 0; cell < this.player.getCells()[row].length; cell++) {
-                    Cell newCell = newCells[row][cell];
-                    int[] placements = newCell.getPlacement();
-                    x = placements[0] - 1;
-                    y = placements[1] - 1;
-                    this.player.getCells()[x][y].updateCell(newCell);
-                }
-            }
-        } catch (java.lang.ArrayIndexOutOfBoundsException ex) {
-            ex.printStackTrace();
-        }
-    }
+//    public void updateCells(Cell[][] newCells) {
+//        int x = 0;
+//        int y = 0;
+//        try {
+//            for (int row = 0; row < this.player.getCells().length; row++) {
+//                for (int cell = 0; cell < this.player.getCells()[row].length; cell++) {
+//                    Cell newCell = newCells[row][cell];
+//                    int[] placements = newCell.getPlacement();
+//                    x = placements[0] - 1;
+//                    y = placements[1] - 1;
+//                    this.player.getCells()[x][y].updateCell(newCell);
+//                }
+//            }
+//        } catch (java.lang.ArrayIndexOutOfBoundsException ex) {
+//            ex.printStackTrace();
+//        }
+//    }
     
     public String askForThreeNumbers() {
         return JOptionPane.showInputDialog("Un jugador lo esta atacando, digite 3 numeros separados por \"-\"");

@@ -19,6 +19,7 @@ public abstract class BaseCommand implements iCommand, Serializable{
     private boolean broadcast, localCommand;
     private String commandName;
     private Player playerExcecuting;
+    private String strToShare;
 
     public BaseCommand(String commandName, String[] args, boolean broadcast, boolean localCommand, Player player) {
         this.args = args;
@@ -38,6 +39,14 @@ public abstract class BaseCommand implements iCommand, Serializable{
 
     public void setPlayerExcecuting(Player playerExcecuting) {
         this.playerExcecuting = playerExcecuting;
+    }
+
+    public String getStrToShare() {
+        return strToShare;
+    }
+
+    public void setStrToShare(String strToShare) {
+        this.strToShare = strToShare;
     }
     
     public String[] getArgs() {

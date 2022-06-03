@@ -4,6 +4,7 @@
  */
 package commandsmanager.commands;
 
+import client.gui.Cell;
 import commandsmanager.BaseCommand;
 import gamelogic.Player;
 import java.io.Serializable;
@@ -25,16 +26,26 @@ public class StartGameCommand extends BaseCommand implements Serializable {
         if (getPlayerExcecuting().areFighersDone()) {
             getPlayerExcecuting().setReady(true);
         }
-        if (ServerFrame.getServer().startGame())
+        if (ServerFrame.getServer().startGame()) {
+            System.out.println("CELLS--------------------------------------------");
+            for (Cell[] row : getPlayerExcecuting().getCells())
+                for (Cell cell : row)
+                    System.out.println(cell.getFighter());
             return "Todos los jugadores estan listos";
+        }
         else
             return "Jugador " + getPlayerExcecuting().getPlayerName() + " esta listo para jugar, pero aun faltan jugadores para comenzar el juego";
     }
 
     @Override
     public String executeOnClient() {
-        if (getPlayerExcecuting().isReady())
+        if (getPlayerExcecuting().isReady()) {
+            System.out.println("CELLS--------------------------------------------");
+            for (Cell[] row : getPlayerExcecuting().getCells())
+                for (Cell cell : row)
+                    System.out.println(cell.getFighter());
             return "Listo para jugar";
+        }
         else
             return "Requiere como minimo 3 luchadores creados antes de comenzar la partida";
     }

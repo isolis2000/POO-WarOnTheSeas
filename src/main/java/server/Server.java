@@ -36,15 +36,34 @@ public class Server extends Thread{
     private HashMap<ThreadServer, Player> players = new HashMap<>();
     private HashMap<String, ThreadServer> connectionsByName = new HashMap<>();
     private boolean gameStarted = false;
+    private ArrayList<String> logs;
 //    private HashMap<String, Player> players = new HashMap<>();
     //
     public Server(ServerFrame screenRef){
         this.screenRef = screenRef;
+        this.logs = new ArrayList<>();
         this.runServer();
     }
 
     public HashMap<ThreadServer, Player> getPlayers() {
         return players;
+    }
+    
+    public void addToLogs(String str) {
+        logs.add(str);
+        System.out.println("new logs: ");
+        System.out.println();
+    }
+
+    public ArrayList<String> getLogs() {
+        return logs;
+    }
+    
+    public String getLogsString() {
+        String log = "";
+        for (String str : logs)
+            log += "\n" + str;
+        return log;
     }
     
     public void syncPlayerToThread(Player player) {
