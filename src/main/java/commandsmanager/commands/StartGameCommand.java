@@ -27,10 +27,6 @@ public class StartGameCommand extends BaseCommand implements Serializable {
             getPlayerExcecuting().setReady(true);
         }
         if (ServerFrame.getServer().startGame()) {
-            System.out.println("CELLS--------------------------------------------");
-            for (Cell[] row : getPlayerExcecuting().getCells())
-                for (Cell cell : row)
-                    System.out.println(cell.getFighter());
             return "Todos los jugadores estan listos";
         }
         else
@@ -40,10 +36,6 @@ public class StartGameCommand extends BaseCommand implements Serializable {
     @Override
     public String executeOnClient() {
         if (getPlayerExcecuting().isReady()) {
-            System.out.println("CELLS--------------------------------------------");
-            for (Cell[] row : getPlayerExcecuting().getCells())
-                for (Cell cell : row)
-                    System.out.println(cell.getFighter());
             return "Listo para jugar";
         }
         else

@@ -6,6 +6,7 @@
 package commandsmanager;
 
 import commandsmanager.commands.AttackCommand;
+import commandsmanager.commands.CellInfoCommand;
 import commandsmanager.commands.PrivateChatCommand;
 import commandsmanager.commands.CreateCharacterCommand;
 import commandsmanager.commands.ErrorCommand;
@@ -26,6 +27,7 @@ public class CommandFactory {
             case "INICIAR PARTIDA" -> new StartGameCommand(name, args, player);
             case "ATAQUE" -> new AttackCommand(name, args, player);
             case "LOG" -> new LogCommand(name, args, player);
+            case "CONSULTAR CELDA" -> new CellInfoCommand(name, args, player);
             default -> new ErrorCommand("error", args, player);
         };
     }

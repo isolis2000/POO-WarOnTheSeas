@@ -4,6 +4,7 @@
  */
 package commandsmanager.commands;
 
+import client.ClientManager;
 import commandsmanager.BaseCommand;
 import gamelogic.Player;
 import java.io.Serializable;
@@ -20,12 +21,30 @@ public class CellInfoCommand extends BaseCommand implements Serializable {
 
     @Override
     public String executeOnServer() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int x = -1, y = -1;
+        try {
+            for (int i = 1; i < args.length; i++) {
+                switch (args[i].toLowerCase()) {
+                    case "x" -> x = Integer.parseInt(args[i + 1]) - 1;
+                    case "y" -> y = Integer.parseInt(args[i + 1]) - 1;
+                    default -> { 
+                            throw new NumberFormatException();
+                    }
+                }
+                i++;
+            }
+            this.strToShare = playerExcecuting.getCells()[x][y].getRecordStr();
+            return "Se le envio la informacion de la celda al jugador: " 
+                    + playerExcecuting.getPlayerName();
+        } catch (NumberFormatException ex) {
+            return "ERROR";
+        }
     }
 
     @Override
     public String executeOnClient() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ClientManager.getCM().getMainScreen().showPopup(strToShare);
+        return "Se imprimio la informacion de la celda";
     }
     
 }

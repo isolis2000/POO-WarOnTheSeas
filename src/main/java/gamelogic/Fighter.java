@@ -66,6 +66,9 @@ public abstract class Fighter implements Serializable {
     
     protected double getDamageWithPowerUp(int initialDamage) {
         double damage = initialDamage + ((initialDamage * (power * powerup))/100);
+        System.out.println("power: " + power);
+        System.out.println("powerup: " + powerup);
+        System.out.println("DAMAGE to take: " + damage);
         powerup = 0;
         return damage;
     }

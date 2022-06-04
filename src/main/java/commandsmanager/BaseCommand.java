@@ -15,11 +15,11 @@ import gamelogic.Player;
  * @author diemo
  */
 public abstract class BaseCommand implements iCommand, Serializable{
-    private String[] args;
+    protected String[] args;
     private boolean broadcast, localCommand;
     private String commandName;
-    private Player playerExcecuting;
-    private String strToShare;
+    protected Player playerExcecuting;
+    protected String strToShare;
 
     public BaseCommand(String commandName, String[] args, boolean broadcast, boolean localCommand, Player player) {
         this.args = args;
