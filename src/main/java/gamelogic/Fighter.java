@@ -18,9 +18,9 @@ public abstract class Fighter implements Serializable {
     private String name, image;
     protected int percentage, power, resistance, sanity, powerup;
     private Color color;
-    protected Player playerExecuting;
+    protected Player player;
 
-    public Fighter(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
+    public Fighter(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player player) {
         this.name = name;
         this.image = image;
         this.percentage = percentage;
@@ -28,7 +28,7 @@ public abstract class Fighter implements Serializable {
         this.resistance = resistance;
         this.sanity = sanity;
         this.color = color;
-        this.playerExecuting = playerExecuting;
+        this.player = player;
         this.powerup = 0;
     }
     
@@ -44,7 +44,7 @@ public abstract class Fighter implements Serializable {
     
     // 0 attaque 1 objetivo 2 luchador 3 habilidad
     private boolean sanity() {
-        for (Cell[] row : this.getPlayerExecuting().getCells())
+        for (Cell[] row : this.getPlayer().getCells())
             for (Cell cell : row)
                 if (cell.getFighter().getName().equals(this.name))
                     cell.addHp(this.sanity);
@@ -52,7 +52,7 @@ public abstract class Fighter implements Serializable {
     }
     
     private boolean resistance() {
-        for (Cell[] row : this.getPlayerExecuting().getCells())
+        for (Cell[] row : this.getPlayer().getCells())
             for (Cell cell : row)
                 if (cell.getFighter().getName().equals(this.name))
                     cell.setResistance(this.resistance);
@@ -95,8 +95,8 @@ public abstract class Fighter implements Serializable {
         this.name = name;
     }
 
-    public Player getPlayerExecuting() {
-        return playerExecuting;
+    public Player getPlayer() {
+        return player;
     }
 
     public String getImage() {

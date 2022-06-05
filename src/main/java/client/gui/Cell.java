@@ -38,7 +38,7 @@ public class Cell extends JLabel implements Serializable {
     
     public void addToRecord(String str) {
         record.add(str);
-        String strForLogs = "Evento de jugador " + this.fighter.getPlayerExecuting().getPlayerName()
+        String strForLogs = "Evento de jugador " + this.fighter.getPlayer().getPlayerName()
                 + " en casilla " + Arrays.toString(placement) + ": ";
         strForLogs += str;
         ServerFrame.getServer().addToLogs(strForLogs);
@@ -59,18 +59,24 @@ public class Cell extends JLabel implements Serializable {
         return hp;
     }
 
-    public void setHp(int hp, String strForRecord) {
-        this.hp = hp;
-        verifyHp(strForRecord);
+    public boolean setHp(int hp, String strForRecord) {
+        if (this.hp > 0) {
+            this.hp = hp;
+            return verifyHp(strForRecord);
+        } else
+            return false;
     }
     
-    private void verifyHp(String strForRecord) {
+    private boolean verifyHp(String strForRecord) {
+        boolean ret = false;
         if (this.hp <= 0) {
             this.hp = 0;
             if (this.getText().equals(""))
                 this.setText("X");
+            ret = true;
         }
         addToRecord(strForRecord);
+        return ret;
     }
     
     public void addHp(int hp) {
@@ -91,11 +97,12 @@ public class Cell extends JLabel implements Serializable {
         return fighter;
     }
     
-    public void takeDamage(double damage, String strForRecord) {
+    public boolean takeDamage(double damage, String strForRecord) {
         if (this.hp > 0){
             this.hp -= damage - (damage * (resistance/100));
-            verifyHp(strForRecord);
+            return verifyHp(strForRecord);
         }
+        return true;
     }
 
     public void setFighter(Fighter owner) {
@@ -118,16 +125,16 @@ public class Cell extends JLabel implements Serializable {
         this.radioactiveWaste ++;
     }
     
-    public void setVolcano(Volcano volcano, String strForRecord) {
+    public boolean setVolcano(Volcano volcano, String strForRecord) {
         this.volcano = volcano;
         verifySpecialObjects();
-        this.setHp(0, strForRecord);
+        return this.setHp(0, strForRecord);
     }
     
-    public void setSwirl(Swirl swirl, String strForRecord) {
+    public boolean setSwirl(Swirl swirl, String strForRecord) {
         this.swirl = swirl;
         verifySpecialObjects();
-        this.setHp(0, strForRecord);
+        return this.setHp(0, strForRecord);
     }
     
     public Volcano getVolcano() {

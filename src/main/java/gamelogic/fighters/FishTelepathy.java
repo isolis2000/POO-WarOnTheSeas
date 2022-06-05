@@ -31,8 +31,6 @@ public class FishTelepathy extends Fighter {
             case "PULP" -> pulp(target);
             default ->false;
         };
-        if (!result)
-            System.out.println("specialAttackBombsucks");
         return result;
     }
     
@@ -41,12 +39,13 @@ public class FishTelepathy extends Fighter {
         int numOfCells = random.nextInt(100, 301);
         double damage = getDamageWithPowerUp(33);
         try {
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getPlayerName() 
                     + " ataco esta casilla con el ataque Cardumen." 
                     + " La casilla tomo " + damage + "% de dano.";
             ArrayList<Cell> cellsToDestroy = target.getPlayer().getRandomCells(numOfCells);
             for (Cell cell : cellsToDestroy)
-                cell.takeDamage(damage, forRecord);
+                if (cell.takeDamage(damage, forRecord))
+                    target.getPlayer().removeCell();
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -60,10 +59,11 @@ public class FishTelepathy extends Fighter {
     private boolean sharkAttack(ThreadServer target) {
         try {
             ArrayList<Cell> sharkCells = target.getPlayer().getSharkCells();
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getPlayerName() 
                     + " destruyo esta casilla con el ataque Shark Attack.";
             for (Cell cell : sharkCells) {
-                cell.setHp(0, forRecord);
+                if (cell.setHp(0, forRecord))
+                    target.getPlayer().removeCell();
             }
             return true;
         } catch (Exception ex) {
@@ -85,11 +85,12 @@ public class FishTelepathy extends Fighter {
         try {
             for (int i = 0; i < octopusAmmount; i++)
                 cellsToAttack.addAll(target.getPlayer().getRandomCells(8));
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getPlayerName() 
                     + " ataco esta casilla con el ataque Pulp." 
                     + " La casilla tomo " + damage + "% de dano.";
             for (Cell cell : cellsToAttack) {
-                cell.takeDamage(damage, forRecord);
+                if (cell.takeDamage(damage, forRecord))
+                    target.getPlayer().removeCell();
             }
             return true;
         } catch (Exception ex) {

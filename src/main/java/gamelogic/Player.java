@@ -25,14 +25,50 @@ public class Player implements Serializable {
     private ArrayList<Fighter> fighters = new ArrayList<>();
     private static final Color[] colors = {Color.pink, Color.green, Color.cyan};
     private Cell[][] cells = new Cell[20][30];
+    private ArrayList<String> availableStats = new ArrayList<>();
+    private int cellsLeft = 600;
+    private double hp = 100;
     
     public Player(String playerName) {
         this.playerName = playerName;
+        int[] availableNumbers = {50, 75, 100};
+        for (int num = 0; num < availableNumbers.length; num ++)
+            for (int i = 0; i < 3; i ++)
+                availableStats.add(Integer.toString(availableNumbers[num]));
+    }
+    
+    public void removeCell() {
+        cellsLeft --;
+        hp = 100.0 * ((float)cellsLeft/600f);
+    }
+
+    public int getCellsLeft() {
+        return cellsLeft;
+    }
+
+    public ArrayList<String> getAvailableStats() {
+        return availableStats;
+    }
+
+    public double getHp() {
+        return hp;
+    }
+    
+    private boolean removeStatsFromAvailable(String[] stats) {
+        for (String str : stats)
+            if (availableStats.contains(str))
+                availableStats.remove(str);
+            else
+                return false;                
+        return true;
     }
     
     public boolean addFighter(String name, String image, int percentage, int type, int power, int resistance, int sanity) {
         Color color = colors[fighters.size()];
-        if (fighters.size() < 3) {
+        String powerStr = Integer.toString(power);
+        String resistanceStr = Integer.toString(resistance);
+        String sanityStr = Integer.toString(sanity);
+        if (fighters.size() < 3 && removeStatsFromAvailable(new String[] {powerStr, resistanceStr, sanityStr})) {
             Fighter commander = FighterFactory.getFighter(name, image, percentage, power, resistance, sanity, color, type, this);
             fighters.add(commander);
             addFighterToCells(commander);
@@ -79,6 +115,8 @@ public class Player implements Serializable {
         this.fightersDone = newPlayer.areFighersDone();
         this.turn = newPlayer.isTurn();
         this.fighters = newPlayer.getFighters();
+        this.hp = newPlayer.getHp();
+        this.cellsLeft = newPlayer.getCellsLeft();
         for (int row = 0; row < cells.length; row++)
             for (int cell = 0; cell < cells[row].length; cell++)
                 this.cells[row][cell].updateCell(newPlayer.getCells()[row][cell]);
@@ -175,7 +213,6 @@ public class Player implements Serializable {
             for (int j = y - radius; j <= y + radius; j++)
                 if (((i >= 0) && (i < 20) && (j >= 0) && (j < 30))) {
                     set.add(cells[i][j]);
-                    System.out.println("Cell added: [" + Integer.toString(i) + ", " + Integer.toString(j) + "]");
                 }
         cellsRet.addAll(set);
         return cellsRet;

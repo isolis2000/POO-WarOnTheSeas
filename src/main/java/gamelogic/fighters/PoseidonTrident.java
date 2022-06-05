@@ -62,9 +62,10 @@ public class PoseidonTrident extends Fighter {
             for (int i = 0; i < 3; i++) {
                 String direction = directions[random.nextInt(directions.length)];
                 ArrayList<Cell> cellsToDestroy = target.getPlayer().getCellsInLine(new int[] {x.get(i), y.get(i)}, numOfCells, direction);
-                String forRecord = "Jugador " + this.playerExecuting.getPlayerName() + "destruyo esta casilla con el ataque threeLines";
+                String forRecord = "Jugador " + this.player.getPlayerName() + "destruyo esta casilla con el ataque threeLines";
                 for (Cell cell : cellsToDestroy) {
-                    cell.setHp(0, forRecord);
+                    if (cell.setHp(0, forRecord))
+                        target.getPlayer().removeCell();
                 }
             }
             return true;

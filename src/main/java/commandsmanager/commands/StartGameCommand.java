@@ -4,6 +4,7 @@
  */
 package commandsmanager.commands;
 
+import client.ClientManager;
 import client.gui.Cell;
 import commandsmanager.BaseCommand;
 import gamelogic.Player;
@@ -23,23 +24,33 @@ public class StartGameCommand extends BaseCommand implements Serializable {
     @Override
     public String executeOnServer() {
         System.out.println("Jugador: " + this.getPlayerExcecuting().getPlayerName() + " esta listo? " + getPlayerExcecuting().areFighersDone());
-        if (getPlayerExcecuting().areFighersDone()) {
-            getPlayerExcecuting().setReady(true);
-        }
-        if (ServerFrame.getServer().startGame()) {
-            return "Todos los jugadores estan listos";
-        }
-        else
-            return "Jugador " + getPlayerExcecuting().getPlayerName() + " esta listo para jugar, pero aun faltan jugadores para comenzar el juego";
+        if (!ServerFrame.getServer().isGameStarted()) {
+            if (getPlayerExcecuting().areFighersDone()) {
+                getPlayerExcecuting().setReady(true);
+            }
+            if (ServerFrame.getServer().startGame()) {
+                this.gameStarted = true;
+                return "Todos los jugadores estan listos";
+            }
+            else
+                return "Jugador " + getPlayerExcecuting().getPlayerName() + " esta listo para jugar, pero aun faltan jugadores para comenzar el juego";
+        } else
+            return "Juego ya comenzo";
     }
 
     @Override
     public String executeOnClient() {
-        if (getPlayerExcecuting().isReady()) {
-            return "Listo para jugar";
+        if (!this.gameStarted) {
+            if (getPlayerExcecuting().isReady()) {
+                ClientManager.getCM().getMainScreen().updateInfoPanels();
+                return "Listo para jugar";
+            }
+            else
+                return "Requiere como minimo 3 luchadores creados antes de comenzar la partida";
+        } else {
+            ClientManager.getCM().getMainScreen().updateInfoPanels();
+            return "Juego ya comenzo";
         }
-        else
-            return "Requiere como minimo 3 luchadores creados antes de comenzar la partida";
     }
     
 }

@@ -20,6 +20,7 @@ public abstract class BaseCommand implements iCommand, Serializable{
     private String commandName;
     protected Player playerExcecuting;
     protected String strToShare;
+    protected boolean success = true, gameStarted;
 
     public BaseCommand(String commandName, String[] args, boolean broadcast, boolean localCommand, Player player) {
         this.args = args;
@@ -63,6 +64,14 @@ public abstract class BaseCommand implements iCommand, Serializable{
     
     public boolean isBroadcast(){
         return broadcast;
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
     }
     
     

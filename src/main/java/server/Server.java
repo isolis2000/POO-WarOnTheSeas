@@ -20,6 +20,7 @@ import models.Message;
 import gamelogic.Player;
 import java.io.ObjectInputStream;
 import java.util.Collections;
+import java.util.Random;
 
 /**
  *
@@ -51,8 +52,6 @@ public class Server extends Thread{
     
     public void addToLogs(String str) {
         logs.add(str);
-        System.out.println("new logs: ");
-        System.out.println();
     }
 
     public ArrayList<String> getLogs() {
@@ -68,13 +67,14 @@ public class Server extends Thread{
     
     public void syncPlayerToThread(Player player) {
         ThreadServer ts = connectionsByName.get(player.getPlayerName());
-        players.replace(ts, player);
+        ts.getPlayer().syncPlayer(player);
     }
     
     //mensaje para todos
     public void broadcast (BaseCommand command){
         for (ThreadServer connection : connections) {
             try {
+                connection.getWriter().reset();
 //                System.out.println("broadcastasdlfkn" + command.toString());
 //                System.out.println("connections size: " + connections.size());
 //                System.out.println("connectionasdfasd: " + connection);
@@ -89,7 +89,6 @@ public class Server extends Thread{
                 System.out.println("connection: " + connection.getPlayer());
                 command.setPlayerExcecuting(connection.getPlayer());
                 connection.getWriter().writeObject(command);
-                connection.getWriter().flush();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -101,6 +100,7 @@ public class Server extends Thread{
         try {
             System.out.println("Hello");
             System.out.println(command.toString());
+            command.setPlayerExcecuting(ts.getPlayer());
             ts.getWriter().writeObject(command);
         } catch (IOException ex) {
         }
@@ -114,10 +114,12 @@ public class Server extends Thread{
     }
     
     public boolean startGame() {
+        Random random = new Random();
         if (!areAllPlayersReady())
             return false;
-        Collections.shuffle(connections);
-        connections.get(0).getPlayer().setTurn(true);
+        connections.get(random.nextInt(connections.size())).getPlayer().setTurn(true);
+        System.out.println("turn " + connections.get(0).getPlayer().getPlayerName() + connections.get(0).getPlayer().isTurn());
+        System.out.println("turn " + connections.get(1).getPlayer().getPlayerName() +  connections.get(1).getPlayer().isTurn());
         gameStarted = true;
         return true;
     }
@@ -158,10 +160,12 @@ public class Server extends Thread{
                         connections.get(0).getPlayer().setTurn(true);
                     else
                         connections.get(i + 1).getPlayer().setTurn(true);
-                    return;
+                    break;
                 }
             }
         }
+        System.out.println("turn " + connections.get(0).getPlayer().getPlayerName() + connections.get(0).getPlayer().isTurn());
+        System.out.println("turn " + connections.get(1).getPlayer().getPlayerName() +  connections.get(1).getPlayer().isTurn());
     }
     
     public void run(){
