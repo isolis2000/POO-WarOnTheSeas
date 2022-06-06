@@ -15,6 +15,7 @@ import commandsmanager.commands.ChatCommand;
 import commandsmanager.commands.GetEnemyStateCommand;
 import commandsmanager.commands.LogCommand;
 import commandsmanager.commands.PaintCellsCommand;
+import commandsmanager.commands.SkipTurnCommand;
 import commandsmanager.commands.SurrenderCommand;
 import gamelogic.Player;
 
@@ -34,6 +35,7 @@ public class CommandFactory {
             case "RENDIRSE" -> new SurrenderCommand(name, args, player);
             case "CONSULTAR ENEMIGO" -> new GetEnemyStateCommand(name, args, player);
             case "PINTAR" -> new PaintCellsCommand(name, args, player);
+            case "SALTAR TURNO" -> new SkipTurnCommand(name, args, player);
             default -> new ErrorCommand("error", args, player);
         };
     }

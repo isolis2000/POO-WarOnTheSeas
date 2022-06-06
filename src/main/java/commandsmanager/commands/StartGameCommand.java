@@ -25,9 +25,9 @@ public class StartGameCommand extends BaseCommand implements Serializable {
     public String executeOnServer() {
 //        System.out.println("Jugador: " + this.getPlayerExcecuting().getPlayerName() + " esta listo? " + getPlayerExcecuting().areFighersDone());
         if (!ServerFrame.getServer().isGameStarted()) {
-            if (getPlayerExcecuting().areFighersDone()) {
-                getPlayerExcecuting().setReady(true);
-            }
+//            if (getPlayerExcecuting().areFighersDone()) {
+//                getPlayerExcecuting().setReady(true);
+//            }
             if (ServerFrame.getServer().startGame()) {
                 this.gameStarted = true;
 //                String playerName = playerExcecuting.getPlayerName();
@@ -50,6 +50,7 @@ public class StartGameCommand extends BaseCommand implements Serializable {
             else
                 return "Requiere como minimo 3 luchadores creados antes de comenzar la partida";
         } else {
+            ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(playerExcecuting);
             ClientManager.getCM().getMainScreen().updateInfoPanels();
             return "Juego ya comenzo";
         }
