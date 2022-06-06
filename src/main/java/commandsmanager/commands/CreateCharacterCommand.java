@@ -59,8 +59,10 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
 //                    System.out.println("Fighters after add: " + getPlayerExcecuting().getFighters().toString());
 //                    System.out.println("cells after add: ");
 //                System.out.println("-----------------------------------------------------------------------");
-                    if (getPlayerExcecuting().getFighters().size() == 3)
+                    if (getPlayerExcecuting().getFighters().size() == 3) {
                         getPlayerExcecuting().setFighersDone(true);
+                        getPlayerExcecuting().setReady(true);
+                    }
 //                    ServerFrame.getServer().getConnectionsByName().get(getPlayerExcecuting().getPlayerName()).getPlayer().syncPlayer(getPlayerExcecuting());
                     ServerFrame.getServer().getPlayerByName(playerExcecuting.getName()).syncPlayer(playerExcecuting);
                     return CommandUtils.concatArray(args);  

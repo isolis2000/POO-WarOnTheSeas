@@ -55,11 +55,14 @@ public class Player implements Serializable {
     }
     
     private boolean removeStatsFromAvailable(String[] stats) {
+        ArrayList<String> localCopy = new ArrayList<>();
+        localCopy.addAll(availableStats);
         for (String str : stats)
-            if (availableStats.contains(str))
-                availableStats.remove(str);
-            else
-                return false;                
+            if (localCopy.contains(str))
+                localCopy.remove(str);
+            else 
+                return false;
+        availableStats = localCopy;
         return true;
     }
     
@@ -128,6 +131,7 @@ public class Player implements Serializable {
         this.fighters = newPlayer.getFighters();
         this.hp = newPlayer.getHp();
         this.cellsLeft = newPlayer.getCellsLeft();
+        this.availableStats = newPlayer.getAvailableStats();
         for (int row = 0; row < cells.length; row++)
             for (int cell = 0; cell < cells[row].length; cell++)
                 this.cells[row][cell].updateCell(newPlayer.getCells()[row][cell]);

@@ -82,7 +82,15 @@ public class Server extends Thread{
     
     public Player getPlayerByName(String name) {
         ThreadServer ts = connectionsByName.get(name);
-        return players.get(ts);
+//        Player player = players.get(ts);
+//        Player otherPlayer = ts.getPlayer();
+//        System.out.println("p: " + player);
+//        System.out.println("p2: " + otherPlayer);
+//        if (player.equals(otherPlayer))
+//            System.out.println("iguales");
+//        else
+//            System.out.println("no son iguales");
+        return ts.getPlayer();
     }
     
     public void syncPlayerToThread(Player player) {
@@ -154,13 +162,6 @@ public class Server extends Thread{
             for (ThreadServer connection : connections) {
                 try {
                     connection.getWriter().reset();
-    //                System.out.println("broadcastasdlfkn" + command.toString());
-    //                System.out.println("connections size: " + connections.size());
-    //                System.out.println("connectionasdfasd: " + connection);
-    //                System.out.println("Connection: " + connection.connection.getPlayer().getPlayerName());
-    //                System.out.println("Object: " + Arrays.toString(command.getArgs()));
-    //                System.out.println("Object1: " + command);
-    //                System.out.println("writer: " + getWriter());
                     command.setPlayerExcecuting(connection.getPlayer());
                     this.screenRef.showServerMessage(command.executeOnServer());
                     command.getPlayerExcecuting().setTurn(connection.getPlayer().isTurn());
@@ -174,6 +175,7 @@ public class Server extends Thread{
                     ex.printStackTrace();
                 }
             }
+            
         }
     }
     
@@ -181,7 +183,7 @@ public class Server extends Thread{
         try {
             System.out.println("To SEND FOR ONE ---------------------------");
             System.out.println(command.toString());
-            command.setPlayerExcecuting(ts.getPlayer());
+            command.setPlayerExcecuting(getPlayerByName(ts.getPlayer().getName()));
             ts.getWriter().writeObject(command);
         } catch (IOException ex) {
         }
@@ -195,12 +197,21 @@ public class Server extends Thread{
     }
     
     public boolean startGame() {
-        Random random = new Random();
-        if (!areAllPlayersReady())
-            return false;
-        connections.get(random.nextInt(connections.size())).getPlayer().setTurn(true);
-        gameStarted = true;
-        return true;
+        if (!gameStarted) {
+            System.out.println("entro");
+            Random random = new Random();
+            if (!areAllPlayersReady())
+                return false;
+            connections.get(random.nextInt(connections.size())).getPlayer().setTurn(true);
+//            connections.get(0).getPlayer().setTurn(true);
+            for (ThreadServer connection : connections)
+                if (connection.getPlayer().isTurn())
+                    System.out.println("Player: " + connection.getPlayer().getName() + " with turn: " + connection.getPlayer().isTurn());
+                else
+                    System.out.println("todos f");
+            gameStarted = true;
+        }
+        return gameStarted;
     }
     
     private boolean areAllPlayersReady() {
@@ -258,7 +269,7 @@ public class Server extends Thread{
 //                System.out.println("name: " + name);
                 ThreadServer newThread = new ThreadServer(newSocket, this, player); 
 //                System.out.println("3");
-                players.put(newThread, player);
+//                players.put(newThread, player);
 //                System.out.println("4");
 //                for (String set : playerNames.values())
 //                    System.out.println("player: " + set);

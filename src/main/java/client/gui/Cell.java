@@ -80,11 +80,11 @@ public class Cell extends JLabel implements Serializable {
     public void addHp(int hp) {
         if (this.hp > 0) {
             String forRecord = "Esta casilla ha sido curada en " + hp + "%. ";
-            forRecord += "Su vida paso de " + hp + "%";
+            forRecord += "Su vida paso de " + this.hp + "%";
             this.hp += hp;
             if (this.hp > 100)
                 this.hp = 100;
-            forRecord += " a " + hp + "%.";
+            forRecord += " a " + this.hp + "%.";
             addToRecord(forRecord);
         }
     }
