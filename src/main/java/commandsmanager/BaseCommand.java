@@ -77,12 +77,13 @@ public abstract class BaseCommand implements iCommand, Serializable{
     
     public abstract String executeOnServer();
     public abstract String executeOnClient(); 
-//    
-//    @Override
-//    public String toString() {
-//        String ret = commandName;
-//        ret += playerExcecuting;
-//        return ret;
-//    }    
+    
+    @Override
+    public String toString() {
+        String ret = commandName;
+        ret += ", player: " + playerExcecuting;
+        ret += " turn: " + playerExcecuting.isTurn();
+        return ret;
+    }    
     
 }

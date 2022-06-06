@@ -32,8 +32,8 @@ public class WavesControl extends Fighter {
             case "RADIOACTIVE RUSH" -> radioactiveRush(target);
             default -> false;
         };
-        if (!result)
-            System.out.println("specialAttackBombsucks");
+//        if (!result)
+//            System.out.println("specialAttackBombsucks");
         return result;
     }
     
@@ -56,7 +56,7 @@ public class WavesControl extends Fighter {
                 i++;
             }
             int[] origin = {x, y};
-            String forRecord = "Jugador " + this.player.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " destruyo esta casilla con el ataque Swirl Rising.";
             ArrayList<Cell> cellsToAttack = target.getPlayer().getCellsInRadius(origin, radius);
             Swirl swirl = new Swirl(radius, origin);
@@ -95,11 +95,12 @@ public class WavesControl extends Fighter {
             Swirl swirl = target.getPlayer().getCells()[x][y].getSwirl();
             int radius = swirl.getRadius();
             double damage = getDamageWithPowerUp(25);
-            String forRecord = "Jugador " + this.player.getPlayerName() 
+            String initialRecord = "Jugador " + this.player.getName() 
                     + " ataco esta casilla con el ataque Send Human Garbage." 
                     + " La casilla tomo " + damage + "% de dano.";
             ArrayList<Cell> cellsToAttack = target.getPlayer().getRandomCells(radius * 10);
             for (Cell cell : cellsToAttack) {
+                String forRecord = initialRecord;
                 if (random.nextBoolean()) {
                     forRecord += " Adicionalmente, como la basura es radioactiva, "
                             + "esta permanece en esta casilla";
@@ -124,16 +125,16 @@ public class WavesControl extends Fighter {
     private boolean radioactiveRush(ThreadServer target) {
         Random random = new Random();
         try {
-            String initialRecord = "Jugador " + this.player.getPlayerName() 
+            String initialRecord = "Jugador " + this.player.getName() 
                     + " ataco esta casilla con el ataque Radioactive Rush.";
             ArrayList<Cell> cellsToAttack = target.getPlayer().getRadioactiveCells();
             for (Cell cell : cellsToAttack) {
                 int time = random.nextInt(10) + 1;
                 int tonsOfRadWaste = cell.getRadioactiveWaste();
-                initialRecord += "Esta casilla posee " + tonsOfRadWaste
-                        + " toneladas de basura radioactiva."
+                String extraInfoRecord = initialRecord + "Esta casilla posee " 
+                        + tonsOfRadWaste + " toneladas de basura radioactiva."
                         + " El ataque durara " + time + " segundos.";
-                cell.addToRecord(initialRecord);
+                cell.addToRecord(extraInfoRecord);
                 double damage = getDamageWithPowerUp(tonsOfRadWaste * 10);
                 for (int i = 0; i < time; i++) {
                     String forRecord = "Esta casilla tomo " + damage + "% de dano"

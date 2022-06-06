@@ -35,7 +35,7 @@ public class CellInfoCommand extends BaseCommand implements Serializable {
             }
             this.strToShare = playerExcecuting.getCells()[x][y].getRecordStr();
             return "Se le envio la informacion de la celda al jugador: " 
-                    + playerExcecuting.getPlayerName();
+                    + playerExcecuting.getName();
         } catch (NumberFormatException ex) {
             return "ERROR";
         }
@@ -43,7 +43,7 @@ public class CellInfoCommand extends BaseCommand implements Serializable {
 
     @Override
     public String executeOnClient() {
-        ClientManager.getCM().getMainScreen().showPopup(strToShare);
+        ClientManager.getCM().getMainScreen().showScrollablePopup(strToShare);
         return "Se imprimio la informacion de la celda";
     }
     

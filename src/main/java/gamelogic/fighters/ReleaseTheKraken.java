@@ -32,8 +32,8 @@ public class ReleaseTheKraken extends Fighter {
             case "RELEASE THE KRAKEN" -> releaseTheKraken(args, target);
             default ->false;
         };
-        if (!result)
-            System.out.println("specialAttackBombsucks");
+//        if (!result)
+//            System.out.println("specialAttackBombsucks");
         return result;
     }   
     
@@ -49,7 +49,7 @@ public class ReleaseTheKraken extends Fighter {
                 }
                 i++;
             }
-            String forRecord = "Jugador " + this.player.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " destruyo esta casilla con el ataque Tentacles";
             for (int i = 0; i < 3; i++) {
                 for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x.get(i), y.get(i)}, 1)) {
@@ -88,7 +88,7 @@ public class ReleaseTheKraken extends Fighter {
                 }
                 i++;
             }
-            String forRecord = "Jugador " + this.player.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " destruyo esta casilla con el ataque Kraken Breath";
             for (Cell cell : target.getPlayer().getCellsInLine(new int[] {x, y}, numOfCells, direction)) {
                 if (cell.setHp(0, forRecord))
@@ -119,7 +119,7 @@ public class ReleaseTheKraken extends Fighter {
                 }
                 i++;
             }
-            String forRecord = "Jugador " + this.player.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " destruyo esta casilla con el ataque Release The Kraken";
             for (Cell cell : target.getPlayer().getCellsInRadius(new int[] {x, y}, radius)) {
                 if (cell.setHp(0, forRecord))

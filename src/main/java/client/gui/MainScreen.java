@@ -23,6 +23,7 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 /**
@@ -57,6 +58,7 @@ public class MainScreen extends javax.swing.JFrame {
         txfTotalHP = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txfDestroyedCells = new javax.swing.JTextField();
+        lblTurn = new javax.swing.JLabel();
         pnlCommands = new javax.swing.JPanel();
         txfCommand = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -69,7 +71,6 @@ public class MainScreen extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         txaLogs = new javax.swing.JTextArea();
         pnlRight = new javax.swing.JPanel();
-        lblTurn = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 84, 119));
@@ -110,6 +111,10 @@ public class MainScreen extends javax.swing.JFrame {
         txfDestroyedCells.setBorder(null);
         txfDestroyedCells.setFocusable(false);
 
+        lblTurn.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        lblTurn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTurn.setText("No es su turno");
+
         javax.swing.GroupLayout pnlGameDataLayout = new javax.swing.GroupLayout(pnlGameData);
         pnlGameData.setLayout(pnlGameDataLayout);
         pnlGameDataLayout.setHorizontalGroup(
@@ -117,9 +122,11 @@ public class MainScreen extends javax.swing.JFrame {
             .addGroup(pnlGameDataLayout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(jLabel1)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txfTotalHP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 434, Short.MAX_VALUE)
+                .addGap(163, 163, 163)
+                .addComponent(lblTurn, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                .addGap(158, 158, 158)
                 .addComponent(jLabel2)
                 .addGap(0, 0, 0)
                 .addComponent(txfDestroyedCells, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -132,7 +139,8 @@ public class MainScreen extends javax.swing.JFrame {
                 .addGroup(pnlGameDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlGameDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
-                        .addComponent(txfDestroyedCells, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txfDestroyedCells, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblTurn))
                     .addGroup(pnlGameDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
                         .addComponent(txfTotalHP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -264,23 +272,15 @@ public class MainScreen extends javax.swing.JFrame {
         pnlRight.setFocusable(false);
         pnlRight.setPreferredSize(new java.awt.Dimension(315, 539));
 
-        lblTurn.setText("No es su turno");
-
         javax.swing.GroupLayout pnlRightLayout = new javax.swing.GroupLayout(pnlRight);
         pnlRight.setLayout(pnlRightLayout);
         pnlRightLayout.setHorizontalGroup(
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlRightLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTurn, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
-                .addGap(163, 163, 163))
+            .addGap(0, 264, Short.MAX_VALUE)
         );
         pnlRightLayout.setVerticalGroup(
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlRightLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTurn)
-                .addContainerGap(514, Short.MAX_VALUE))
+            .addGap(0, 537, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -327,7 +327,7 @@ public class MainScreen extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -350,7 +350,7 @@ public class MainScreen extends javax.swing.JFrame {
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         String comando = txfCommand.getText().trim();
-        System.out.println("comando: " + comando);
+        System.out.println("comando enviado: " + comando);
         if (!comando.equals("")) {
             String array[] = CommandUtils.convertToArray(comando);
             BaseCommand newCommand = CommandFactory.getCommand(array[0], array, player);
@@ -393,6 +393,7 @@ public class MainScreen extends javax.swing.JFrame {
             for (int col = 0; col < 30; col++) {
                 int[] placement = {row+1, col+1};
                 Cell cell = new Cell("E", placement);
+                cell.setHorizontalAlignment(SwingConstants.CENTER);
                 cell.setText("");
                 cell.setOpaque(true);
                 cell.setBackground(Color.gray);
@@ -407,6 +408,10 @@ public class MainScreen extends javax.swing.JFrame {
     }
     
     public void showPopup(String str) {
+        JOptionPane.showMessageDialog(null, str);
+    }
+    
+    public void showScrollablePopup(String str) {
         JTextArea textArea = new JTextArea(str);
         JScrollPane scrollPane = new JScrollPane(textArea);  
         textArea.setLineWrap(true);  

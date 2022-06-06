@@ -59,46 +59,127 @@ public class Server extends Thread{
     }
     
     public String getLogsString() {
-        String log = "";
+        String log = "- ";
         for (String str : logs)
-            log += "\n" + str;
+            log += str + "\n\n-";
         return log;
     }
     
+    public boolean playerSurrender(Player player) {
+        for (ThreadServer ts : connections)
+            if (ts.getPlayer().getName().equals(player.getName())) {
+            try {
+                ts.getWriter().close();
+            } catch (IOException ex) {System.out.println("ex");}
+                connections.remove(ts);
+            }
+        return connections.size() == 1;
+    }
+    
+    public String getWinner() {
+        return connections.get(0).getPlayer().getName();
+    }
+    
+    public Player getPlayerByName(String name) {
+        ThreadServer ts = connectionsByName.get(name);
+        return players.get(ts);
+    }
+    
     public void syncPlayerToThread(Player player) {
-        ThreadServer ts = connectionsByName.get(player.getPlayerName());
+        ThreadServer ts = connectionsByName.get(player.getName());
         ts.getPlayer().syncPlayer(player);
     }
     
     //mensaje para todos
-    public void broadcast (BaseCommand command){
+    private void attackBroadcast (BaseCommand command){
+        String firstExecName = "";
         for (ThreadServer connection : connections) {
-            try {
-                connection.getWriter().reset();
-//                System.out.println("broadcastasdlfkn" + command.toString());
-//                System.out.println("connections size: " + connections.size());
-//                System.out.println("connectionasdfasd: " + connection);
-//                System.out.println("Connection: " + connection.connection.getPlayer().getPlayerName());
-//                System.out.println("Object: " + Arrays.toString(command.getArgs()));
-//                System.out.println("Object1: " + command);
-//                System.out.println("writer: " + getWriter());
-                this.screenRef.showServerMessage(command.executeOnServer());
-//                this.screenRef.showServerMessage(Integer.toString(command.getPlayerExcecuting().getFighters().size()));
-                System.out.println("To SEND ------------------");
-                System.out.println(command.toString());
-                System.out.println("connection: " + connection.getPlayer());
-                command.setPlayerExcecuting(connection.getPlayer());
-                connection.getWriter().writeObject(command);
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if (connection.getPlayer().isTurn()) {
+                firstExecName = connection.getPlayer().getName();
+                try {
+                    connection.getWriter().reset();
+    //                System.out.println("broadcastasdlfkn" + command.toString());
+    //                System.out.println("connections size: " + connections.size());
+    //                System.out.println("connectionasdfasd: " + connection);
+    //                System.out.println("Connection: " + connection.connection.getPlayer().getPlayerName());
+    //                System.out.println("Object: " + Arrays.toString(command.getArgs()));
+    //                System.out.println("Object1: " + command);
+    //                System.out.println("writer: " + getWriter());
+                    command.setPlayerExcecuting(connection.getPlayer());
+                    this.screenRef.showServerMessage(command.executeOnServer());
+                    command.getPlayerExcecuting().setTurn(connection.getPlayer().isTurn());
+    //                this.screenRef.showServerMessage(Integer.toString(command.getPlayerExcecuting().getFighters().size()));
+                    System.out.println("To SEND ------------------ 1 ");
+                    System.out.println("turn: " + connection.getPlayer().isTurn());
+                    System.out.println(command.toString());
+                    System.out.println("connection: " + connection.getPlayer());
+                    connection.getWriter().writeObject(command);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                break;
             }
         }
-        
+        for (ThreadServer connection : connections) {
+            if (!connection.getPlayer().getName().equals(firstExecName)) {
+                try {
+                    connection.getWriter().reset();
+    //                System.out.println("broadcastasdlfkn" + command.toString());
+    //                System.out.println("connections size: " + connections.size());
+    //                System.out.println("connectionasdfasd: " + connection);
+    //                System.out.println("Connection: " + connection.connection.getPlayer().getPlayerName());
+    //                System.out.println("Object: " + Arrays.toString(command.getArgs()));
+    //                System.out.println("Object1: " + command);
+    //                System.out.println("writer: " + getWriter());
+                    command.setPlayerExcecuting(connection.getPlayer());
+//                    this.screenRef.showServerMessage(command.executeOnServer());
+//                    command.getPlayerExcecuting().setTurn(connection.getPlayer().isTurn());
+//                    this.screenRef.showServerMessage(Integer.toString(command.getPlayerExcecuting().getFighters().size()));
+                    System.out.println("To SEND ------------------ 2 ");
+                    System.out.println("turn: " + connection.getPlayer().isTurn());
+                    System.out.println(command.toString());
+                    System.out.println("connection: " + connection.getPlayer());
+                    connection.getWriter().writeObject(command);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    public void broadcast(BaseCommand command) {
+        if (command.getCommandName().toUpperCase().equals("ATAQUE")) {
+            attackBroadcast(command);
+        } else {
+            for (ThreadServer connection : connections) {
+                try {
+                    connection.getWriter().reset();
+    //                System.out.println("broadcastasdlfkn" + command.toString());
+    //                System.out.println("connections size: " + connections.size());
+    //                System.out.println("connectionasdfasd: " + connection);
+    //                System.out.println("Connection: " + connection.connection.getPlayer().getPlayerName());
+    //                System.out.println("Object: " + Arrays.toString(command.getArgs()));
+    //                System.out.println("Object1: " + command);
+    //                System.out.println("writer: " + getWriter());
+                    command.setPlayerExcecuting(connection.getPlayer());
+                    this.screenRef.showServerMessage(command.executeOnServer());
+                    command.getPlayerExcecuting().setTurn(connection.getPlayer().isTurn());
+    //                this.screenRef.showServerMessage(Integer.toString(command.getPlayerExcecuting().getFighters().size()));
+                    System.out.println("To SEND ------------------ 1 ");
+                    System.out.println("turn: " + connection.getPlayer().isTurn());
+                    System.out.println(command.toString());
+                    System.out.println("connection: " + connection.getPlayer());
+                    connection.getWriter().writeObject(command);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
     
     public void sendToOne(BaseCommand command, ThreadServer ts) {
         try {
-            System.out.println("Hello");
+            System.out.println("To SEND FOR ONE ---------------------------");
             System.out.println(command.toString());
             command.setPlayerExcecuting(ts.getPlayer());
             ts.getWriter().writeObject(command);
@@ -118,8 +199,6 @@ public class Server extends Thread{
         if (!areAllPlayersReady())
             return false;
         connections.get(random.nextInt(connections.size())).getPlayer().setTurn(true);
-        System.out.println("turn " + connections.get(0).getPlayer().getPlayerName() + connections.get(0).getPlayer().isTurn());
-        System.out.println("turn " + connections.get(1).getPlayer().getPlayerName() +  connections.get(1).getPlayer().isTurn());
         gameStarted = true;
         return true;
     }
@@ -164,8 +243,6 @@ public class Server extends Thread{
                 }
             }
         }
-        System.out.println("turn " + connections.get(0).getPlayer().getPlayerName() + connections.get(0).getPlayer().isTurn());
-        System.out.println("turn " + connections.get(1).getPlayer().getPlayerName() +  connections.get(1).getPlayer().isTurn());
     }
     
     public void run(){
@@ -188,10 +265,10 @@ public class Server extends Thread{
                 newThread.start();
 //                System.out.println("5");
                 connections.add(newThread);
-                connectionsByName.put(player.getPlayerName(), newThread);
-                System.out.println("Thread in: " + newThread.getPlayer().getPlayerName());
+                connectionsByName.put(player.getName(), newThread);
+//                System.out.println("Thread in: " + newThread.getPlayer().getPlayerName());
 //                System.out.println("6");
-                this.screenRef.showServerMessage("Nuevo thread creado, nombre del jugador: " + player.getPlayerName());
+                this.screenRef.showServerMessage("Nuevo thread creado, nombre del jugador: " + player.getName());
                 
                 if (connections.size() >= MAX_CONNECTIONS){
                     isWaiting = true;

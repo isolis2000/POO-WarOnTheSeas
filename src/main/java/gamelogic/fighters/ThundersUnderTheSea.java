@@ -30,8 +30,8 @@ public class ThundersUnderTheSea extends Fighter {
             case "EEL ATTACK" -> eelAttack(target);
             default ->false;
         };
-        if (!result)
-            System.out.println("specialAttackBombsucks");
+//        if (!result)
+//            System.out.println("specialAttackBombsucks");
         return result;
     }
     /*
@@ -42,7 +42,7 @@ public class ThundersUnderTheSea extends Fighter {
     private boolean thunderRain(ThreadServer target) {
         Random random = new Random();
         try {
-            String forRecord = "Jugador " + this.player.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " ataco esta casilla con el ataque Thunder Rain." 
                     + " La casilla tomo ";
             ArrayList<Cell> cellsHit = target.getPlayer().getRandomCells(100);
@@ -68,7 +68,7 @@ public class ThundersUnderTheSea extends Fighter {
         Random random = new Random();
         int ammountOfThunders = random.nextInt(5, 11);
         try {
-            String forRecord = "Jugador " + this.player.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " destruyo esta casilla con el ataque Poseidon Thunders";
             ArrayList<Cell> initialHits = target.getPlayer().getRandomCells(ammountOfThunders);
             for (Cell initialCell : initialHits) {
@@ -95,7 +95,7 @@ public class ThundersUnderTheSea extends Fighter {
         Random random = new Random();
         int numOfEels = random.nextInt(25, 101);
         try {
-            String forRecord = "Jugador " + this.player.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " ataco esta casilla con el ataque Eel Attack." 
                     + " La casilla recibio ";
             ArrayList<Cell> cellsToAttack = target.getPlayer().getRandomCells(numOfEels);

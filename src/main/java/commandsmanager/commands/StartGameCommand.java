@@ -18,22 +18,24 @@ import server.ServerFrame;
 public class StartGameCommand extends BaseCommand implements Serializable {
 
     public StartGameCommand(String commandName, String[] args, Player player) {
-        super(commandName, args, true, false, player);
+        super(commandName, args, true, false, player);//broadcast, localcommand
     }
 
     @Override
     public String executeOnServer() {
-        System.out.println("Jugador: " + this.getPlayerExcecuting().getPlayerName() + " esta listo? " + getPlayerExcecuting().areFighersDone());
+//        System.out.println("Jugador: " + this.getPlayerExcecuting().getPlayerName() + " esta listo? " + getPlayerExcecuting().areFighersDone());
         if (!ServerFrame.getServer().isGameStarted()) {
             if (getPlayerExcecuting().areFighersDone()) {
                 getPlayerExcecuting().setReady(true);
             }
             if (ServerFrame.getServer().startGame()) {
                 this.gameStarted = true;
+//                String playerName = playerExcecuting.getPlayerName();
+//                this.playerExcecuting = ServerFrame.getServer().getPlayers().get(ServerFrame.getServer().getConnectionsByName().get(playerName));
                 return "Todos los jugadores estan listos";
             }
             else
-                return "Jugador " + getPlayerExcecuting().getPlayerName() + " esta listo para jugar, pero aun faltan jugadores para comenzar el juego";
+                return "Jugador " + getPlayerExcecuting().getName() + " esta listo para jugar, pero aun faltan jugadores para comenzar el juego";
         } else
             return "Juego ya comenzo";
     }

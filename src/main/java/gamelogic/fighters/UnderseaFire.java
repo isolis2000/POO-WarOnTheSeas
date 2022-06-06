@@ -32,8 +32,8 @@ public class UnderseaFire extends Fighter {
             case "TERMAL RUSH" -> termalRush(args, target);
             default ->false;
         };
-        if (!result)
-            System.out.println("specialAttackBombsucks");
+//        if (!result)
+//            System.out.println("specialAttackBombsucks");
         return result;
     }
     
@@ -55,7 +55,7 @@ public class UnderseaFire extends Fighter {
                 }
                 i++;
             }
-            String forRecord = "Jugador " + this.player.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " destruyo esta casilla con el ataque Volcano Rising.";
             int[] origin = {x, y};
             ArrayList<Cell> cellsToAttack = target.getPlayer().getCellsInRadius(origin, radius);
@@ -90,7 +90,7 @@ public class UnderseaFire extends Fighter {
             Volcano volcano = target.getPlayer().getCells()[x][y].getVolcano();
             int radius = volcano.getRadius();
             double damage = getDamageWithPowerUp(20);
-            String forRecord = "Jugador " + this.player.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " ataco esta casilla con el ataque Volcano Explosion." 
                     + " La casilla tomo " + damage + "% de dano.";
             ArrayList<Cell> cellsToAttack = target.getPlayer().getRandomCells(radius * 10);
@@ -126,15 +126,15 @@ public class UnderseaFire extends Fighter {
             Volcano volcano = target.getPlayer().getCells()[x][y].getVolcano();
             int radius = volcano.getRadius();
             int[] origin = volcano.getOrigin();
-            String initialRecord = "Jugador " + this.player.getPlayerName() 
+            String initialRecord = "Jugador " + this.player.getName() 
                     + " ataco esta casilla con el ataque Radioactive Rush. El "
                     + "radio de este volcan es de " + radius;
             ArrayList<Cell> cellsToAttack = target.getPlayer().getCellsInRadius(origin, radius + 5);
             double damage = getDamageWithPowerUp(radius);
             for (Cell cell : cellsToAttack) {
                 int time = random.nextInt(5, 7);
-                initialRecord += " El ataque durara " + time + " segundos.";
-                cell.addToRecord(initialRecord);
+                String timeRecord = initialRecord + " El ataque durara " + time + " segundos.";
+                cell.addToRecord(timeRecord);
                 for (int i = 0; i < time; i++) {
                     String forRecord = "Esta casilla tomo " + damage + "% de dano"
                             + " por el efecto del calentamiento del agua.";

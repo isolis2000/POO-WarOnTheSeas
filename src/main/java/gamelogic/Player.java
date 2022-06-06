@@ -21,7 +21,7 @@ import server.ThreadServer;
 public class Player implements Serializable {
     
     private boolean ready = false, fightersDone = false, turn = false;
-    private final String playerName;
+    private final String name;
     private ArrayList<Fighter> fighters = new ArrayList<>();
     private static final Color[] colors = {Color.pink, Color.green, Color.cyan};
     private Cell[][] cells = new Cell[20][30];
@@ -30,7 +30,7 @@ public class Player implements Serializable {
     private double hp = 100;
     
     public Player(String playerName) {
-        this.playerName = playerName;
+        this.name = playerName;
         int[] availableNumbers = {50, 75, 100};
         for (int num = 0; num < availableNumbers.length; num ++)
             for (int i = 0; i < 3; i ++)
@@ -72,7 +72,7 @@ public class Player implements Serializable {
             Fighter commander = FighterFactory.getFighter(name, image, percentage, power, resistance, sanity, color, type, this);
             fighters.add(commander);
             addFighterToCells(commander);
-            System.out.println("Added new fighter, new size: " + fighters.size());
+//            System.out.println("Added new fighter, new size: " + fighters.size());
             return true;
         } else {
             return false;
@@ -99,6 +99,17 @@ public class Player implements Serializable {
                 numOfAvailableCells --;
             }
         }
+    }
+    
+    public void paintCells(String dataType) {
+        for (Cell[] row : cells)
+            for (Cell cell : row)
+                cell.paintCell(dataType);
+    } 
+    
+    public String getState() {
+        return "Jugador " + name + " tiene " + hp + "% de vida y le han destruido "
+                + (600 - cellsLeft) + " casillas.";
     }
     
     private ArrayList<Cell> getCellsWithoutFighter() {
@@ -132,8 +143,8 @@ public class Player implements Serializable {
         return fighters.get(fighters.size()-1);
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getName() {
+        return name;
     }
 
     public ArrayList<Fighter> getFighters() {
@@ -190,7 +201,7 @@ public class Player implements Serializable {
                     fighterToUse = fighter;
             }
             if (fighterToUse.attack(args, target))
-                return playerName + " ataco a " + target.getPlayer().getPlayerName()
+                return name + " ataco a " + target.getPlayer().getName()
                         + " con el luchador " + fighterName + " utilizando el ataque "
                         + args[3];
             else
@@ -290,8 +301,8 @@ public class Player implements Serializable {
         return radioactiveCells;
     }
     
-    @Override
-    public String toString() {
-        return playerName + "\nfighters: \n" + fighters.toString() + "\n----------------------------\nlisto? = " + ready;
-    }
+//    @Override
+//    public String toString() {
+//        return playerName + "\nfighters: \n" + fighters.toString() + "\n----------------------------\nlisto? = " + ready;
+//    }
 }

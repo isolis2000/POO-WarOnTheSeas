@@ -45,14 +45,13 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
                     case "RESISTENCIA" -> resistance = Integer.parseInt(args[i + 1]);
                     case "SANIDAD" -> sanity = Integer.parseInt(args[i + 1]);
                     default -> {
-                            System.out.println("no1");
                             return "ERROR";
 //                            return error(player.getPlayerName());
                     }
                 }
                 i++;
             }
-            System.out.println("fighters before: " + getPlayerExcecuting().getFighters().toString());
+//            System.out.println("fighters before: " + getPlayerExcecuting().getFighters().toString());
             if (CommandUtils.areValuesOk(new Object[] {name, image, percentage, type, power, resistance, sanity})) {
 //                System.out.println("-----------------------------------------------------------------------");
 //                getPlayerExcecuting().printCells();
@@ -62,7 +61,8 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
 //                System.out.println("-----------------------------------------------------------------------");
                     if (getPlayerExcecuting().getFighters().size() == 3)
                         getPlayerExcecuting().setFighersDone(true);
-                    ServerFrame.getServer().getConnectionsByName().get(getPlayerExcecuting().getPlayerName()).getPlayer().syncPlayer(getPlayerExcecuting());
+//                    ServerFrame.getServer().getConnectionsByName().get(getPlayerExcecuting().getPlayerName()).getPlayer().syncPlayer(getPlayerExcecuting());
+                    ServerFrame.getServer().getPlayerByName(playerExcecuting.getName()).syncPlayer(playerExcecuting);
                     return CommandUtils.concatArray(args);  
                 }
                 else {
@@ -70,12 +70,12 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
                     return "ERROR";
                 }
             } else {
-                System.out.println("no4");
+//                System.out.println("no4");
                 return "ERROR";
 //                return error(player.getPlayerName());
             }
         } catch (Exception ex) {
-            System.out.println("fighters size EXCEPTION: " + getPlayerExcecuting().getFighters().size());
+//            System.out.println("fighters size EXCEPTION: " + getPlayerExcecuting().getFighters().size());
             return "ERROR";
 //            return error(player.getPlayerName());
         }
@@ -97,9 +97,9 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
                 return "No se pueden crer mas de 3 luchadores";
             else if (player.isReady())
                 return "No puede crear luchadores luego de comenzar el juego";
-            String ret = player.getPlayerName() + " creo un luchador con los siguientes datos: \n" 
+            String ret = player.getName() + " creo un luchador con los siguientes datos: \n" 
                     + player.getLastFighter().toString();
-            System.out.println("player getfighter: " + player.getLastFighter());
+//            System.out.println("player getfighter: " + player.getLastFighter());
             ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(player);
             return ret;
         } else

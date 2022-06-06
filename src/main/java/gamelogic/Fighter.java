@@ -7,6 +7,7 @@ package gamelogic;
 import client.gui.Cell;
 import java.awt.Color;
 import java.io.Serializable;
+import server.ServerFrame;
 import server.ThreadServer;
 
 /**
@@ -35,40 +36,46 @@ public abstract class Fighter implements Serializable {
     // 0 attack 1 target 2 fighter 3 attacktype 4 instructions
     public boolean attack(String[] args, ThreadServer target) {
         return switch (args[3].toLowerCase()) {
-            case "sanidad" -> sanity();
-            case "resistencia" -> resistance();
-            case "fuerza" -> powerUp();
+            case "sanidad" -> sanity(target);
+            case "resistencia" -> resistance(target);
+            case "fuerza" -> powerUp(target);
             default -> specialAttack(args, target);
         };
     }
     
     // 0 attaque 1 objetivo 2 luchador 3 habilidad
-    private boolean sanity() {
-        for (Cell[] row : this.getPlayer().getCells())
+    private boolean sanity(ThreadServer target) {
+        for (Cell[] row : target.getPlayer().getCells())
             for (Cell cell : row)
                 if (cell.getFighter().getName().equals(this.name))
                     cell.addHp(this.sanity);
         return true;
     }
     
-    private boolean resistance() {
-        for (Cell[] row : this.getPlayer().getCells())
-            for (Cell cell : row)
-                if (cell.getFighter().getName().equals(this.name))
-                    cell.setResistance(this.resistance);
+    private boolean resistance(ThreadServer target) {
+        System.out.println("fighter name: " + name);
+        for (Cell[] row : target.getPlayer().getCells())
+            for (Cell cell : row) {
+                System.out.println("name inside: " + cell.getFighter().getName());
+                if (cell.getFighter().getName().equals(this.name)) {
+                    cell.setResistance(resistance);
+                    System.out.println("resistance inside: " + resistance);
+                    System.out.println("cell: " + cell.getResistance());
+                }
+            }
         return true;
     }
     
-    private boolean powerUp() {
+    private boolean powerUp(ThreadServer target) {
         this.powerup ++;
         return true;
     }
     
     protected double getDamageWithPowerUp(int initialDamage) {
         double damage = initialDamage + ((initialDamage * (power * powerup))/100);
-        System.out.println("power: " + power);
-        System.out.println("powerup: " + powerup);
-        System.out.println("DAMAGE to take: " + damage);
+//        System.out.println("power: " + power);
+//        System.out.println("powerup: " + powerup);
+//        System.out.println("DAMAGE to take: " + damage);
         powerup = 0;
         return damage;
     }

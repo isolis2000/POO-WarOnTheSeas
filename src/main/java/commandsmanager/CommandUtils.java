@@ -47,17 +47,19 @@ public class CommandUtils {
         try {
             for (Object o : arr) {
                 if (o instanceof Integer && (int)o == -1) {
-                    System.out.println("valuesok1");
+//                    System.out.println("valuesok1");
                     return false;
                 }
                 else if (o == null) {
-                    System.out.println("valuesok2");
+//                    System.out.println("valuesok2");
                     return false;
                 }
             }
             return true;            
         } catch (Exception ex) {
             
-                    System.out.println("valuesok1");return false;}
+//                    System.out.println("valuesok1");
+            return false;
+        }
     }
 }
