@@ -75,6 +75,7 @@ public class ThreadClient extends Thread{
 //                System.out.println(this.reader.readObject());
                 readMessage = (BaseCommand)this.reader.readObject();
                 ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(readMessage.getPlayerExcecuting());
+                ClientManager.getCM().getMainScreen().updateInfoPanels();
                 System.out.println("RECIBIDO--------------------------");
                 System.out.println("mensaje: " + readMessage);
             } catch (IOException ex) {    

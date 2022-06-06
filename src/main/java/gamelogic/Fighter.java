@@ -7,6 +7,7 @@ package gamelogic;
 import client.gui.Cell;
 import java.awt.Color;
 import java.io.Serializable;
+import server.ServerFrame;
 import server.ThreadServer;
 
 /**
@@ -16,11 +17,11 @@ import server.ThreadServer;
 public abstract class Fighter implements Serializable {
     
     private String name, image;
-    private int percentage, power, resistance, sanity;
+    protected int percentage, power, resistance, sanity, powerup;
     private Color color;
-    protected Player playerExecuting;
+    protected Player player;
 
-    public Fighter(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
+    public Fighter(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player player) {
         this.name = name;
         this.image = image;
         this.percentage = percentage;
@@ -28,7 +29,8 @@ public abstract class Fighter implements Serializable {
         this.resistance = resistance;
         this.sanity = sanity;
         this.color = color;
-        this.playerExecuting = playerExecuting;
+        this.player = player;
+        this.powerup = 0;
     }
     
     // 0 attack 1 target 2 fighter 3 attacktype 4 instructions
@@ -36,6 +38,7 @@ public abstract class Fighter implements Serializable {
         return switch (args[3].toLowerCase()) {
             case "sanidad" -> sanity(target);
             case "resistencia" -> resistance(target);
+            case "fuerza" -> powerUp(target);
             default -> specialAttack(args, target);
         };
     }
@@ -50,11 +53,31 @@ public abstract class Fighter implements Serializable {
     }
     
     private boolean resistance(ThreadServer target) {
+        System.out.println("fighter name: " + name);
         for (Cell[] row : target.getPlayer().getCells())
-            for (Cell cell : row)
-                if (cell.getFighter().getName().equals(this.name))
-                    cell.setResistance(this.resistance);
+            for (Cell cell : row) {
+                System.out.println("name inside: " + cell.getFighter().getName());
+                if (cell.getFighter().getName().equals(this.name)) {
+                    cell.setResistance(resistance);
+                    System.out.println("resistance inside: " + resistance);
+                    System.out.println("cell: " + cell.getResistance());
+                }
+            }
         return true;
+    }
+    
+    private boolean powerUp(ThreadServer target) {
+        this.powerup ++;
+        return true;
+    }
+    
+    protected double getDamageWithPowerUp(int initialDamage) {
+        double damage = initialDamage + ((initialDamage * (power * powerup))/100);
+//        System.out.println("power: " + power);
+//        System.out.println("powerup: " + powerup);
+//        System.out.println("DAMAGE to take: " + damage);
+        powerup = 0;
+        return damage;
     }
     
     protected abstract boolean specialAttack(String[] args, ThreadServer target);
@@ -79,8 +102,8 @@ public abstract class Fighter implements Serializable {
         this.name = name;
     }
 
-    public Player getPlayerExecuting() {
-        return playerExecuting;
+    public Player getPlayer() {
+        return player;
     }
 
     public String getImage() {

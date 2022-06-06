@@ -33,19 +33,19 @@ public class Client {
             if (!isConnected){
                 this.socket = new Socket(SERVER_IP, PORT);
 //                this.writer = new ObjectOutputStream(socket.getOutputStream());
-                System.out.println("1");
+//                System.out.println("1");
                 this.outStream = new ObjectOutputStream(socket.getOutputStream());
-                System.out.println("2");
-                ClientManager.getCM().getMainScreen().showClientMessage(player.getPlayerName());
-                System.out.println("3");
+//                System.out.println("2");
+                ClientManager.getCM().getMainScreen().showClientMessage(player.getName());
+//                System.out.println("3");
                 outStream.writeObject(player);
-                System.out.println("4");
+//                System.out.println("4");
                 this.theadClient = new ThreadClient();
-                System.out.println("5");
+//                System.out.println("5");
                 this.theadClient.start();
-                System.out.println("6");
+//                System.out.println("6");
                 this.isConnected = true;
-                System.out.println("7");
+//                System.out.println("7");
             }
             //threadClient
         } catch (IOException ex) {

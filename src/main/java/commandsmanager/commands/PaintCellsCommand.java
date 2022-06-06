@@ -8,29 +8,28 @@ import client.ClientManager;
 import commandsmanager.BaseCommand;
 import gamelogic.Player;
 import java.io.Serializable;
-import server.ServerFrame;
 
 /**
  *
  * @author ivan
  */
-public class LogCommand extends BaseCommand implements Serializable {
+public class PaintCellsCommand extends BaseCommand implements Serializable {
 
-    public LogCommand(String commandName, String[] args, Player player) {
+    public PaintCellsCommand(String commandName, String[] args, Player player) {
         super(commandName, args, false, true, player);
     }
 
     @Override
     public String executeOnServer() {
-//        System.out.println("logs on server: " + ServerFrame.getServer().getLogsString());
-        this.setStrToShare(ServerFrame.getServer().getLogsString());
-        return "Se envio el registro al jugador " + this.getPlayerExcecuting().getName();
+        String dataType = args[1];
+        playerExcecuting.paintCells(dataType);
+        return "Se pintaron las casillas del jugador " + playerExcecuting.getName();
     }
 
     @Override
     public String executeOnClient() {
-        ClientManager.getCM().getMainScreen().showScrollablePopup(this.getStrToShare());
-        return "El registro se abrira en un popup";
+        ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(getPlayerExcecuting());
+        return "Se pintaron las casillas";
     }
     
 }

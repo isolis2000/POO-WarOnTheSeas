@@ -32,8 +32,8 @@ public class WavesControl extends Fighter {
             case "RADIOACTIVE RUSH" -> radioactiveRush(target);
             default -> false;
         };
-        if (!result)
-            System.out.println("specialAttackBombsucks");
+//        if (!result)
+//            System.out.println("specialAttackBombsucks");
         return result;
     }
     
@@ -56,12 +56,13 @@ public class WavesControl extends Fighter {
                 i++;
             }
             int[] origin = {x, y};
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " destruyo esta casilla con el ataque Swirl Rising.";
             ArrayList<Cell> cellsToAttack = target.getPlayer().getCellsInRadius(origin, radius);
             Swirl swirl = new Swirl(radius, origin);
             for (Cell cell : cellsToAttack) {
-                cell.setSwirl(swirl, forRecord);
+                if (cell.setSwirl(swirl, forRecord))
+                    target.getPlayer().removeCell();
             }
             return true;
         } catch (NumberFormatException ex) {
@@ -93,17 +94,20 @@ public class WavesControl extends Fighter {
             }
             Swirl swirl = target.getPlayer().getCells()[x][y].getSwirl();
             int radius = swirl.getRadius();
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+            double damage = getDamageWithPowerUp(25);
+            String initialRecord = "Jugador " + this.player.getName() 
                     + " ataco esta casilla con el ataque Send Human Garbage." 
-                    + " La casilla tomo 25% de dano.";
+                    + " La casilla tomo " + damage + "% de dano.";
             ArrayList<Cell> cellsToAttack = target.getPlayer().getRandomCells(radius * 10);
             for (Cell cell : cellsToAttack) {
+                String forRecord = initialRecord;
                 if (random.nextBoolean()) {
                     forRecord += " Adicionalmente, como la basura es radioactiva, "
                             + "esta permanece en esta casilla";
                     cell.addRadioactiveWaste();
                 }
-                cell.takeDamage(25, forRecord);
+                if (cell.takeDamage(damage, forRecord))
+                    target.getPlayer().removeCell();
             }
             return true;
         } catch (Exception ex) {
@@ -121,21 +125,22 @@ public class WavesControl extends Fighter {
     private boolean radioactiveRush(ThreadServer target) {
         Random random = new Random();
         try {
-            String initialRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+            String initialRecord = "Jugador " + this.player.getName() 
                     + " ataco esta casilla con el ataque Radioactive Rush.";
             ArrayList<Cell> cellsToAttack = target.getPlayer().getRadioactiveCells();
             for (Cell cell : cellsToAttack) {
                 int time = random.nextInt(10) + 1;
                 int tonsOfRadWaste = cell.getRadioactiveWaste();
-                initialRecord += "Esta casilla posee " + tonsOfRadWaste
-                        + " toneladas de basura radioactiva."
+                String extraInfoRecord = initialRecord + "Esta casilla posee " 
+                        + tonsOfRadWaste + " toneladas de basura radioactiva."
                         + " El ataque durara " + time + " segundos.";
-                cell.addToRecord(initialRecord);
-                int damage = tonsOfRadWaste * 10;
+                cell.addToRecord(extraInfoRecord);
+                double damage = getDamageWithPowerUp(tonsOfRadWaste * 10);
                 for (int i = 0; i < time; i++) {
                     String forRecord = "Esta casilla tomo " + damage + "% de dano"
                             + " por el efecto de la basura radioactiva.";
-                    cell.takeDamage(damage, forRecord);
+                    if (cell.takeDamage(damage, forRecord))
+                        target.getPlayer().removeCell();
                 }
             }
             return true;

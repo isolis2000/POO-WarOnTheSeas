@@ -4,6 +4,7 @@
  */
 package commandsmanager.commands;
 
+import client.ClientManager;
 import client.gui.Cell;
 import commandsmanager.BaseCommand;
 import gamelogic.Player;
@@ -17,37 +18,41 @@ import server.ServerFrame;
 public class StartGameCommand extends BaseCommand implements Serializable {
 
     public StartGameCommand(String commandName, String[] args, Player player) {
-        super(commandName, args, true, false, player);
+        super(commandName, args, true, false, player);//broadcast, localcommand
     }
 
     @Override
     public String executeOnServer() {
-        System.out.println("Jugador: " + this.getPlayerExcecuting().getPlayerName() + " esta listo? " + getPlayerExcecuting().areFighersDone());
-        if (getPlayerExcecuting().areFighersDone()) {
-            getPlayerExcecuting().setReady(true);
-        }
-        if (ServerFrame.getServer().startGame()) {
-            System.out.println("CELLS--------------------------------------------");
-            for (Cell[] row : getPlayerExcecuting().getCells())
-                for (Cell cell : row)
-                    System.out.println(cell.getFighter());
-            return "Todos los jugadores estan listos";
-        }
-        else
-            return "Jugador " + getPlayerExcecuting().getPlayerName() + " esta listo para jugar, pero aun faltan jugadores para comenzar el juego";
+//        System.out.println("Jugador: " + this.getPlayerExcecuting().getPlayerName() + " esta listo? " + getPlayerExcecuting().areFighersDone());
+        if (!ServerFrame.getServer().isGameStarted()) {
+            if (getPlayerExcecuting().areFighersDone()) {
+                getPlayerExcecuting().setReady(true);
+            }
+            if (ServerFrame.getServer().startGame()) {
+                this.gameStarted = true;
+//                String playerName = playerExcecuting.getPlayerName();
+//                this.playerExcecuting = ServerFrame.getServer().getPlayers().get(ServerFrame.getServer().getConnectionsByName().get(playerName));
+                return "Todos los jugadores estan listos";
+            }
+            else
+                return "Jugador " + getPlayerExcecuting().getName() + " esta listo para jugar, pero aun faltan jugadores para comenzar el juego";
+        } else
+            return "Juego ya comenzo";
     }
 
     @Override
     public String executeOnClient() {
-        if (getPlayerExcecuting().isReady()) {
-            System.out.println("CELLS--------------------------------------------");
-            for (Cell[] row : getPlayerExcecuting().getCells())
-                for (Cell cell : row)
-                    System.out.println(cell.getFighter());
-            return "Listo para jugar";
+        if (!this.gameStarted) {
+            if (getPlayerExcecuting().isReady()) {
+                ClientManager.getCM().getMainScreen().updateInfoPanels();
+                return "Listo para jugar";
+            }
+            else
+                return "Requiere como minimo 3 luchadores creados antes de comenzar la partida";
+        } else {
+            ClientManager.getCM().getMainScreen().updateInfoPanels();
+            return "Juego ya comenzo";
         }
-        else
-            return "Requiere como minimo 3 luchadores creados antes de comenzar la partida";
     }
     
 }

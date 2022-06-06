@@ -17,17 +17,7 @@ import server.ThreadServer;
  * @author ivan
  */
 public class FishTelepathy extends Fighter {
-    /*
-    Cardumen: Crea entre 100 y 300 peces pequeños que atacan
-    aleatoriamente casillas del contrincante. Cada pez daña un 33% de la
-    casilla.
-    • Shark attack: los tiburones atacan las 4 esquinas del mapa. Desde
-    cada una de las esquinas un radio de entre 1 y 10 casillas.
-    • Pulp: se generan entre 20 y 50 pulpos, cada uno saca 8 tentáculos en
-    casillas aleatorias. Si al menos 4 tentáculos de cualesquiera pulpos
-    tocan la misma casilla, se destruye. Es decir, cada tentáculo daña un
-    25% la casilla que toca.
-    */
+    
     public FishTelepathy(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
         super(name, image, percentage, power, resistance, sanity, color, playerExecuting);
     }
@@ -41,21 +31,21 @@ public class FishTelepathy extends Fighter {
             case "PULP" -> pulp(target);
             default ->false;
         };
-        if (!result)
-            System.out.println("specialAttackBombsucks");
         return result;
     }
     
     private boolean cardumen(ThreadServer target) {
         Random random = new Random();       
-        int numOfCells = random.nextInt(99, 300) + 1;
+        int numOfCells = random.nextInt(100, 301);
+        double damage = getDamageWithPowerUp(33);
         try {
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " ataco esta casilla con el ataque Cardumen." 
-                    + " La casilla tomo 33% de dano.";
+                    + " La casilla tomo " + damage + "% de dano.";
             ArrayList<Cell> cellsToDestroy = target.getPlayer().getRandomCells(numOfCells);
             for (Cell cell : cellsToDestroy)
-                cell.takeDamage(33, forRecord);
+                if (cell.takeDamage(damage, forRecord))
+                    target.getPlayer().removeCell();
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -69,11 +59,11 @@ public class FishTelepathy extends Fighter {
     private boolean sharkAttack(ThreadServer target) {
         try {
             ArrayList<Cell> sharkCells = target.getPlayer().getSharkCells();
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
-                    + " ataco esta casilla con el ataque Shark Attack." 
-                    + " La casilla tomo 50% de dano.";
+            String forRecord = "Jugador " + this.player.getName() 
+                    + " destruyo esta casilla con el ataque Shark Attack.";
             for (Cell cell : sharkCells) {
-                cell.takeDamage(50, forRecord);
+                if (cell.setHp(0, forRecord))
+                    target.getPlayer().removeCell();
             }
             return true;
         } catch (Exception ex) {
@@ -91,14 +81,16 @@ public class FishTelepathy extends Fighter {
         Random random = new Random();
         int octopusAmmount = random.nextInt(20,51);
         ArrayList<Cell> cellsToAttack = new ArrayList<>();
+        double damage = getDamageWithPowerUp(25);
         try {
             for (int i = 0; i < octopusAmmount; i++)
                 cellsToAttack.addAll(target.getPlayer().getRandomCells(8));
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " ataco esta casilla con el ataque Pulp." 
-                    + " La casilla tomo 25% de dano.";
+                    + " La casilla tomo " + damage + "% de dano.";
             for (Cell cell : cellsToAttack) {
-                cell.takeDamage(25, forRecord);
+                if (cell.takeDamage(damage, forRecord))
+                    target.getPlayer().removeCell();
             }
             return true;
         } catch (Exception ex) {

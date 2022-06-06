@@ -23,6 +23,7 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 /**
@@ -54,9 +55,10 @@ public class MainScreen extends javax.swing.JFrame {
         pnlMain = new javax.swing.JPanel();
         pnlGameData = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txfTotalHP = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txfDestroyedCells = new javax.swing.JTextField();
+        lblTurn = new javax.swing.JLabel();
         pnlCommands = new javax.swing.JPanel();
         txfCommand = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -86,15 +88,15 @@ public class MainScreen extends javax.swing.JFrame {
         jLabel1.setText("Vida:");
         jLabel1.setFocusable(false);
 
-        jTextField1.setBackground(new java.awt.Color(0, 84, 119));
-        jTextField1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField1.setText("50%");
-        jTextField1.setBorder(null);
-        jTextField1.setFocusable(false);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txfTotalHP.setBackground(new java.awt.Color(0, 84, 119));
+        txfTotalHP.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        txfTotalHP.setForeground(new java.awt.Color(255, 255, 255));
+        txfTotalHP.setText("50%");
+        txfTotalHP.setBorder(null);
+        txfTotalHP.setFocusable(false);
+        txfTotalHP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txfTotalHPActionPerformed(evt);
             }
         });
 
@@ -102,12 +104,16 @@ public class MainScreen extends javax.swing.JFrame {
         jLabel2.setText("Casillas destruidas: ");
         jLabel2.setFocusable(false);
 
-        jTextField2.setBackground(new java.awt.Color(0, 84, 119));
-        jTextField2.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField2.setText("200");
-        jTextField2.setBorder(null);
-        jTextField2.setFocusable(false);
+        txfDestroyedCells.setBackground(new java.awt.Color(0, 84, 119));
+        txfDestroyedCells.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        txfDestroyedCells.setForeground(new java.awt.Color(255, 255, 255));
+        txfDestroyedCells.setText("200");
+        txfDestroyedCells.setBorder(null);
+        txfDestroyedCells.setFocusable(false);
+
+        lblTurn.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        lblTurn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTurn.setText("No es su turno");
 
         javax.swing.GroupLayout pnlGameDataLayout = new javax.swing.GroupLayout(pnlGameData);
         pnlGameData.setLayout(pnlGameDataLayout);
@@ -116,12 +122,14 @@ public class MainScreen extends javax.swing.JFrame {
             .addGroup(pnlGameDataLayout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(jLabel1)
-                .addGap(0, 0, 0)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 434, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txfTotalHP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(163, 163, 163)
+                .addComponent(lblTurn, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                .addGap(158, 158, 158)
                 .addComponent(jLabel2)
                 .addGap(0, 0, 0)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txfDestroyedCells, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(45, 45, 45))
         );
         pnlGameDataLayout.setVerticalGroup(
@@ -131,10 +139,11 @@ public class MainScreen extends javax.swing.JFrame {
                 .addGroup(pnlGameDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlGameDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txfDestroyedCells, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblTurn))
                     .addGroup(pnlGameDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txfTotalHP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(104, Short.MAX_VALUE))
         );
 
@@ -318,7 +327,7 @@ public class MainScreen extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,13 +344,13 @@ public class MainScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txfCommandActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txfTotalHPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfTotalHPActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txfTotalHPActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         String comando = txfCommand.getText().trim();
-        System.out.println("comando: " + comando);
+        System.out.println("comando enviado: " + comando);
         if (!comando.equals("")) {
             String array[] = CommandUtils.convertToArray(comando);
             BaseCommand newCommand = CommandFactory.getCommand(array[0], array, player);
@@ -384,6 +393,7 @@ public class MainScreen extends javax.swing.JFrame {
             for (int col = 0; col < 30; col++) {
                 int[] placement = {row+1, col+1};
                 Cell cell = new Cell("E", placement);
+                cell.setHorizontalAlignment(SwingConstants.CENTER);
                 cell.setText("");
                 cell.setOpaque(true);
                 cell.setBackground(Color.gray);
@@ -394,9 +404,14 @@ public class MainScreen extends javax.swing.JFrame {
                 pnlBoard.add(player.getCells()[row][col]);
             }
         }
+        updateInfoPanels();
     }
     
     public void showPopup(String str) {
+        JOptionPane.showMessageDialog(null, str);
+    }
+    
+    public void showScrollablePopup(String str) {
         JTextArea textArea = new JTextArea(str);
         JScrollPane scrollPane = new JScrollPane(textArea);  
         textArea.setLineWrap(true);  
@@ -404,6 +419,15 @@ public class MainScreen extends javax.swing.JFrame {
         scrollPane.setPreferredSize( new Dimension( 500, 500 ) );
         JOptionPane.showMessageDialog(null, scrollPane, "Registro",  
                                                JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void updateInfoPanels() {
+        txfTotalHP.setText(Double.toString(player.getHp()));
+        txfDestroyedCells.setText(Integer.toString(600 - player.getCellsLeft()));
+        if (player.isTurn())
+            lblTurn.setText("Es su turno!");
+        else
+            lblTurn.setText("No es su turno");
     }
     
     private void initClient() {
@@ -545,8 +569,7 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel lblTurn;
     private javax.swing.JPanel pnlBoard;
     private javax.swing.JPanel pnlCommands;
     private javax.swing.JPanel pnlGameData;
@@ -557,5 +580,7 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JTextArea txaCommandsRegistry;
     private javax.swing.JTextArea txaLogs;
     private javax.swing.JTextField txfCommand;
+    private javax.swing.JTextField txfDestroyedCells;
+    private javax.swing.JTextField txfTotalHP;
     // End of variables declaration//GEN-END:variables
 }

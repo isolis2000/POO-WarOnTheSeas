@@ -33,15 +33,22 @@ public class AttackCommand extends BaseCommand implements Serializable {
     public String executeOnServer() {
         String targetName = this.getArgs()[1];
         ThreadServer ts =  ServerFrame.getServer().getConnectionsByName().get(targetName);
+//        ts.getPlayer().syncPlayer(playerExcecuting);
         excecutionResult = getPlayerExcecuting().attackWithFighter(ts, this.getArgs());
         ServerFrame.getServer().changeTurn();
+//        String playerName = playerExcecuting.getPlayerName();
+//        Player playerToSync = ServerFrame.getServer().getConnectionsByName().get(playerName).getPlayer();
+//        playerExcecuting.syncPlayer(playerToSync);
 //        ServerFrame.getServer().syncPlayerToThread(this.getPlayerExcecuting());
+//        System.out.println("hp: " + getPlayerExcecuting().getHp());
+//        System.out.println("left: " + getPlayerExcecuting().getCellsLeft());
         return excecutionResult;
     }
 
     @Override
     public String executeOnClient() {
         ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(getPlayerExcecuting());
+        ClientManager.getCM().getMainScreen().updateInfoPanels();
         return excecutionResult;
     }
     

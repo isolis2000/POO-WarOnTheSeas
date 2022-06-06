@@ -30,8 +30,8 @@ public class ThundersUnderTheSea extends Fighter {
             case "EEL ATTACK" -> eelAttack(target);
             default ->false;
         };
-        if (!result)
-            System.out.println("specialAttackBombsucks");
+//        if (!result)
+//            System.out.println("specialAttackBombsucks");
         return result;
     }
     /*
@@ -42,14 +42,15 @@ public class ThundersUnderTheSea extends Fighter {
     private boolean thunderRain(ThreadServer target) {
         Random random = new Random();
         try {
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " ataco esta casilla con el ataque Thunder Rain." 
                     + " La casilla tomo ";
             ArrayList<Cell> cellsHit = target.getPlayer().getRandomCells(100);
             for (Cell cell : cellsHit) {
-                int damageTaken = random.nextInt(10,21);
-                forRecord += Integer.toString(damageTaken) + "% de dano.";
-                cell.takeDamage(damageTaken, forRecord);
+                double damageTaken = getDamageWithPowerUp(random.nextInt(10,21));
+                forRecord += Double.toString(damageTaken) + "% de dano.";
+                if (cell.takeDamage(damageTaken, forRecord))
+                    target.getPlayer().removeCell();
             }
             return true;
         } catch (NumberFormatException ex) {
@@ -67,14 +68,15 @@ public class ThundersUnderTheSea extends Fighter {
         Random random = new Random();
         int ammountOfThunders = random.nextInt(5, 11);
         try {
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " destruyo esta casilla con el ataque Poseidon Thunders";
             ArrayList<Cell> initialHits = target.getPlayer().getRandomCells(ammountOfThunders);
             for (Cell initialCell : initialHits) {
                 int radius = random.nextInt(2, 11);
                 ArrayList<Cell> colateralCells = target.getPlayer().getCellsInRadius(initialCell.getPlacement(), radius);
                 for (Cell cell : colateralCells)
-                    cell.setHp(0, forRecord);
+                    if (cell.setHp(0, forRecord))
+                        target.getPlayer().removeCell();
             }
             return true;
         } catch (NumberFormatException ex) {
@@ -93,16 +95,17 @@ public class ThundersUnderTheSea extends Fighter {
         Random random = new Random();
         int numOfEels = random.nextInt(25, 101);
         try {
-            String forRecord = "Jugador " + this.playerExecuting.getPlayerName() 
+            String forRecord = "Jugador " + this.player.getName() 
                     + " ataco esta casilla con el ataque Eel Attack." 
                     + " La casilla recibio ";
             ArrayList<Cell> cellsToAttack = target.getPlayer().getRandomCells(numOfEels);
             for (Cell cell : cellsToAttack) {
                 int numOfShocks = random.nextInt(10) + 1;
-                int damage = numOfShocks * 10;
+                double damage = getDamageWithPowerUp(numOfShocks * 10);
                 forRecord += Integer.toString(numOfShocks) + " descargas y tomo " 
-                        + Integer.toString(damage) + "% de dano.";
-                cell.takeDamage(damage, forRecord);
+                        + Double.toString(damage) + "% de dano.";
+                if (cell.takeDamage(damage, forRecord))
+                    target.getPlayer().removeCell();
             }
             return true;
         } catch (NumberFormatException ex) {

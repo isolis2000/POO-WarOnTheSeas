@@ -15,11 +15,12 @@ import gamelogic.Player;
  * @author diemo
  */
 public abstract class BaseCommand implements iCommand, Serializable{
-    private String[] args;
+    protected String[] args;
     private boolean broadcast, localCommand;
     private String commandName;
-    private Player playerExcecuting;
-    private String strToShare;
+    protected Player playerExcecuting;
+    protected String strToShare;
+    protected boolean success = true, gameStarted;
 
     public BaseCommand(String commandName, String[] args, boolean broadcast, boolean localCommand, Player player) {
         this.args = args;
@@ -64,16 +65,25 @@ public abstract class BaseCommand implements iCommand, Serializable{
     public boolean isBroadcast(){
         return broadcast;
     }
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
     
     
     public abstract String executeOnServer();
     public abstract String executeOnClient(); 
-//    
-//    @Override
-//    public String toString() {
-//        String ret = commandName;
-//        ret += playerExcecuting;
-//        return ret;
-//    }    
+    
+    @Override
+    public String toString() {
+        String ret = commandName;
+        ret += ", player: " + playerExcecuting;
+        ret += " turn: " + playerExcecuting.isTurn();
+        return ret;
+    }    
     
 }

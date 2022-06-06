@@ -45,20 +45,20 @@ public class ThreadServer extends Thread{
     }
     
     public void run(){
-        System.out.println("no");
+//        System.out.println("no");
         BaseCommand readCommand = null;
         while (isRunning) {
-            System.out.println("yes");
+//            System.out.println("yes");
             try {
                 writer.reset();
             } catch (IOException ex) {
                 System.exit(0);
             }
             try {
-                System.out.println("previous read command");
+//                System.out.println("previous read command");
                 readCommand = (BaseCommand)this.reader.readObject();
 //                player = readCommand.getPlayerExcecuting();
-                System.out.println("CellsAfterW: " + Arrays.toString(player.getCells()));
+//                System.out.println("CellsAfterW: " + Arrays.toString(player.getCells()));
 //                readCommand.setPlayerExcecuting(player);
                 player = readCommand.getPlayerExcecuting();
 //                System.out.println("map: ");
@@ -81,7 +81,7 @@ public class ThreadServer extends Thread{
                 String name = readCommand.getArgs()[1];
                 server.screenRef.showServerMessage(readCommand.executeOnServer());
                 for (HashMap.Entry<ThreadServer, Player> set : server.getPlayers().entrySet())
-                    if (set.getValue().getPlayerName().equals(name))
+                    if (set.getValue().getName().equals(name))
                         server.sendToOne(readCommand, set.getKey());
             }
         }
