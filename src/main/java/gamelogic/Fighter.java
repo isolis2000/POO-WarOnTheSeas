@@ -16,14 +16,15 @@ import server.ThreadServer;
  */
 public abstract class Fighter implements Serializable {
     
-    private String name, image;
+    private String name, image, type;
     protected int percentage, power, resistance, sanity, powerup;
     private Color color;
     protected Player player;
 
-    public Fighter(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player player) {
+    public Fighter(String name, String image, String type, int percentage, int power, int resistance, int sanity, Color color, Player player) {
         this.name = name;
         this.image = image;
+        this.type = type;
         this.percentage = percentage;
         this.power = power;
         this.resistance = resistance;
@@ -152,6 +153,10 @@ public abstract class Fighter implements Serializable {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public String getType() {
+        return type;
     }
     
 }

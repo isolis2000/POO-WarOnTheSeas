@@ -726,15 +726,17 @@ public class MainScreen extends javax.swing.JFrame {
             if (!fighterNameLabels[i].getText().equals(player.getFighters().get(i).getName())) {
                 Fighter fighter = player.getFighters().get(i);
                 String name = fighter.getName();
-                String percentage = Integer.toString(fighter.getPercentage());
+                String percentage = Integer.toString(fighter.getPercentage()) + "%";
+                String type = fighter.getType();
                 String iconStr = "/fighter_icons/" + fighter.getImage() + ".png";
                 ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource(iconStr));
-                String power = Integer.toString(fighter.getPower());
-                String resistance = Integer.toString(fighter.getResistance());
-                String sanity = Integer.toString(fighter.getSanity());
+                String power = Integer.toString(fighter.getPower()) + "%";
+                String resistance = Integer.toString(fighter.getResistance()) + "%";
+                String sanity = Integer.toString(fighter.getSanity()) + "%";
                 fighterNameLabels[i].setText(name);
                 fighterNameRLabels[i].setText(name);
                 fighterPercentageLabels[i].setText(percentage);
+                fighterTypeLabels[i].setText(type);
                 fighterIconLabels[i].setIcon(icon);
                 fighterPowerLabels[i].setText(power);
                 fighterResistanceLabels[i].setText(resistance);

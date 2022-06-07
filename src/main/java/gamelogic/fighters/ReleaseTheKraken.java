@@ -19,7 +19,7 @@ import server.ThreadServer;
 public class ReleaseTheKraken extends Fighter {
 
     public ReleaseTheKraken(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
-        super(name, image, percentage, power, resistance, sanity, color, playerExecuting);
+        super(name, image, "Release The Kraken", percentage, power, resistance, sanity, color, playerExecuting);
     }
     
     // 0 attack 1 target 2 fighter 3 attacktype 4 instructions
