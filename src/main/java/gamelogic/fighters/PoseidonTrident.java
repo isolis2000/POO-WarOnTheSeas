@@ -19,7 +19,7 @@ import server.ThreadServer;
 public class PoseidonTrident extends Fighter {
 
     public PoseidonTrident(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
-        super(name, image, percentage, power, resistance, sanity, color, playerExecuting);
+        super(name, image, "Poseidon Trident", percentage, power, resistance, sanity, color, playerExecuting);
     }
 /*
     Three lines: selecciona 3 puntos en el mapa. En cada punto destruye lo que esté de 1 a 4

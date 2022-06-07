@@ -20,7 +20,7 @@ import server.ThreadServer;
 public class UnderseaFire extends Fighter {
 
     public UnderseaFire(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
-        super(name, image, percentage, power, resistance, sanity, color, playerExecuting);
+        super(name, image, "Undersea Fire", percentage, power, resistance, sanity, color, playerExecuting);
     }
     
     @Override

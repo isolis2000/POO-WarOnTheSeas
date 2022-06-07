@@ -20,7 +20,7 @@ import server.ThreadServer;
 public class WavesControl extends Fighter {
 
     public WavesControl(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
-        super(name, image, percentage, power, resistance, sanity, color, playerExecuting);
+        super(name, image, "Waves Control", percentage, power, resistance, sanity, color, playerExecuting);
     }
     
     @Override

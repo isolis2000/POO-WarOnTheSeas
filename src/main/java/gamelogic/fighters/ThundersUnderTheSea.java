@@ -19,7 +19,7 @@ import server.ThreadServer;
 public class ThundersUnderTheSea extends Fighter {
 
     public ThundersUnderTheSea(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
-        super(name, image, percentage, power, resistance, sanity, color, playerExecuting);
+        super(name, image, "Thunders Under The Sea", percentage, power, resistance, sanity, color, playerExecuting);
     }
     @Override
     protected boolean specialAttack(String[] args, ThreadServer target) {
