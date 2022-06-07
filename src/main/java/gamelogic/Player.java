@@ -66,6 +66,20 @@ public class Player implements Serializable {
         return true;
     }
     
+    public int[] getFighterCells(String fighterName) {
+        int cellsDestroyed = 0, totalCells = 0;
+        for (Cell[] row : cells)
+            for (Cell cell : row)
+                if (cell.getFighter() != null 
+                        && cell.getFighter().getName().equals(fighterName)) {
+                    totalCells ++;
+                    if (cell.getHp() <= 0)
+                        cellsDestroyed ++;
+                }
+        int cellsLeftFromTotal = totalCells - cellsDestroyed;
+        return new int[] {cellsLeftFromTotal, totalCells};
+    }
+    
     public boolean addFighter(String name, String image, int percentage, int type, int power, int resistance, int sanity) {
         Color color = colors[fighters.size()];
         String powerStr = Integer.toString(power);

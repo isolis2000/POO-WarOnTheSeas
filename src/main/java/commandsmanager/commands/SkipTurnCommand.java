@@ -16,7 +16,6 @@ import server.ServerFrame;
  */
 public class SkipTurnCommand extends BaseCommand implements Serializable {
     
-    private String excecutionResult = "";
     
     public SkipTurnCommand(String commandName, String[] args, Player player) {
         super(commandName, args, true, false, player);
@@ -24,16 +23,18 @@ public class SkipTurnCommand extends BaseCommand implements Serializable {
     
     @Override
     public String executeOnServer() {
-        ServerFrame.getServer().changeTurn();
-        excecutionResult = "Jugador " + playerExcecuting.getName() + " ha saltado su turno.";
-        return excecutionResult;
+        if (strToShare == null) {
+            ServerFrame.getServer().changeTurn();
+            strToShare = "Jugador " + playerExcecuting.getName() + " ha saltado su turno.";
+        }
+        return strToShare;
     }
 
     @Override
     public String executeOnClient() {
         ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(getPlayerExcecuting());
         ClientManager.getCM().getMainScreen().updateInfoPanels();
-        return excecutionResult;
+        return strToShare;
     }
     
 }

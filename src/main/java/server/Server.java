@@ -38,12 +38,20 @@ public class Server extends Thread{
     private HashMap<String, ThreadServer> connectionsByName = new HashMap<>();
     private boolean gameStarted = false;
     private ArrayList<String> logs;
+    private ArrayList<String> attackCommands = new ArrayList<>();
 //    private HashMap<String, Player> players = new HashMap<>();
     //
     public Server(ServerFrame screenRef){
         this.screenRef = screenRef;
         this.logs = new ArrayList<>();
+        initAttackCommands();
         this.runServer();
+    }
+    
+    private void initAttackCommands() {
+        attackCommands.add("ATAQUE");
+        attackCommands.add("RENDIRSE");
+        attackCommands.add("SALTAR TURNO");
     }
 
     public HashMap<ThreadServer, Player> getPlayers() {
@@ -68,10 +76,7 @@ public class Server extends Thread{
     public boolean playerSurrender(Player player) {
         for (ThreadServer ts : connections)
             if (ts.getPlayer().getName().equals(player.getName())) {
-            try {
-                ts.getWriter().close();
-            } catch (IOException ex) {System.out.println("ex");}
-                connections.remove(ts);
+                ts.setPlayerLost(true);
             }
         return connections.size() == 1;
     }
@@ -113,7 +118,7 @@ public class Server extends Thread{
     //                System.out.println("Object: " + Arrays.toString(command.getArgs()));
     //                System.out.println("Object1: " + command);
     //                System.out.println("writer: " + getWriter());
-                    command.setPlayerExcecuting(connection.getPlayer());
+                    command.getPlayerExcecuting().syncPlayer(connection.getPlayer());
                     this.screenRef.showServerMessage(command.executeOnServer());
                     command.getPlayerExcecuting().setTurn(connection.getPlayer().isTurn());
     //                this.screenRef.showServerMessage(Integer.toString(command.getPlayerExcecuting().getFighters().size()));
@@ -139,6 +144,7 @@ public class Server extends Thread{
     //                System.out.println("Object: " + Arrays.toString(command.getArgs()));
     //                System.out.println("Object1: " + command);
     //                System.out.println("writer: " + getWriter());
+//                    command.getPlayerExcecuting().syncPlayer(connection.getPlayer());
                     command.setPlayerExcecuting(connection.getPlayer());
 //                    this.screenRef.showServerMessage(command.executeOnServer());
 //                    command.getPlayerExcecuting().setTurn(connection.getPlayer().isTurn());
@@ -156,12 +162,13 @@ public class Server extends Thread{
     }
     
     public void broadcast(BaseCommand command) {
-        if (command.getCommandName().toUpperCase().equals("ATAQUE")) {
+        if (attackCommands.contains(command.getCommandName().toUpperCase())) {
             attackBroadcast(command);
         } else {
             for (ThreadServer connection : connections) {
                 try {
                     connection.getWriter().reset();
+//                    command.getPlayerExcecuting().syncPlayer(connection.getPlayer());
                     command.setPlayerExcecuting(connection.getPlayer());
                     this.screenRef.showServerMessage(command.executeOnServer());
                     command.getPlayerExcecuting().setTurn(connection.getPlayer().isTurn());
@@ -183,7 +190,7 @@ public class Server extends Thread{
         try {
             System.out.println("To SEND FOR ONE ---------------------------");
             System.out.println(command.toString());
-            command.setPlayerExcecuting(getPlayerByName(ts.getPlayer().getName()));
+            command.getPlayerExcecuting().syncPlayer(getPlayerByName(ts.getPlayer().getName()));
             ts.getWriter().writeObject(command);
         } catch (IOException ex) {
         }
@@ -245,15 +252,39 @@ public class Server extends Thread{
         if (connections.size() != 1) {
             for (int i = 0; i < connections.size(); i++) {
                 if (connections.get(i).getPlayer().isTurn()) {
-                    connections.get(i).getPlayer().setTurn(false);
-                    if (i + 1 == connections.size())
-                        connections.get(0).getPlayer().setTurn(true);
-                    else
-                        connections.get(i + 1).getPlayer().setTurn(true);
-                    break;
+                    ThreadServer current = connections.get(i);
+                    ThreadServer nextTs = getNextPlayer(current);
+//                    connections.get(i).getPlayer().setTurn(false);
+                    if (!nextTs.equals(connections.get(i))) {
+                        current.getPlayer().setTurn(false);
+                        nextTs.getPlayer().setTurn(true);
+                        break;
+                    }
                 }
             }
         }
+    }
+    
+    private ThreadServer getNextPlayer(ThreadServer current) {
+        ArrayList<ThreadServer> localCopy = new ArrayList<>();
+        localCopy.addAll(connections);
+        for (ThreadServer ts : connections)
+            if (!ts.equals(current) && ts.isPlayerLost())
+                localCopy.remove(ts);
+        int size = localCopy.size();
+        if (size <= 1)
+            return current;
+        else {
+            for (int i = 0; i < size; i++)
+                if (localCopy.get(i).equals(current)) {
+                    if (i + 1 == size)
+                        return localCopy.get(0);
+                    else
+                        return localCopy.get(i + 1);
+                }
+        }
+        System.out.println("null??????");
+        return null;
     }
     
     public void run(){

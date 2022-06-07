@@ -49,6 +49,7 @@ public class AttackCommand extends BaseCommand implements Serializable {
     public String executeOnClient() {
         ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(getPlayerExcecuting());
         ClientManager.getCM().getMainScreen().updateInfoPanels();
+        ClientManager.getCM().getMainScreen().showLastAttack(excecutionResult);
         return excecutionResult;
     }
     

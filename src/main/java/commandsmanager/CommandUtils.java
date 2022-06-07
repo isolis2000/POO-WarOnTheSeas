@@ -34,7 +34,10 @@ public class CommandUtils {
     public static String concatArray(String[] args) {
         String str = "";
         for (int i = 0; i < args.length; i++) {
-            str += args[i] + "-";
+            if (i + 1 < args.length)
+                str += args[i] + "-";
+            else
+                str += args[i];
         }
         return str;
     }

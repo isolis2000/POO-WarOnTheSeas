@@ -17,10 +17,12 @@ import gamelogic.Fighter;
 import gamelogic.Player;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
@@ -33,6 +35,16 @@ import javax.swing.border.Border;
 public class MainScreen extends javax.swing.JFrame {
     
     private Player player;
+    private JLabel[] fighterNameLabels = new JLabel[3];
+    private JLabel[] fighterHpLabels = new JLabel[3];
+    private JLabel[] fighterCellLabels = new JLabel[3];
+    private JLabel[] fighterNameRLabels = new JLabel[3];
+    private JLabel[] fighterTypeLabels = new JLabel[3];
+    private JLabel[] fighterPowerLabels = new JLabel[3];
+    private JLabel[] fighterResistanceLabels = new JLabel[3];
+    private JLabel[] fighterSanityLabels = new JLabel[3];
+    private JLabel[] fighterIconLabels = new JLabel[3];
+    private JLabel[] fighterPercentageLabels = new JLabel[3];
     
     /**
      * Creates new form NewJFrame
@@ -59,6 +71,15 @@ public class MainScreen extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txfDestroyedCells = new javax.swing.JTextField();
         lblTurn = new javax.swing.JLabel();
+        lblFighter1 = new javax.swing.JLabel();
+        lblFighterHp1 = new javax.swing.JLabel();
+        lblFighterCells1 = new javax.swing.JLabel();
+        lblFighter2 = new javax.swing.JLabel();
+        lblFighterHp2 = new javax.swing.JLabel();
+        lblFighterCells2 = new javax.swing.JLabel();
+        lblFighterHp3 = new javax.swing.JLabel();
+        lblFighterCells3 = new javax.swing.JLabel();
+        lblFighter3 = new javax.swing.JLabel();
         pnlCommands = new javax.swing.JPanel();
         txfCommand = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -71,6 +92,39 @@ public class MainScreen extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         txaLogs = new javax.swing.JTextArea();
         pnlRight = new javax.swing.JPanel();
+        lblFighterRight1 = new javax.swing.JLabel();
+        lblFighterRight2 = new javax.swing.JLabel();
+        lblFighterRight3 = new javax.swing.JLabel();
+        pnlFighterInfoRight1 = new javax.swing.JPanel();
+        lblFighterPercentageRight1 = new javax.swing.JLabel();
+        lblFighterNameRight1 = new javax.swing.JLabel();
+        lblFighterTypeRight1 = new javax.swing.JLabel();
+        lblFighterPowerRight1 = new javax.swing.JLabel();
+        lblFighterResistanceRight1 = new javax.swing.JLabel();
+        lblFighterSanityRight1 = new javax.swing.JLabel();
+        lblFighterPowerDataRight1 = new javax.swing.JLabel();
+        lblFighterResistanceDataRight1 = new javax.swing.JLabel();
+        lblFighterSanityDataRight1 = new javax.swing.JLabel();
+        pnlFighterInfoRight2 = new javax.swing.JPanel();
+        lblFighterPercentageRight2 = new javax.swing.JLabel();
+        lblFighterNameRight2 = new javax.swing.JLabel();
+        lblFighterTypeRight2 = new javax.swing.JLabel();
+        lblFighterPowerRight2 = new javax.swing.JLabel();
+        lblFighterResistanceRight2 = new javax.swing.JLabel();
+        lblFighterSanityRight2 = new javax.swing.JLabel();
+        lblFighterPowerDataRight2 = new javax.swing.JLabel();
+        lblFighterResistanceDataRight2 = new javax.swing.JLabel();
+        lblFighterSanityDataRight2 = new javax.swing.JLabel();
+        pnlFighterInfoRight3 = new javax.swing.JPanel();
+        lblFighterPercentageRight3 = new javax.swing.JLabel();
+        lblFighterNameRight3 = new javax.swing.JLabel();
+        lblFighterTypeRight3 = new javax.swing.JLabel();
+        lblFighterPowerRight3 = new javax.swing.JLabel();
+        lblFighterResistanceRight3 = new javax.swing.JLabel();
+        lblFighterSanityRight3 = new javax.swing.JLabel();
+        lblFighterPowerDataRight3 = new javax.swing.JLabel();
+        lblFighterResistanceDataRight3 = new javax.swing.JLabel();
+        lblFighterSanityDataRight3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 84, 119));
@@ -83,15 +137,19 @@ public class MainScreen extends javax.swing.JFrame {
         pnlGameData.setBackground(new java.awt.Color(0, 84, 119));
         pnlGameData.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
         pnlGameData.setFocusable(false);
+        pnlGameData.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel1.setText("Vida:");
         jLabel1.setFocusable(false);
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGameData.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 21, -1, -1));
 
+        txfTotalHP.setEditable(false);
         txfTotalHP.setBackground(new java.awt.Color(0, 84, 119));
         txfTotalHP.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         txfTotalHP.setForeground(new java.awt.Color(255, 255, 255));
-        txfTotalHP.setText("50%");
+        txfTotalHP.setText("50.50%");
         txfTotalHP.setBorder(null);
         txfTotalHP.setFocusable(false);
         txfTotalHP.addActionListener(new java.awt.event.ActionListener() {
@@ -99,53 +157,92 @@ public class MainScreen extends javax.swing.JFrame {
                 txfTotalHPActionPerformed(evt);
             }
         });
+        pnlGameData.add(txfTotalHP, new org.netbeans.lib.awtextra.AbsoluteConstraints(97, 21, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel2.setText("Casillas destruidas: ");
         jLabel2.setFocusable(false);
+        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGameData.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(597, 21, -1, -1));
 
+        txfDestroyedCells.setEditable(false);
         txfDestroyedCells.setBackground(new java.awt.Color(0, 84, 119));
         txfDestroyedCells.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         txfDestroyedCells.setForeground(new java.awt.Color(255, 255, 255));
         txfDestroyedCells.setText("200");
         txfDestroyedCells.setBorder(null);
         txfDestroyedCells.setFocusable(false);
+        pnlGameData.add(txfDestroyedCells, new org.netbeans.lib.awtextra.AbsoluteConstraints(775, 21, 42, -1));
 
         lblTurn.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
         lblTurn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTurn.setText("No es su turno");
+        lblTurn.setFocusable(false);
+        lblTurn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGameData.add(lblTurn, new org.netbeans.lib.awtextra.AbsoluteConstraints(361, 21, 130, -1));
 
-        javax.swing.GroupLayout pnlGameDataLayout = new javax.swing.GroupLayout(pnlGameData);
-        pnlGameData.setLayout(pnlGameDataLayout);
-        pnlGameDataLayout.setHorizontalGroup(
-            pnlGameDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGameDataLayout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txfTotalHP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(163, 163, 163)
-                .addComponent(lblTurn, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
-                .addGap(158, 158, 158)
-                .addComponent(jLabel2)
-                .addGap(0, 0, 0)
-                .addComponent(txfDestroyedCells, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45))
-        );
-        pnlGameDataLayout.setVerticalGroup(
-            pnlGameDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGameDataLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(pnlGameDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlGameDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(txfDestroyedCells, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblTurn))
-                    .addGroup(pnlGameDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(txfTotalHP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(104, Short.MAX_VALUE))
-        );
+        lblFighter1.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+        lblFighter1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighter1.setText("Luchador 1");
+        lblFighter1.setFocusable(false);
+        lblFighter1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGameData.add(lblFighter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 61, -1, -1));
+
+        lblFighterHp1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterHp1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterHp1.setText("100%");
+        lblFighterHp1.setFocusable(false);
+        lblFighterHp1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGameData.add(lblFighterHp1, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 89, 97, -1));
+
+        lblFighterCells1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterCells1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterCells1.setText("300 de 300 casillas");
+        lblFighterCells1.setFocusable(false);
+        lblFighterCells1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGameData.add(lblFighterCells1, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 112, 176, -1));
+
+        lblFighter2.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+        lblFighter2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighter2.setText("Luchador 2");
+        lblFighter2.setFocusable(false);
+        lblFighter2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGameData.add(lblFighter2, new org.netbeans.lib.awtextra.AbsoluteConstraints(361, 56, 130, -1));
+
+        lblFighterHp2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterHp2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterHp2.setText("100%");
+        lblFighterHp2.setFocusable(false);
+        lblFighterHp2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGameData.add(lblFighterHp2, new org.netbeans.lib.awtextra.AbsoluteConstraints(361, 84, 130, -1));
+
+        lblFighterCells2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterCells2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterCells2.setText("300 de 300 casillas");
+        lblFighterCells2.setFocusable(false);
+        lblFighterCells2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGameData.add(lblFighterCells2, new org.netbeans.lib.awtextra.AbsoluteConstraints(361, 107, 130, -1));
+
+        lblFighterHp3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterHp3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterHp3.setText("100%");
+        lblFighterHp3.setFocusable(false);
+        lblFighterHp3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGameData.add(lblFighterHp3, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 89, 97, -1));
+
+        lblFighterCells3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterCells3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterCells3.setText("300 de 300 casillas");
+        lblFighterCells3.setFocusable(false);
+        lblFighterCells3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGameData.add(lblFighterCells3, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 112, 176, -1));
+
+        lblFighter3.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+        lblFighter3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighter3.setText("Luchador 3");
+        lblFighter3.setFocusable(false);
+        lblFighter3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pnlGameData.add(lblFighter3, new org.netbeans.lib.awtextra.AbsoluteConstraints(729, 61, -1, -1));
 
         pnlCommands.setBackground(new java.awt.Color(0, 84, 119));
         pnlCommands.setFocusable(false);
@@ -262,9 +359,9 @@ public class MainScreen extends javax.swing.JFrame {
         pnlLeftLayout.setVerticalGroup(
             pnlLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLeftLayout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pnlRight.setBackground(new java.awt.Color(0, 84, 119));
@@ -272,15 +369,193 @@ public class MainScreen extends javax.swing.JFrame {
         pnlRight.setFocusable(false);
         pnlRight.setPreferredSize(new java.awt.Dimension(315, 539));
 
+        lblFighterRight1.setFocusable(false);
+
+        lblFighterRight2.setFocusable(false);
+
+        lblFighterRight3.setFocusable(false);
+
+        pnlFighterInfoRight1.setBackground(new java.awt.Color(0, 84, 119));
+        pnlFighterInfoRight1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblFighterPercentageRight1.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+        lblFighterPercentageRight1.setForeground(new java.awt.Color(255, 255, 255));
+        lblFighterPercentageRight1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterPercentageRight1.setText("100%");
+        pnlFighterInfoRight1.add(lblFighterPercentageRight1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 199, -1));
+
+        lblFighterNameRight1.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
+        lblFighterNameRight1.setForeground(new java.awt.Color(255, 153, 153));
+        lblFighterNameRight1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterNameRight1.setText("Nombre de luchador 1");
+        pnlFighterInfoRight1.add(lblFighterNameRight1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 34, 199, -1));
+
+        lblFighterTypeRight1.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
+        lblFighterTypeRight1.setForeground(new java.awt.Color(255, 255, 204));
+        lblFighterTypeRight1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterTypeRight1.setText("Tipo de Luchador 1");
+        pnlFighterInfoRight1.add(lblFighterTypeRight1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 59, 199, -1));
+
+        lblFighterPowerRight1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterPowerRight1.setText("Poder:");
+        pnlFighterInfoRight1.add(lblFighterPowerRight1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 101, 77, -1));
+
+        lblFighterResistanceRight1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterResistanceRight1.setText("Resistencia:");
+        pnlFighterInfoRight1.add(lblFighterResistanceRight1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 124, -1, -1));
+
+        lblFighterSanityRight1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterSanityRight1.setText("Sanidad:");
+        pnlFighterInfoRight1.add(lblFighterSanityRight1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 147, 77, -1));
+
+        lblFighterPowerDataRight1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterPowerDataRight1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblFighterPowerDataRight1.setText("100%");
+        pnlFighterInfoRight1.add(lblFighterPowerDataRight1, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 101, -1, -1));
+
+        lblFighterResistanceDataRight1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterResistanceDataRight1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblFighterResistanceDataRight1.setText("100%");
+        pnlFighterInfoRight1.add(lblFighterResistanceDataRight1, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 124, -1, -1));
+
+        lblFighterSanityDataRight1.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterSanityDataRight1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblFighterSanityDataRight1.setText("100%");
+        pnlFighterInfoRight1.add(lblFighterSanityDataRight1, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 147, -1, -1));
+
+        pnlFighterInfoRight2.setBackground(new java.awt.Color(0, 84, 119));
+        pnlFighterInfoRight2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblFighterPercentageRight2.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+        lblFighterPercentageRight2.setForeground(new java.awt.Color(255, 255, 255));
+        lblFighterPercentageRight2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterPercentageRight2.setText("100%");
+        pnlFighterInfoRight2.add(lblFighterPercentageRight2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 199, -1));
+
+        lblFighterNameRight2.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
+        lblFighterNameRight2.setForeground(new java.awt.Color(255, 153, 153));
+        lblFighterNameRight2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterNameRight2.setText("Nombre de luchador 1");
+        pnlFighterInfoRight2.add(lblFighterNameRight2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 34, 199, -1));
+
+        lblFighterTypeRight2.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
+        lblFighterTypeRight2.setForeground(new java.awt.Color(255, 255, 204));
+        lblFighterTypeRight2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterTypeRight2.setText("Tipo de Luchador 1");
+        pnlFighterInfoRight2.add(lblFighterTypeRight2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 59, 199, -1));
+
+        lblFighterPowerRight2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterPowerRight2.setText("Poder:");
+        pnlFighterInfoRight2.add(lblFighterPowerRight2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 101, 77, -1));
+
+        lblFighterResistanceRight2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterResistanceRight2.setText("Resistencia:");
+        pnlFighterInfoRight2.add(lblFighterResistanceRight2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 124, -1, -1));
+
+        lblFighterSanityRight2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterSanityRight2.setText("Sanidad:");
+        pnlFighterInfoRight2.add(lblFighterSanityRight2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 147, 77, -1));
+
+        lblFighterPowerDataRight2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterPowerDataRight2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblFighterPowerDataRight2.setText("100%");
+        pnlFighterInfoRight2.add(lblFighterPowerDataRight2, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 101, -1, -1));
+
+        lblFighterResistanceDataRight2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterResistanceDataRight2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblFighterResistanceDataRight2.setText("100%");
+        pnlFighterInfoRight2.add(lblFighterResistanceDataRight2, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 124, -1, -1));
+
+        lblFighterSanityDataRight2.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterSanityDataRight2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblFighterSanityDataRight2.setText("100%");
+        pnlFighterInfoRight2.add(lblFighterSanityDataRight2, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 147, -1, -1));
+
+        pnlFighterInfoRight3.setBackground(new java.awt.Color(0, 84, 119));
+        pnlFighterInfoRight3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblFighterPercentageRight3.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+        lblFighterPercentageRight3.setForeground(new java.awt.Color(255, 255, 255));
+        lblFighterPercentageRight3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterPercentageRight3.setText("100%");
+        pnlFighterInfoRight3.add(lblFighterPercentageRight3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 199, -1));
+
+        lblFighterNameRight3.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
+        lblFighterNameRight3.setForeground(new java.awt.Color(255, 153, 153));
+        lblFighterNameRight3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterNameRight3.setText("Nombre de luchador 1");
+        pnlFighterInfoRight3.add(lblFighterNameRight3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 34, 199, -1));
+
+        lblFighterTypeRight3.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
+        lblFighterTypeRight3.setForeground(new java.awt.Color(255, 255, 204));
+        lblFighterTypeRight3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFighterTypeRight3.setText("Tipo de Luchador 1");
+        pnlFighterInfoRight3.add(lblFighterTypeRight3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 59, 199, -1));
+
+        lblFighterPowerRight3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterPowerRight3.setText("Poder:");
+        pnlFighterInfoRight3.add(lblFighterPowerRight3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 101, 77, -1));
+
+        lblFighterResistanceRight3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterResistanceRight3.setText("Resistencia:");
+        pnlFighterInfoRight3.add(lblFighterResistanceRight3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 124, -1, -1));
+
+        lblFighterSanityRight3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterSanityRight3.setText("Sanidad:");
+        pnlFighterInfoRight3.add(lblFighterSanityRight3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 147, 77, -1));
+
+        lblFighterPowerDataRight3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterPowerDataRight3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblFighterPowerDataRight3.setText("100%");
+        pnlFighterInfoRight3.add(lblFighterPowerDataRight3, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 101, -1, -1));
+
+        lblFighterResistanceDataRight3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterResistanceDataRight3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblFighterResistanceDataRight3.setText("100%");
+        pnlFighterInfoRight3.add(lblFighterResistanceDataRight3, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 124, -1, -1));
+
+        lblFighterSanityDataRight3.setFont(new java.awt.Font("Liberation Sans", 0, 14)); // NOI18N
+        lblFighterSanityDataRight3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        lblFighterSanityDataRight3.setText("100%");
+        pnlFighterInfoRight3.add(lblFighterSanityDataRight3, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 147, -1, -1));
+
         javax.swing.GroupLayout pnlRightLayout = new javax.swing.GroupLayout(pnlRight);
         pnlRight.setLayout(pnlRightLayout);
         pnlRightLayout.setHorizontalGroup(
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 264, Short.MAX_VALUE)
+            .addGroup(pnlRightLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlRightLayout.createSequentialGroup()
+                        .addComponent(lblFighterRight1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnlFighterInfoRight1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlRightLayout.createSequentialGroup()
+                        .addComponent(lblFighterRight2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnlFighterInfoRight2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlRightLayout.createSequentialGroup()
+                        .addComponent(lblFighterRight3, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnlFighterInfoRight3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
         pnlRightLayout.setVerticalGroup(
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 537, Short.MAX_VALUE)
+            .addGroup(pnlRightLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlFighterInfoRight1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblFighterRight1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblFighterRight2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlFighterInfoRight2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblFighterRight3, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlFighterInfoRight3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -295,25 +570,25 @@ public class MainScreen extends javax.swing.JFrame {
                         .addComponent(pnlLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pnlGameData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pnlBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 872, Short.MAX_VALUE))
+                            .addComponent(pnlGameData, javax.swing.GroupLayout.DEFAULT_SIZE, 918, Short.MAX_VALUE)
+                            .addComponent(pnlBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 918, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlRight, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(pnlRight, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMainLayout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+                .addContainerGap(14, Short.MAX_VALUE)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(pnlMainLayout.createSequentialGroup()
-                            .addComponent(pnlBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                            .addComponent(pnlBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(pnlGameData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(pnlLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnlRight, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(pnlCommands, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -327,7 +602,9 @@ public class MainScreen extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, 1700, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,10 +626,10 @@ public class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_txfTotalHPActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
-        String comando = txfCommand.getText().trim();
-        System.out.println("comando enviado: " + comando);
-        if (!comando.equals("")) {
-            String array[] = CommandUtils.convertToArray(comando);
+        String command = txfCommand.getText().trim();
+        System.out.println("comando enviado: " + command);
+        if (!command.equals("")) {
+            String array[] = CommandUtils.convertToArray(command);
             BaseCommand newCommand = CommandFactory.getCommand(array[0], array, player);
             if (newCommand.getCommandName().toUpperCase().equals("ERROR")) {
                 showClientMessage(newCommand.executeOnClient());
@@ -364,6 +641,7 @@ public class MainScreen extends javax.swing.JFrame {
                     player.isTurn()
                     ){
                 try {
+                    showCommandRegistry(newCommand.getArgsStr());
                     ClientManager.getCM().getThreadClient().getWriter().writeObject(newCommand);
                 } catch (IOException ex) {
                 }
@@ -404,7 +682,6 @@ public class MainScreen extends javax.swing.JFrame {
                 pnlBoard.add(player.getCells()[row][col]);
             }
         }
-        updateInfoPanels();
     }
     
     public void showPopup(String str) {
@@ -422,12 +699,52 @@ public class MainScreen extends javax.swing.JFrame {
     }
     
     public void updateInfoPanels() {
-        txfTotalHP.setText(Double.toString(player.getHp()));
+        txfTotalHP.setText(new DecimalFormat("#.##").format(player.getHp()) + "%");
         txfDestroyedCells.setText(Integer.toString(600 - player.getCellsLeft()));
+        updateFighterPanels();
         if (player.isTurn())
             lblTurn.setText("Es su turno!");
         else
             lblTurn.setText("No es su turno");
+        for (int i = 0; i < 3; i++) {
+            String fighterName = fighterNameLabels[i].getText();
+            try {
+                int[] data = player.getFighterCells(fighterName); //fighter has [0] out of [1] cells
+                double hpPercent = 100f * ((double)data[0]/(double)data[1]);
+                String cellsTxt = data[0] + " de " + data[1] + " casillas";
+                fighterHpLabels[i].setText(new DecimalFormat("#.##").format(hpPercent) + "%");
+                fighterCellLabels[i].setText(cellsTxt);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                break;
+            }
+        }
+    }
+    
+    private void updateFighterPanels() {
+        for (int i = 0; i < player.getFighters().size(); i++)
+            if (!fighterNameLabels[i].getText().equals(player.getFighters().get(i).getName())) {
+                Fighter fighter = player.getFighters().get(i);
+                String name = fighter.getName();
+                String percentage = Integer.toString(fighter.getPercentage());
+                String iconStr = "/fighter_icons/" + fighter.getImage() + ".png";
+                ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource(iconStr));
+                String power = Integer.toString(fighter.getPower());
+                String resistance = Integer.toString(fighter.getResistance());
+                String sanity = Integer.toString(fighter.getSanity());
+                fighterNameLabels[i].setText(name);
+                fighterNameRLabels[i].setText(name);
+                fighterPercentageLabels[i].setText(percentage);
+                fighterIconLabels[i].setIcon(icon);
+                fighterPowerLabels[i].setText(power);
+                fighterResistanceLabels[i].setText(resistance);
+                fighterSanityLabels[i].setText(sanity);
+            }
+    }
+    
+    public void showLastAttack(String str) {
+        String strToUse = "Resultado del ataque:\n" + str;
+        txaAttackResults.setText(strToUse);
     }
     
     private void initClient() {
@@ -437,10 +754,60 @@ public class MainScreen extends javax.swing.JFrame {
         ClientManager.getCM().setPlayerName(name);
         player = new Player(name);
         initBoard();
+        initArrays();
+        updateInfoPanels();
         ClientManager.getCM().getClient().connect(player);
     }
     
-    private void showCommandRegistry(String msg) {
+    private void initArrays() {
+        fighterHpLabels[0] = lblFighterHp1;
+        fighterHpLabels[1] = lblFighterHp2;
+        fighterHpLabels[2] = lblFighterHp3;
+        
+        fighterCellLabels[0] = lblFighterCells1;
+        fighterCellLabels[1] = lblFighterCells2;
+        fighterCellLabels[2] = lblFighterCells3;
+        
+        fighterNameLabels[0] = lblFighter1;
+        fighterNameLabels[1] = lblFighter2;
+        fighterNameLabels[2] = lblFighter3;
+        
+        fighterNameRLabels[0] = lblFighterNameRight1;
+        fighterNameRLabels[1] = lblFighterNameRight2;
+        fighterNameRLabels[2] = lblFighterNameRight3;
+        
+        fighterTypeLabels[0] = lblFighterTypeRight1;
+        fighterTypeLabels[1] = lblFighterTypeRight2;
+        fighterTypeLabels[2] = lblFighterTypeRight3;
+        
+        fighterPowerLabels[0] = lblFighterPowerDataRight1;
+        fighterPowerLabels[1] = lblFighterPowerDataRight2;
+        fighterPowerLabels[2] = lblFighterPowerDataRight3;
+        
+        fighterResistanceLabels[0] = lblFighterResistanceDataRight1;
+        fighterResistanceLabels[1] = lblFighterResistanceDataRight2;
+        fighterResistanceLabels[2] = lblFighterResistanceDataRight3;
+        
+        fighterSanityLabels[0] = lblFighterSanityDataRight1;
+        fighterSanityLabels[1] = lblFighterSanityDataRight2;
+        fighterSanityLabels[2] = lblFighterSanityDataRight3;
+        
+        fighterIconLabels[0] = lblFighterRight1;
+        fighterIconLabels[1] = lblFighterRight2;
+        fighterIconLabels[2] = lblFighterRight3;
+        
+        fighterPercentageLabels[0] = lblFighterPercentageRight1;
+        fighterPercentageLabels[1] = lblFighterPercentageRight2;
+        fighterPercentageLabels[2] = lblFighterPercentageRight3;
+        
+        for (int i = 0; i < 3; i++) {
+            fighterHpLabels[i].setForeground(Color.white);
+            fighterCellLabels[i].setForeground(Color.white);
+            fighterNameLabels[i].setForeground(Color.white);
+        }
+    }
+    
+    public void showCommandRegistry(String msg) {
         String text = txaCommandsRegistry.getText();
         text += "\n" + msg;
         txaCommandsRegistry.setText(text);
@@ -484,20 +851,20 @@ public class MainScreen extends javax.swing.JFrame {
 //        updateCells(cellsAux);
 //    }
     
-    private void shuffleMatrix(Cell[][] arr) {
-        Random random = new Random();
-
-        for (int i = arr.length - 1; i > 0; i--) {
-            for (int j = arr[i].length - 1; j > 0; j--) {
-                int m = random.nextInt(i + 1);
-                int n = random.nextInt(j + 1);
-
-                Cell temp = arr[i][j];
-                arr[i][j] = arr[m][n];
-                arr[m][n] = temp;
-            }
-        }
-    }
+//    private void shuffleMatrix(Cell[][] arr) {
+//        Random random = new Random();
+//
+//        for (int i = arr.length - 1; i > 0; i--) {
+//            for (int j = arr[i].length - 1; j > 0; j--) {
+//                int m = random.nextInt(i + 1);
+//                int n = random.nextInt(j + 1);
+//
+//                Cell temp = arr[i][j];
+//                arr[i][j] = arr[m][n];
+//                arr[m][n] = temp;
+//            }
+//        }
+//    }
 
     public Player getPlayer() {
         return player;
@@ -569,9 +936,51 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblFighter1;
+    private javax.swing.JLabel lblFighter2;
+    private javax.swing.JLabel lblFighter3;
+    private javax.swing.JLabel lblFighterCells1;
+    private javax.swing.JLabel lblFighterCells2;
+    private javax.swing.JLabel lblFighterCells3;
+    private javax.swing.JLabel lblFighterHp1;
+    private javax.swing.JLabel lblFighterHp2;
+    private javax.swing.JLabel lblFighterHp3;
+    private javax.swing.JLabel lblFighterNameRight1;
+    private javax.swing.JLabel lblFighterNameRight2;
+    private javax.swing.JLabel lblFighterNameRight3;
+    private javax.swing.JLabel lblFighterPercentageRight1;
+    private javax.swing.JLabel lblFighterPercentageRight2;
+    private javax.swing.JLabel lblFighterPercentageRight3;
+    private javax.swing.JLabel lblFighterPowerDataRight1;
+    private javax.swing.JLabel lblFighterPowerDataRight2;
+    private javax.swing.JLabel lblFighterPowerDataRight3;
+    private javax.swing.JLabel lblFighterPowerRight1;
+    private javax.swing.JLabel lblFighterPowerRight2;
+    private javax.swing.JLabel lblFighterPowerRight3;
+    private javax.swing.JLabel lblFighterResistanceDataRight1;
+    private javax.swing.JLabel lblFighterResistanceDataRight2;
+    private javax.swing.JLabel lblFighterResistanceDataRight3;
+    private javax.swing.JLabel lblFighterResistanceRight1;
+    private javax.swing.JLabel lblFighterResistanceRight2;
+    private javax.swing.JLabel lblFighterResistanceRight3;
+    private javax.swing.JLabel lblFighterRight1;
+    private javax.swing.JLabel lblFighterRight2;
+    private javax.swing.JLabel lblFighterRight3;
+    private javax.swing.JLabel lblFighterSanityDataRight1;
+    private javax.swing.JLabel lblFighterSanityDataRight2;
+    private javax.swing.JLabel lblFighterSanityDataRight3;
+    private javax.swing.JLabel lblFighterSanityRight1;
+    private javax.swing.JLabel lblFighterSanityRight2;
+    private javax.swing.JLabel lblFighterSanityRight3;
+    private javax.swing.JLabel lblFighterTypeRight1;
+    private javax.swing.JLabel lblFighterTypeRight2;
+    private javax.swing.JLabel lblFighterTypeRight3;
     private javax.swing.JLabel lblTurn;
     private javax.swing.JPanel pnlBoard;
     private javax.swing.JPanel pnlCommands;
+    private javax.swing.JPanel pnlFighterInfoRight1;
+    private javax.swing.JPanel pnlFighterInfoRight2;
+    private javax.swing.JPanel pnlFighterInfoRight3;
     private javax.swing.JPanel pnlGameData;
     private javax.swing.JPanel pnlLeft;
     private javax.swing.JPanel pnlMain;

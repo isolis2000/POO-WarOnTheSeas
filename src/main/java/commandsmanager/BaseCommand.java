@@ -74,6 +74,10 @@ public abstract class BaseCommand implements iCommand, Serializable{
         this.gameStarted = gameStarted;
     }
     
+    public String getArgsStr() {
+        return CommandUtils.concatArray(args);
+    }
+    
     
     public abstract String executeOnServer();
     public abstract String executeOnClient(); 
