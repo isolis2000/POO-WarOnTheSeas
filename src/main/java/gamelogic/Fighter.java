@@ -1,19 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package gamelogic;
 
 import client.gui.Cell;
 import java.awt.Color;
 import java.io.Serializable;
-import server.ServerFrame;
 import server.ThreadServer;
 
-/**
- *
- * @author ivan
- */
 public abstract class Fighter implements Serializable {
     
     private String name, image, type;
@@ -74,26 +65,11 @@ public abstract class Fighter implements Serializable {
     
     protected double getDamageWithPowerUp(int initialDamage) {
         double damage = initialDamage + ((initialDamage * (power * powerup))/100);
-//        System.out.println("power: " + power);
-//        System.out.println("powerup: " + powerup);
-//        System.out.println("DAMAGE to take: " + damage);
         powerup = 0;
         return damage;
     }
     
     protected abstract boolean specialAttack(String[] args, ThreadServer target);
-
-//    @Override
-//    public String toString() {
-//        String ret = "Nombre: " + name;
-////        ret += "\nImagen: " + image;
-//        ret += "\nPorcentaje: " + percentage;
-//        ret += "\nTipo: " + type;
-//        ret += "\nPoder: " + power;
-//        ret += "\nResistencia: " + resistance;
-//        ret += "\nSanidad: " + sanity;
-//        return ret;
-//    }
 
     public String getName() {
         return name;

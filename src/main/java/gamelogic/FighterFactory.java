@@ -8,19 +8,9 @@ import gamelogic.fighters.UnderseaFire;
 import gamelogic.fighters.WavesControl;
 import java.awt.Color;
 
-/**
- *
- * @author ivan
- */
 public class FighterFactory {
     
     public static Fighter getFighter(String name, String image, int percentage, int power, int resistance, int sanity, Color color, int type, Player playerExecuting){
-        /*
-        
-        fighterTypes.put("UNDERSEA FIRE", 4);
-        fighterTypes.put("THUNDERS UNDER THE SEA", 5);
-        fighterTypes.put("WAVES CONTROL", 6);
-        */
         return switch (type) {
             case 1 -> new ReleaseTheKraken(name, image, percentage, power, resistance, sanity, color, playerExecuting);
             case 2 -> new PoseidonTrident(name, image, percentage, power, resistance, sanity, color, playerExecuting);

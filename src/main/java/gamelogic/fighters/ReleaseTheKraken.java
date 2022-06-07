@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package gamelogic.fighters;
 
 import client.gui.Cell;
@@ -12,10 +8,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import server.ThreadServer;
 
-/**
- *
- * @author ivan
- */
 public class ReleaseTheKraken extends Fighter {
 
     public ReleaseTheKraken(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
@@ -25,16 +17,12 @@ public class ReleaseTheKraken extends Fighter {
     // 0 attack 1 target 2 fighter 3 attacktype 4 instructions
     @Override
     protected boolean specialAttack(String[] args, ThreadServer target) {
-        boolean result = 
-        switch (args[3].toUpperCase()) {
+        return switch (args[3].toUpperCase()) {
             case "TENTACLES" -> tentacles(args, target);
             case "KRAKEN BREATH" -> krakenBreath(args, target);
             case "RELEASE THE KRAKEN" -> releaseTheKraken(args, target);
             default ->false;
         };
-//        if (!result)
-//            System.out.println("specialAttackBombsucks");
-        return result;
     }   
     
     private boolean tentacles(String[] args, ThreadServer target) {

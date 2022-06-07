@@ -1,17 +1,7 @@
-/* 
- * To change this license header, choose License Headers in Project Properties. 
- * To change this template file, choose Tools | Templates 
- * and open the template in the editor. 
- */ 
 package models; 
  
 import java.io.Serializable; 
  
-/** 
- * 
- * CELL x 10 y 20 
- * SKIP 
- */ 
 public class Message implements Serializable{ 
     private String name; 
     private String[] parameters; 

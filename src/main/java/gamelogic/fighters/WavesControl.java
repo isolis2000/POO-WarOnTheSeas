@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package gamelogic.fighters;
 
 import client.gui.Cell;
@@ -13,10 +9,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import server.ThreadServer;
 
-/**
- *
- * @author ivan
- */
 public class WavesControl extends Fighter {
 
     public WavesControl(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
@@ -25,16 +17,12 @@ public class WavesControl extends Fighter {
     
     @Override
     protected boolean specialAttack(String[] args, ThreadServer target) {
-        boolean result = 
-        switch (args[3].toUpperCase()) {
+        return switch (args[3].toUpperCase()) {
             case "SWIRL RISING" -> swirlRising(args, target);
             case "SEND HUMAN GARBAGE" -> sendHumanGarbage(args, target);
             case "RADIOACTIVE RUSH" -> radioactiveRush(target);
             default -> false;
         };
-//        if (!result)
-//            System.out.println("specialAttackBombsucks");
-        return result;
     }
     
     /*

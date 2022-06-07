@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package client.gui;
 
 import gamelogic.structures.Swirl;
@@ -14,10 +10,6 @@ import java.util.Arrays;
 import javax.swing.JLabel;
 import server.ServerFrame;
 
-/**
- *
- * @author ivan
- */
 public class Cell extends JLabel implements Serializable {
     
     private ArrayList<String> record = new ArrayList<>();

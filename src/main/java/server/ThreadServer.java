@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package server;
 
 import commandsmanager.BaseCommand;
@@ -11,16 +6,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import models.Message;
 import gamelogic.Player;
-import java.util.Arrays;
 
-/**
- *
- * @author diemo
- */
 public class ThreadServer extends Thread{
     private Socket socket;
     private Server server;
@@ -46,25 +33,16 @@ public class ThreadServer extends Thread{
     }
     
     public void run(){
-//        System.out.println("no");
         BaseCommand readCommand = null;
         while (isRunning) {
-//            System.out.println("yes");
             try {
                 writer.reset();
             } catch (IOException ex) {
                 System.exit(0);
             }
             try {
-//                System.out.println("previous read command");
                 readCommand = (BaseCommand)this.reader.readObject();
-//                player = readCommand.getPlayerExcecuting();
-//                System.out.println("CellsAfterW: " + Arrays.toString(player.getCells()));
-//                readCommand.setPlayerExcecuting(player);
                 player = readCommand.getPlayerExcecuting();
-//                System.out.println("map: ");
-//                System.out.println(server.getPlayerNames().get(this));
-                //System.out.println("read command");
             } catch (IOException ex) { 
                 System.out.println(ex.getMessage());
             } catch (ClassNotFoundException ex) {
@@ -75,8 +53,6 @@ public class ThreadServer extends Thread{
             }
             else if (readCommand.isLocalCommand()){
                 server.screenRef.showServerMessage(readCommand.executeOnServer());
-//                player = readCommand.getPlayerExcecuting();
-//                System.out.println("fighters after executing and equaling: " + player.getFighters().toString());
                 server.sendToOne(readCommand, this);
             } else {
                 String name = readCommand.getArgs()[1];
