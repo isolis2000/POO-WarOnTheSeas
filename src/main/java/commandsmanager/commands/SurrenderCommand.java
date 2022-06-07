@@ -18,6 +18,7 @@ import server.ServerFrame;
  * @author ivan
  */
 public class SurrenderCommand extends BaseCommand implements Serializable {
+    
 
     public SurrenderCommand(String commandName, String[] args, Player player) {
         super(commandName, args, true, false, player);
@@ -25,19 +26,22 @@ public class SurrenderCommand extends BaseCommand implements Serializable {
 
     @Override
     public String executeOnServer() {
-        String ret = "Jugador " + playerExcecuting.getName() + " se ha rendido. ";
-        if (ServerFrame.getServer().playerSurrender(playerExcecuting))
-            ret += ServerFrame.getServer().getWinner() + " ha ganado!";
-        return ret;        
+        if (strToShare == null) {
+            ServerFrame.getServer().changeTurn();
+            strToShare = "Jugador " + playerExcecuting.getName() + " se ha rendido. ";
+            if (ServerFrame.getServer().playerSurrender(playerExcecuting))
+                strToShare += ServerFrame.getServer().getWinner() + " ha ganado!";
+        }
+        return strToShare;        
     }
 
     @Override
     public String executeOnClient() {
-        ClientManager.getCM().getMainScreen().showPopup("Usted ha perdido!");
-        try {
-            ClientManager.getCM().getThreadClient().getWriter().close();
-        } catch (IOException ex) {System.out.println("ex");}
-        return "Usted se ha rendido.";
+//        ClientManager.getCM().getMainScreen().showPopup(strToShare);
+//        ClientManager.getCM().getMainScreen().getPlayer().setTurn(false);
+        ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(getPlayerExcecuting());
+        ClientManager.getCM().getMainScreen().updateInfoPanels();
+        return strToShare;
     }
     
 }

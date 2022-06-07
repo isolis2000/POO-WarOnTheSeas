@@ -28,6 +28,7 @@ public class ThreadServer extends Thread{
     private ObjectInputStream reader;
     private Player player;
     private boolean isRunning = true;
+    private boolean playerLost = false;
 
     public ThreadServer(Socket socket, Server server, Player player) {
         this.socket = socket;
@@ -86,6 +87,14 @@ public class ThreadServer extends Thread{
             }
         }
         
+    }
+
+    public boolean isPlayerLost() {
+        return playerLost;
+    }
+
+    public void setPlayerLost(boolean playerLost) {
+        this.playerLost = playerLost;
     }
 
     public Socket getSocket() {

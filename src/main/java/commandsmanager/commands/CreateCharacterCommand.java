@@ -60,7 +60,6 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
 //                    System.out.println("cells after add: ");
 //                System.out.println("-----------------------------------------------------------------------");
                     if (getPlayerExcecuting().getFighters().size() == 3) {
-                        getPlayerExcecuting().setFighersDone(true);
                         getPlayerExcecuting().setReady(true);
                     }
 //                    ServerFrame.getServer().getConnectionsByName().get(getPlayerExcecuting().getPlayerName()).getPlayer().syncPlayer(getPlayerExcecuting());
@@ -95,14 +94,17 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
     public String executeOnClient() {
         if (success) {
             Player player = getPlayerExcecuting();
-            if (player.areFighersDone())
+            if (player.getFighters().size() == 3)
+                player.setFighersDone(true);
+            else if (player.areFighersDone())
                 return "No se pueden crer mas de 3 luchadores";
-            else if (player.isReady())
-                return "No puede crear luchadores luego de comenzar el juego";
             String ret = player.getName() + " creo un luchador con los siguientes datos: \n" 
                     + player.getLastFighter().toString();
+            ret += ". Ahora tiene " + player.getFighters().size() + " luchadores creados.";
 //            System.out.println("player getfighter: " + player.getLastFighter());
             ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(player);
+            System.out.println("nuevo tama;o : " + ClientManager.getCM().getMainScreen().getPlayer().getFighters());
+            ClientManager.getCM().getMainScreen().updateInfoPanels();
             return ret;
         } else
             return "Error al crear personaje, los valores disponibles son: " + getPlayerExcecuting().getAvailableStats();
