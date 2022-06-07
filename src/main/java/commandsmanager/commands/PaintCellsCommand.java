@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package commandsmanager.commands;
 
 import client.ClientManager;
@@ -9,10 +5,6 @@ import commandsmanager.BaseCommand;
 import gamelogic.Player;
 import java.io.Serializable;
 
-/**
- *
- * @author ivan
- */
 public class PaintCellsCommand extends BaseCommand implements Serializable {
 
     public PaintCellsCommand(String commandName, String[] args, Player player) {

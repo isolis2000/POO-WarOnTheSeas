@@ -1,19 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package commandsmanager;
 
-import client.ClientManager;
-import client.gui.MainScreen;
 import java.io.Serializable;
 import gamelogic.Player;
 
-/**
- *
- * @author diemo
- */
 public abstract class BaseCommand implements iCommand, Serializable{
     protected String[] args;
     private boolean broadcast, localCommand;

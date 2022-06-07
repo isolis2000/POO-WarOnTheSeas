@@ -1,25 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package client;
 
 import commandsmanager.BaseCommand;
-import gamelogic.Fighter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import models.Message;
 
-/**
- *
- * @author diemo
- */
 public class ThreadClient extends Thread{
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
@@ -31,7 +16,6 @@ public class ThreadClient extends Thread{
             reader = new ObjectInputStream(ClientManager.getCM().getClient().socket.getInputStream());
             ClientManager.getCM().setThreadClient(this);
         } catch (IOException ex) {
-            //Logger.getLogger(ThreadClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -60,19 +44,8 @@ public class ThreadClient extends Thread{
             } catch (IOException ex) {
                 System.exit(0);
             }
-//            try {
-//                System.out.println("waiting for bool");
-//                boolean threeNumbersAttack = this.reader.readBoolean();
-//                if (threeNumbersAttack) 
-//                    writer.writeUTF(ClientManager.getCM().getMainScreen().askForThreeNumbers());
-//            } catch (IOException ex) {
-//                System.out.println("No es un bool");
-//            }
             try {
-//                System.out.println("---------------------------------------------------------------");
-//                System.out.println(this.reader.readObject());
                 readMessage = (BaseCommand)this.reader.readObject();
-//                ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(readMessage.getPlayerExcecuting());
                 ClientManager.getCM().getMainScreen().updateInfoPanels();
                 System.out.println("RECIBIDO--------------------------");
                 System.out.println("mensaje: " + readMessage);
@@ -84,13 +57,6 @@ public class ThreadClient extends Thread{
                 continue;
             }
             ClientManager.getCM().getMainScreen().showClientMessage(readMessage.executeOnClient());
-            
-//            if (readMessage.getName().toUpperCase().equals("CHAT")){
-//                System.out.println("recibido " + readMessage.toString());
-//                client.screenRef.showClientMessage("Recibido: " + readMessage.toString());
-//            }else if (readMessage.getName().toUpperCase().equals("ATTACK")){
-//                client.screenRef.showClientMessage("ATAQUE: " + readMessage.toString());
-//            }
         }
     }
 }

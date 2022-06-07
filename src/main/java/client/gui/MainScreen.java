@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package client.gui;
 
-import client.Client;
 import commandsmanager.BaseCommand;
 import commandsmanager.CommandFactory;
 import commandsmanager.CommandUtils;
@@ -18,9 +13,6 @@ import gamelogic.Player;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
@@ -28,10 +20,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-/**
- *
- * @author ivan
- */
 public class MainScreen extends javax.swing.JFrame {
     
     private Player player;
@@ -818,55 +806,6 @@ public class MainScreen extends javax.swing.JFrame {
     public void showClientMessage(String msg) {
         this.txaLogs.append(msg + "\n");
     }
-    
-    public void printCells(Cell[][] cells) {
-//        Cell[][] cells = player.getCells();
-        for (Cell[] row : cells)
-            System.out.println(Arrays.toString(row));
-    }
-    
-//    public void addFighter(Fighter fighter) {
-//        
-//        int x = 0;
-//        Cell[][] cellsAux = new Cell[20][30];
-//        for (int row = 0; row < this.player.getCells().length; row++)
-//            for (int n = 0; n < this.player.getCells()[row].length; n++) {
-//                int[] coords = new int[2];
-//                Cell initialCell = this.player.getCells()[row][n];
-//                System.arraycopy(initialCell.getPlacement(), 0, coords, 0, 2);
-//                Cell newCell = new Cell("", coords);
-//                newCell.setBackground(initialCell.getBackground());
-//                cellsAux[row][n] = newCell;
-//            }
-//        shuffleMatrix(cellsAux);
-//        outerloop:
-//        for (Cell[] cell1 : cellsAux) {
-//            for (Cell cell : cell1) {
-//                if (x == numOfCellsToPaint)
-//                    break outerloop;
-//                else if (cell.getBackground() == Color.gray) {
-//                    cell.setFighter(fighter);
-//                    x++;
-//                }
-//            }
-//        }
-//        updateCells(cellsAux);
-//    }
-    
-//    private void shuffleMatrix(Cell[][] arr) {
-//        Random random = new Random();
-//
-//        for (int i = arr.length - 1; i > 0; i--) {
-//            for (int j = arr[i].length - 1; j > 0; j--) {
-//                int m = random.nextInt(i + 1);
-//                int n = random.nextInt(j + 1);
-//
-//                Cell temp = arr[i][j];
-//                arr[i][j] = arr[m][n];
-//                arr[m][n] = temp;
-//            }
-//        }
-//    }
 
     public Player getPlayer() {
         return player;
@@ -875,24 +814,6 @@ public class MainScreen extends javax.swing.JFrame {
     public void setPlayer(Player player) {
         this.player = player;
     }
-    
-//    public void updateCells(Cell[][] newCells) {
-//        int x = 0;
-//        int y = 0;
-//        try {
-//            for (int row = 0; row < this.player.getCells().length; row++) {
-//                for (int cell = 0; cell < this.player.getCells()[row].length; cell++) {
-//                    Cell newCell = newCells[row][cell];
-//                    int[] placements = newCell.getPlacement();
-//                    x = placements[0] - 1;
-//                    y = placements[1] - 1;
-//                    this.player.getCells()[x][y].updateCell(newCell);
-//                }
-//            }
-//        } catch (java.lang.ArrayIndexOutOfBoundsException ex) {
-//            ex.printStackTrace();
-//        }
-//    }
     
     public String askForThreeNumbers() {
         return JOptionPane.showInputDialog("Un jugador lo esta atacando, digite 3 numeros separados por \"-\"");

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package commandsmanager.commands;
 
 import client.ClientManager;
@@ -9,12 +5,7 @@ import commandsmanager.BaseCommand;
 import gamelogic.Player;
 import java.io.Serializable;
 import server.ServerFrame;
-import server.ThreadServer;
 
-/**
- *
- * @author ivan
- */
 public class GetEnemyStateCommand extends BaseCommand implements Serializable {
 
     public GetEnemyStateCommand(String commandName, String[] args, Player player) {

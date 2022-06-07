@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package gamelogic.fighters;
 
 import client.gui.Cell;
@@ -12,10 +8,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import server.ThreadServer;
 
-/**
- *
- * @author ivan
- */
 public class FishTelepathy extends Fighter {
     
     public FishTelepathy(String name, String image, int percentage, int power, int resistance, int sanity, Color color, Player playerExecuting) {
@@ -24,14 +16,12 @@ public class FishTelepathy extends Fighter {
 
     @Override
     protected boolean specialAttack(String[] args, ThreadServer target) {
-        boolean result = 
-        switch (args[3].toUpperCase()) {
+        return switch (args[3].toUpperCase()) {
             case "CARDUMEN" -> cardumen(target);
             case "SHARK ATTACK" -> sharkAttack(target);
             case "PULP" -> pulp(target);
             default ->false;
         };
-        return result;
     }
     
     private boolean cardumen(ThreadServer target) {

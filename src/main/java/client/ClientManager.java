@@ -1,16 +1,7 @@
 package client;
 
-import client.Client;
-import client.ThreadClient;
 import client.gui.MainScreen;
-import gamelogic.Player;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
-/**
- *
- * @author ivan
- */
 public class ClientManager {
     private static final ClientManager clientManager = new ClientManager();
     private Client client;
@@ -19,7 +10,6 @@ public class ClientManager {
     private MainScreen mainScreen;
     private String playerName;
     private int port;
-//    private Player player;
 
     public Client getClient() {
         return client;
@@ -28,14 +18,6 @@ public class ClientManager {
     public void setClient() {
         client = new Client();
     }
-
-//    public Player getPlayer() {
-//        return player;
-//    }
-//
-//    public void setPlayer(Player player) {
-//        this.player = player;
-//    }
 
     public static ClientManager getCM() {
         return clientManager;

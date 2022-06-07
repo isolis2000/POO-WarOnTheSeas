@@ -1,23 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package gamelogic;
 
-import client.Client;
 import client.gui.Cell;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 import server.ThreadServer;
 
-/**
- *
- * @author ivan
- */
 public class Player implements Serializable {
     
     private boolean ready = false, fightersDone = false, turn = false;
@@ -89,7 +79,6 @@ public class Player implements Serializable {
             Fighter commander = FighterFactory.getFighter(name, image, percentage, power, resistance, sanity, color, type, this);
             fighters.add(commander);
             addFighterToCells(commander);
-//            System.out.println("Added new fighter, new size: " + fighters.size());
             return true;
         } else {
             return false;
@@ -318,9 +307,4 @@ public class Player implements Serializable {
                     radioactiveCells.add(cell);
         return radioactiveCells;
     }
-    
-//    @Override
-//    public String toString() {
-//        return playerName + "\nfighters: \n" + fighters.toString() + "\n----------------------------\nlisto? = " + ready;
-//    }
 }
