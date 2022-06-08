@@ -49,6 +49,14 @@ public class Server extends Thread{
         return logs;
     }
     
+    public boolean isWinner() {
+        int playersLeft = 0;
+        for (ThreadServer ts : connections)
+            if (!ts.getPlayer().isDead())
+                playersLeft ++;
+        return playersLeft == 1;
+    }
+    
     public String getLogsString() {
         String log = "- ";
         for (String str : logs)
@@ -56,16 +64,16 @@ public class Server extends Thread{
         return log;
     }
     
-    public boolean playerSurrender(Player player) {
+    public void playerSurrender(Player player) {
         for (ThreadServer ts : connections)
             if (ts.getPlayer().getName().equals(player.getName())) {
                 ts.setPlayerLost(true);
+                ts.getPlayer().surrender();
             }
-        return connections.size() == 1;
-    }
-    
-    public String getWinner() {
-        return connections.get(0).getPlayer().getName();
+        if (isWinner())
+            for (ThreadServer ts : connections)
+                if (!ts.getPlayer().isDead())
+                    ts.getPlayer().setWinner(true);
     }
     
     public Player getPlayerByName(String name) {
@@ -158,17 +166,10 @@ public class Server extends Thread{
     
     public boolean startGame() {
         if (!gameStarted) {
-            System.out.println("entro");
             Random random = new Random();
             if (!areAllPlayersReady())
                 return false;
             connections.get(random.nextInt(connections.size())).getPlayer().setTurn(true);
-            for (ThreadServer connection : connections)
-                if (connection.getPlayer().isTurn())
-                    System.out.println("Player: " + connection.getPlayer().getName() 
-                            + " with turn: " + connection.getPlayer().isTurn());
-                else
-                    System.out.println("todos f");
             gameStarted = true;
         }
         return gameStarted;

@@ -6,11 +6,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
+import server.ServerFrame;
 import server.ThreadServer;
 
 public class Player implements Serializable {
     
-    private boolean ready = false, fightersDone = false, turn = false;
+    private boolean ready = false, fightersDone = false, turn = false, dead, winner;
     private final String name;
     private ArrayList<Fighter> fighters = new ArrayList<>();
     private static final Color[] colors = {Color.pink, Color.green, Color.cyan};
@@ -135,6 +136,8 @@ public class Player implements Serializable {
         this.hp = newPlayer.getHp();
         this.cellsLeft = newPlayer.getCellsLeft();
         this.availableStats = newPlayer.getAvailableStats();
+        this.dead = newPlayer.isDead();
+        this.winner = newPlayer.isWinner();
         for (int row = 0; row < cells.length; row++)
             for (int cell = 0; cell < cells[row].length; cell++)
                 this.cells[row][cell].updateCell(newPlayer.getCells()[row][cell]);
@@ -197,6 +200,31 @@ public class Player implements Serializable {
     public void setCells(Cell[][] cells) {
         this.cells = cells;
     }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
+    public boolean isWinner() {
+        return winner;
+    }
+
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+    }
+    
+    public void surrender() {
+        for (Cell[] row : cells)
+            for (Cell cell : row){
+                cell.setHp(0, "Jugador se ha rendido, por lo que esta celda ha sido destruida");
+                removeCell();
+            }
+        this.dead = true;
+    }
     
     // 0 attack 1 target 2 fighter 3 attacktype 4 instructions
     public String attackWithFighter(ThreadServer target, String[] args) {
@@ -207,10 +235,17 @@ public class Player implements Serializable {
                 if (fighter.getName().equals(fighterName))
                     fighterToUse = fighter;
             }
-            if (fighterToUse.attack(args, target))
-                return name + " ataco a " + target.getPlayer().getName()
+            if (fighterToUse.attack(args, target)) {
+                String ret = name + " ataco a " + target.getPlayer().getName()
                         + " con el luchador " + fighterName + " utilizando el ataque "
                         + args[3];
+                if (target.getPlayer().getHp() <= 0) {
+                    target.getPlayer().setDead(true);
+                    if (ServerFrame.getServer().isWinner())
+                        this.winner = true;
+                }
+                return ret;
+            }
             else
                 return "ERROR1";
         } catch (Exception ex) {
@@ -307,4 +342,5 @@ public class Player implements Serializable {
                     radioactiveCells.add(cell);
         return radioactiveCells;
     }
+    
 }
