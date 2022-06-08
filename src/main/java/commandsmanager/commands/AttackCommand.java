@@ -27,9 +27,18 @@ public class AttackCommand extends BaseCommand implements Serializable {
 
     @Override
     public String executeOnClient() {
+        boolean wasDead = ClientManager.getCM().getMainScreen().getPlayer().isDead();
         ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(getPlayerExcecuting());
         ClientManager.getCM().getMainScreen().updateInfoPanels();
         ClientManager.getCM().getMainScreen().showLastAttack(excecutionResult);
+        if (!wasDead && playerExcecuting.isDead())
+            ClientManager.getCM().getMainScreen().showPopup("Usted ha perdido");
+        else if (playerExcecuting.isWinner()){
+            String str = "Jugador " + playerExcecuting.getName() + " es el ganador!"
+                    + " Cuando cierre esta venta terminara el juego.";
+            ClientManager.getCM().getMainScreen().showPopup(str);
+            System.exit(0);
+        }
         return excecutionResult;
     }
     

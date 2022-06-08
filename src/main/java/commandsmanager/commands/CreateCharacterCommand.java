@@ -76,7 +76,6 @@ public class CreateCharacterCommand extends BaseCommand implements Serializable 
                     + player.getLastFighter().toString();
             ret += ". Ahora tiene " + player.getFighters().size() + " luchadores creados.";
             ClientManager.getCM().getMainScreen().getPlayer().syncPlayer(player);
-            System.out.println("nuevo tama;o : " + ClientManager.getCM().getMainScreen().getPlayer().getFighters());
             ClientManager.getCM().getMainScreen().updateInfoPanels();
             return ret;
         } else

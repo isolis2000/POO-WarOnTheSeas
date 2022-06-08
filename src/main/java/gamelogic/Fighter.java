@@ -45,14 +45,10 @@ public abstract class Fighter implements Serializable {
     }
     
     private boolean resistance(ThreadServer target) {
-        System.out.println("fighter name: " + name);
         for (Cell[] row : target.getPlayer().getCells())
             for (Cell cell : row) {
-                System.out.println("name inside: " + cell.getFighter().getName());
                 if (cell.getFighter().getName().equals(this.name)) {
                     cell.setResistance(resistance);
-                    System.out.println("resistance inside: " + resistance);
-                    System.out.println("cell: " + cell.getResistance());
                 }
             }
         return true;
